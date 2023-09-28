@@ -1,0 +1,3 @@
+<?php //App%255CController%255CAdminController%2523getAllTag
+
+return [PHP_INT_MAX, []];
