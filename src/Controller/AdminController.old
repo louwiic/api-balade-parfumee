@@ -72,24 +72,38 @@ class AdminController extends AbstractController
     public function getUniqueFileName(UploadedFile $file): array
     {
         $maxAttempts = 50;
-
         $attempts = 0;
-        $nameFile = '';
-        while ($attempts < $maxAttempts) {
-            $nameFile = $this->getRandomString() . "." . $file->getClientOriginalExtension();
-            $filePath = $this->publicDir . DIRECTORY_SEPARATOR . "$nameFile";
-            if (!file_exists($filePath)) {
-                break;
-            }
+    
+        do {
+            $uniquePrefix = date('YmdHis');
+            $nameFile = $uniquePrefix . '_' . $this->getRandomString() . '.' . $file->getClientOriginalExtension();
+            $filePath = $this->publicDir . DIRECTORY_SEPARATOR . $nameFile;                
+
             $attempts++;
-        }
+        } while (file_exists($filePath) && $attempts < $maxAttempts);
+        
         return ['isFailed' => $attempts === $maxAttempts, 'nameFile' => $nameFile, 'filePath' => $filePath];
     }
 
+    #[Route('api/admin/addTag', name: 'app_addDefaultTag', methods: "POST")]
+    public function addTags(ContentTagRepository $contentTagRepository): JsonResponse
+    {
+        
+        $tagNames = ['Fiche à thème', 'Podcast', 'Article'];
+
+        foreach ($tagNames as $tagName) {
+            $tag = new ContentTag();
+            $tag->setName($tagName);
+
+            $contentTagRepository->save($tag, true);
+        }
+        return new JsonResponse(['message' => 'Tags ajouté avec succès']);
+    }
 
     #[Route('api/admin/getAllTag', name: 'app_getAllTag', methods: "GET")]
     public function getAllTag(ContentTagRepository $contentTagRepository): JsonResponse
     {
+        
         if (!$this->isGranted('ROLE_ADMIN')) {
             return new JsonResponse([
                 'message' => 'Vous n\'avez pas les droits pour effectuer cette action.'
@@ -165,8 +179,7 @@ class AdminController extends AbstractController
 
         if (count($violations) > 0) {
             return $this->json(['message' => $violations[0]->getMessage()], 400);
-        }
-
+    
 
         $contentExclusive = new ContentExclusive();
         $contentExclusive->setTag($contentTag);
@@ -254,6 +267,7 @@ class AdminController extends AbstractController
         return new JsonResponse(['message' => 'Notification supprimé avec succès']);
     }
 
+
     #[Route('api/admin/addNotification', name: 'app_addNotification', methods: "POST")]
     public function addNotification(Request $request, UserRepository $userRepository, CategoryNotificationRepository $categoryNotificationRepository): JsonResponse
     {
@@ -293,6 +307,7 @@ class AdminController extends AbstractController
         $this->em->flush();
         return new JsonResponse(['message' => 'Notification ajoutée avec succès']);
     }
+
     #[Route('api/admin/notification/{notification}', name: 'app_updateNotification', methods: "PUT")]
     public function updateNotification(Notification $notification, Request $request) {
         if (!$this->isGranted('ROLE_ADMIN')) {
