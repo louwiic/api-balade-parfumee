@@ -86,27 +86,10 @@ class AdminController extends AbstractController
         return ['isFailed' => $attempts === $maxAttempts, 'nameFile' => $nameFile, 'filePath' => $filePath];
     }
 
-    #[Route('api/admin/addTag', name: 'app_addDefaultTag', methods: "POST")]
-    public function addTags(ContentTagRepository $contentTagRepository): JsonResponse
-    {
-        
-
-        $tagNames = ['Fiche à thème', 'Podcast', 'Article'];
-
-        foreach ($tagNames as $tagName) {
-            $tag = new ContentTag();
-            $tag->setName($tagName);
-
-            $contentTagRepository->save($tag, true);
-        }
-        return new JsonResponse(['message' => 'Tags ajouté avec succès']);
-    }
-
 
     #[Route('api/admin/getAllTag', name: 'app_getAllTag', methods: "GET")]
     public function getAllTag(ContentTagRepository $contentTagRepository): JsonResponse
     {
-        
         if (!$this->isGranted('ROLE_ADMIN')) {
             return new JsonResponse([
                 'message' => 'Vous n\'avez pas les droits pour effectuer cette action.'
