@@ -33,10 +33,11 @@ class StripeController extends AbstractController
         public  $quarterlySubscription,
         public  $freeSubscription
     )
+    
+
     {
         $dotenv = new Dotenv();
         $dotenv->load($kernel->getProjectDir() . DIRECTORY_SEPARATOR . '.env');
-
         $this->entityManager = $entityManager;
         $this->endpoint_secret = $_ENV['ENDPOINT_SECRET'];
         Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
@@ -168,6 +169,16 @@ class StripeController extends AbstractController
 
         // Récupérer l'ID du plan associé à l'abonnement
         $planId = $subscription->items->data[0]->id;
+        var_dump('Nouvelle souscription créée', [
+            'items' => [
+                [
+                    'id' => $planId,
+                    'plan' => $planSubscriptionSelected,
+                ]
+            ],
+            'proration_behavior' => 'create_prorations'
+        ]);
+        return;
         try {
             $subscription = Subscription::update($subscriptionId, [
                 'items' => [
@@ -257,9 +268,9 @@ class StripeController extends AbstractController
         $subscriptionId = $subscription->id;
 
         //  'ID de l'abonnement (   base de données)
-
         return new Response('succes', 200);
     }
+
     #[Route('/get_list_mailChimp', name: 'stripe_webhook', methods: "POST")]
     public function handleWebhook(Request $request)
     {
@@ -301,7 +312,7 @@ class StripeController extends AbstractController
             ]);
         }
 
-// Créez l'abonnement pour le client
+        // Créez l'abonnement pour le client
         $subscription = Subscription::create([
             'customer' => $customer->id,
             'items' => [
