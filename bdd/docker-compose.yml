@@ -1,0 +1,20 @@
+version: '3' 
+services:
+    database:
+      image: mysql
+      container_name: db_docker_symfony
+      environment:
+            #MYSQL_ALLOW_EMPTY_PASSWORD: 'yes' 
+            MYSQL_ROOT_PASSWORD: 
+            MYSQL_DATABASE: rnkj8918_bld_parfume #.env file ${DB_DATABASE} 
+            MYSQL_USER: loic
+            MYSQL_PASSWORD: admin
+      networks:
+        - api_bld_docker
+      ports:
+        - "4306:3306"      
+      restart: always
+      volumes:
+            - ./data:/var/lib/mysql
+networks:
+    api_bld_docker:

@@ -32,6 +32,7 @@ class CheckListController extends AbstractController
         $this->fragranceRepository = $fragranceRepository;
         $this->userRepository = $userRepository;
     }
+    
     #[Route('api/checkList/{m}/{Y}', name: 'app_create_checkList', methods: "POST")]
     public function createCheckList($m = false, $Y = false): Response {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
@@ -46,6 +47,8 @@ class CheckListController extends AbstractController
         $this->entityManager->flush();
         return new JsonResponse(["id" => $checkList->getId(), "createAt" => $checkList->getCreateAt()->format('m/Y')], Response::HTTP_OK);
     }
+
+
     #[Route('api/checkList/{checkList}/{fragrance}', name: 'app_put_checkList', methods: "PUT")]
     #[OA\Parameter(name: 'checkList', in: "path", required: true)]
     #[OA\Parameter(name: 'fragrance', in: "path", required: false)]
