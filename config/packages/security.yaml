@@ -12,6 +12,11 @@ security:
                 class: App\Entity\User
                 property: email
     firewalls:
+        main:
+            # ...
+            stateless: true
+            cors: true
+            # ...
         api:
             pattern: ^/api
             stateless: true
