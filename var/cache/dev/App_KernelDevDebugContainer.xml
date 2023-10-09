@@ -22,7 +22,6 @@
       <parameter key="SensioFrameworkExtraBundle">Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle</parameter>
       <parameter key="SymfonyCastsVerifyEmailBundle">SymfonyCasts\Bundle\VerifyEmail\SymfonyCastsVerifyEmailBundle</parameter>
       <parameter key="LexikJWTAuthenticationBundle">Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle</parameter>
-      <parameter key="NelmioCorsBundle">Nelmio\CorsBundle\NelmioCorsBundle</parameter>
     </parameter>
     <parameter key="kernel.bundles_metadata" type="collection">
       <parameter key="FrameworkBundle" type="collection">
@@ -76,10 +75,6 @@
       <parameter key="LexikJWTAuthenticationBundle" type="collection">
         <parameter key="path">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/lexik/jwt-authentication-bundle</parameter>
         <parameter key="namespace">Lexik\Bundle\JWTAuthenticationBundle</parameter>
-      </parameter>
-      <parameter key="NelmioCorsBundle" type="collection">
-        <parameter key="path">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/nelmio/cors-bundle</parameter>
-        <parameter key="namespace">Nelmio\CorsBundle</parameter>
       </parameter>
     </parameter>
     <parameter key="kernel.charset">UTF-8</parameter>
@@ -258,40 +253,6 @@
     <parameter key="lexik_jwt_authentication.user_id_claim">username</parameter>
     <parameter key="lexik_jwt_authentication.encoder.signature_algorithm">RS256</parameter>
     <parameter key="lexik_jwt_authentication.encoder.crypto_engine">openssl</parameter>
-    <parameter key="nelmio_cors.map" type="collection">
-      <parameter key="^/" type="collection">
-        <parameter key="skip_same_as_origin">true</parameter>
-      </parameter>
-    </parameter>
-    <parameter key="nelmio_cors.defaults" type="collection">
-      <parameter key="allow_origin" type="collection">
-        <parameter>%env(CORS_ALLOW_ORIGIN)%</parameter>
-      </parameter>
-      <parameter key="allow_credentials">false</parameter>
-      <parameter key="allow_headers" type="collection">
-        <parameter>content-type</parameter>
-        <parameter>authorization</parameter>
-      </parameter>
-      <parameter key="expose_headers" type="collection">
-        <parameter>Link</parameter>
-      </parameter>
-      <parameter key="allow_methods" type="collection">
-        <parameter>GET</parameter>
-        <parameter>OPTIONS</parameter>
-        <parameter>POST</parameter>
-        <parameter>PUT</parameter>
-        <parameter>PATCH</parameter>
-        <parameter>DELETE</parameter>
-      </parameter>
-      <parameter key="max_age">3600</parameter>
-      <parameter key="hosts" type="collection"/>
-      <parameter key="origin_regex">true</parameter>
-      <parameter key="forced_allow_origin_value">null</parameter>
-      <parameter key="skip_same_as_origin">true</parameter>
-    </parameter>
-    <parameter key="nelmio_cors.cors_listener.class">Nelmio\CorsBundle\EventListener\CorsListener</parameter>
-    <parameter key="nelmio_cors.options_resolver.class">Nelmio\CorsBundle\Options\Resolver</parameter>
-    <parameter key="nelmio_cors.options_provider.config.class">Nelmio\CorsBundle\Options\ConfigProvider</parameter>
     <parameter key="data_collector.templates" type="collection">
       <parameter key="data_collector.request" type="collection">
         <parameter>request</parameter>
@@ -2230,7 +2191,6 @@
           <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/maker-bundle/src/translations</argument>
           <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/sensio/framework-extra-bundle/src/translations</argument>
           <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/lexik/jwt-authentication-bundle/translations</argument>
-          <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/nelmio/cors-bundle/translations</argument>
         </argument>
         <argument key="cache_vary" type="collection">
           <argument key="scanned_directories" type="collection">
@@ -2251,7 +2211,6 @@
             <argument>vendor/symfony/maker-bundle/src/translations</argument>
             <argument>vendor/sensio/framework-extra-bundle/src/translations</argument>
             <argument>vendor/lexik/jwt-authentication-bundle/translations</argument>
-            <argument>vendor/nelmio/cors-bundle/translations</argument>
           </argument>
         </argument>
       </argument>
@@ -2608,30 +2567,6 @@
           <argument>checkPassport</argument>
         </argument>
         <argument>1024</argument>
-      </call>
-      <call method="addListener">
-        <argument>kernel.request</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="nelmio_cors.cors_listener"/>
-          <argument>onKernelRequest</argument>
-        </argument>
-        <argument>250</argument>
-      </call>
-      <call method="addListener">
-        <argument>kernel.response</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="nelmio_cors.cors_listener"/>
-          <argument>onKernelResponse</argument>
-        </argument>
-        <argument>0</argument>
-      </call>
-      <call method="addListener">
-        <argument>kernel.response</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="nelmio_cors.cacheable_response_vary_listener"/>
-          <argument>onResponse</argument>
-        </argument>
-        <argument>-10</argument>
       </call>
       <call method="addListener">
         <argument>kernel.response</argument>
@@ -7015,27 +6950,6 @@
         <argument>Generate public/private keys for use in your application.</argument>
       </call>
     </service>
-    <service id="nelmio_cors.cors_listener" class="Nelmio\CorsBundle\EventListener\CorsListener">
-      <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" priority="250"/>
-      <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse" priority="0"/>
-      <tag name="container.hot_path"/>
-      <tag name="container.hot_path"/>
-      <argument type="service" id="nelmio_cors.options_resolver"/>
-    </service>
-    <service id="nelmio_cors.options_resolver" class="Nelmio\CorsBundle\Options\Resolver">
-      <argument type="collection">
-        <argument type="service" id="nelmio_cors.options_provider.config"/>
-      </argument>
-    </service>
-    <service id="nelmio_cors.options_provider.config" class="Nelmio\CorsBundle\Options\ConfigProvider">
-      <tag name="nelmio_cors.options_provider" priority="-1"/>
-      <argument>%nelmio_cors.map%</argument>
-      <argument>%nelmio_cors.defaults%</argument>
-    </service>
-    <service id="nelmio_cors.cacheable_response_vary_listener" class="Nelmio\CorsBundle\EventListener\CacheableResponseVaryListener">
-      <tag name="kernel.event_listener" event="kernel.response" method="onResponse" priority="-10"/>
-      <tag name="container.hot_path"/>
-    </service>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\AdminController" class="App\Controller\AdminController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\AdminController" class="App\Controller\AdminController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\AdminController" class="App\Controller\AdminController" autowire="true" autoconfigure="true" abstract="true"/>
@@ -9710,7 +9624,7 @@
     <service id=".service_locator.yj07qm_" alias=".service_locator.ZyXYEQR"/>
     <service id=".service_locator.jij13qc" alias=".service_locator.PBToVFE"/>
     <service id=".service_locator.O24_MAy" alias=".service_locator.yY.p4P7"/>
-    <service id=".service_locator.B9WzKt1" alias=".service_locator..UjS3SV"/>
+    <service id=".service_locator.fnq5_M8" alias=".service_locator..UjS3SV"/>
     <service id="validator" alias="debug.validator"/>
     <service id="http_client" alias=".debug.http_client"/>
     <service id="event_dispatcher" alias="debug.event_dispatcher" public="true"/>
@@ -9769,7 +9683,7 @@
     <service id=".service_locator.g__dTW3" alias=".service_locator.unpIcZj"/>
     <service id=".service_locator.qnm_CJ1" alias=".service_locator.e_4zbH4"/>
     <service id=".service_locator.vWiWdqV" alias=".service_locator.920S.Ym"/>
-    <service id=".service_locator.lqbqsSD" alias=".service_locator..UjS3SV"/>
+    <service id=".service_locator.9LpIjm1" alias=".service_locator..UjS3SV"/>
     <service id=".service_locator.5Uamvy3" alias=".service_locator.DKUVNKG"/>
     <service id=".service_locator.u6DWx23" alias=".service_locator.cXsfP3P"/>
     <service id=".service_locator.hnz5ZNh" alias=".service_locator.0TACwl3"/>
