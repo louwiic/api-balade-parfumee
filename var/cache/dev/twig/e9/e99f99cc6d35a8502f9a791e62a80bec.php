@@ -131,6 +131,6 @@ class __TwigTemplate_cd0251312408741df4f3c03e59b854b4 extends Template
         Sfjs.loadToolbar('{{ token }}');
     })();
 /*]]>*/</script>
-", "@WebProfiler/Profiler/toolbar_js.html.twig", "/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/web-profiler-bundle/Resources/views/Profiler/toolbar_js.html.twig");
+", "@WebProfiler/Profiler/toolbar_js.html.twig", "/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/web-profiler-bundle/Resources/views/Profiler/toolbar_js.html.twig");
     }
 }

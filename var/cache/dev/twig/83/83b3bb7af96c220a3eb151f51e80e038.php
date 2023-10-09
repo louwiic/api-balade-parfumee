@@ -1828,6 +1828,6 @@ class __TwigTemplate_c11a78cba9b4bd248ad0f0d61f160ec4 extends Template
         </tbody>
     </table>
 {% endmacro %}
-", "@Doctrine/Collector/db.html.twig", "/Users/loic/Dev/symfony/balade_parfumes_api/vendor/doctrine/doctrine-bundle/Resources/views/Collector/db.html.twig");
+", "@Doctrine/Collector/db.html.twig", "/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/doctrine/doctrine-bundle/Resources/views/Collector/db.html.twig");
     }
 }

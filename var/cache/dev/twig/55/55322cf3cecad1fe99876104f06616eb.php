@@ -69,6 +69,6 @@ class __TwigTemplate_c82b4f25c04454cf4280db8b97393a0a extends Template
     <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"/>
     <rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"2\" />
 </svg>
-", "@WebProfiler/Icon/settings-width-fixed.svg", "/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/web-profiler-bundle/Resources/views/Icon/settings-width-fixed.svg");
+", "@WebProfiler/Icon/settings-width-fixed.svg", "/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/web-profiler-bundle/Resources/views/Icon/settings-width-fixed.svg");
     }
 }

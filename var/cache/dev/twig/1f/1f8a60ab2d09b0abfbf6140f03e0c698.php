@@ -195,6 +195,6 @@ class __TwigTemplate_cf5b9ada29784492b61a1c83ae197ea3 extends Template
 .timeline-graph .timeline-period {
     stroke-width: 0;
 }
-", "@WebProfiler/Collector/time.css.twig", "/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/web-profiler-bundle/Resources/views/Collector/time.css.twig");
+", "@WebProfiler/Collector/time.css.twig", "/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/web-profiler-bundle/Resources/views/Collector/time.css.twig");
     }
 }

@@ -172,6 +172,6 @@ class __TwigTemplate_f29ce5edfb128bd8dbea991c0952ca05 extends Template
         <button type=\"submit\" class=\"btn\">Register</button>
     {{ form_end(registrationForm) }}
 {% endblock %}
-", "registration/register.html.twig", "/Users/loic/Dev/symfony/balade_parfumes_api/templates/registration/register.html.twig");
+", "registration/register.html.twig", "/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/templates/registration/register.html.twig");
     }
 }

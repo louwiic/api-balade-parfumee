@@ -586,6 +586,6 @@ class __TwigTemplate_fda98ecdbd3f4e948210e9a25823c613 extends Template
         {% endif %}
     </div>
 {% endblock %}
-", "@WebProfiler/Collector/http_client.html.twig", "/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/web-profiler-bundle/Resources/views/Collector/http_client.html.twig");
+", "@WebProfiler/Collector/http_client.html.twig", "/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/web-profiler-bundle/Resources/views/Collector/http_client.html.twig");
     }
 }

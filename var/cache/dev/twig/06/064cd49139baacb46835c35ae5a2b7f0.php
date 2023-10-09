@@ -3395,6 +3395,6 @@ body.outlook p {
         min-width: 0;
     }
 }
-", "@email/zurb_2/main.css", "/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/twig-bridge/Resources/views/Email/zurb_2/main.css");
+", "@email/zurb_2/main.css", "/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/twig-bridge/Resources/views/Email/zurb_2/main.css");
     }
 }

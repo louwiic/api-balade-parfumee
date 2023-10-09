@@ -75,6 +75,6 @@ class __TwigTemplate_18aac928fa8250b5212fdd6d7a6814ea extends Template
     <line x1=\"14\" y1=\"10\" x2=\"14.01\" y2=\"10\"></line>
     <path d=\"M10 14a3.5 3.5 0 0 0 4 0\"></path>
 </svg>
-", "@WebProfiler/Icon/exception.svg", "/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/web-profiler-bundle/Resources/views/Icon/exception.svg");
+", "@WebProfiler/Icon/exception.svg", "/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/web-profiler-bundle/Resources/views/Icon/exception.svg");
     }
 }

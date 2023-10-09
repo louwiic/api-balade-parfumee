@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
   <parameters>
-    <parameter key="kernel.project_dir">/Users/loic/Dev/symfony/balade_parfumes_api</parameter>
+    <parameter key="kernel.project_dir">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger</parameter>
     <parameter key="kernel.environment">dev</parameter>
     <parameter key="kernel.runtime_environment">%env(default:kernel.environment:APP_RUNTIME_ENV)%</parameter>
     <parameter key="kernel.debug">true</parameter>
-    <parameter key="kernel.build_dir">/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev</parameter>
-    <parameter key="kernel.cache_dir">/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev</parameter>
-    <parameter key="kernel.logs_dir">/Users/loic/Dev/symfony/balade_parfumes_api/var/log</parameter>
+    <parameter key="kernel.build_dir">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev</parameter>
+    <parameter key="kernel.cache_dir">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev</parameter>
+    <parameter key="kernel.logs_dir">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/log</parameter>
     <parameter key="kernel.bundles" type="collection">
       <parameter key="FrameworkBundle">Symfony\Bundle\FrameworkBundle\FrameworkBundle</parameter>
       <parameter key="DoctrineBundle">Doctrine\Bundle\DoctrineBundle\DoctrineBundle</parameter>
@@ -26,59 +26,59 @@
     </parameter>
     <parameter key="kernel.bundles_metadata" type="collection">
       <parameter key="FrameworkBundle" type="collection">
-        <parameter key="path">/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/framework-bundle</parameter>
+        <parameter key="path">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/framework-bundle</parameter>
         <parameter key="namespace">Symfony\Bundle\FrameworkBundle</parameter>
       </parameter>
       <parameter key="DoctrineBundle" type="collection">
-        <parameter key="path">/Users/loic/Dev/symfony/balade_parfumes_api/vendor/doctrine/doctrine-bundle</parameter>
+        <parameter key="path">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/doctrine/doctrine-bundle</parameter>
         <parameter key="namespace">Doctrine\Bundle\DoctrineBundle</parameter>
       </parameter>
       <parameter key="DoctrineMigrationsBundle" type="collection">
-        <parameter key="path">/Users/loic/Dev/symfony/balade_parfumes_api/vendor/doctrine/doctrine-migrations-bundle</parameter>
+        <parameter key="path">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/doctrine/doctrine-migrations-bundle</parameter>
         <parameter key="namespace">Doctrine\Bundle\MigrationsBundle</parameter>
       </parameter>
       <parameter key="DebugBundle" type="collection">
-        <parameter key="path">/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/debug-bundle</parameter>
+        <parameter key="path">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/debug-bundle</parameter>
         <parameter key="namespace">Symfony\Bundle\DebugBundle</parameter>
       </parameter>
       <parameter key="TwigBundle" type="collection">
-        <parameter key="path">/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/twig-bundle</parameter>
+        <parameter key="path">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/twig-bundle</parameter>
         <parameter key="namespace">Symfony\Bundle\TwigBundle</parameter>
       </parameter>
       <parameter key="WebProfilerBundle" type="collection">
-        <parameter key="path">/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/web-profiler-bundle</parameter>
+        <parameter key="path">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/web-profiler-bundle</parameter>
         <parameter key="namespace">Symfony\Bundle\WebProfilerBundle</parameter>
       </parameter>
       <parameter key="TwigExtraBundle" type="collection">
-        <parameter key="path">/Users/loic/Dev/symfony/balade_parfumes_api/vendor/twig/extra-bundle</parameter>
+        <parameter key="path">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/twig/extra-bundle</parameter>
         <parameter key="namespace">Twig\Extra\TwigExtraBundle</parameter>
       </parameter>
       <parameter key="SecurityBundle" type="collection">
-        <parameter key="path">/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-bundle</parameter>
+        <parameter key="path">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-bundle</parameter>
         <parameter key="namespace">Symfony\Bundle\SecurityBundle</parameter>
       </parameter>
       <parameter key="MonologBundle" type="collection">
-        <parameter key="path">/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/monolog-bundle</parameter>
+        <parameter key="path">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/monolog-bundle</parameter>
         <parameter key="namespace">Symfony\Bundle\MonologBundle</parameter>
       </parameter>
       <parameter key="MakerBundle" type="collection">
-        <parameter key="path">/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/maker-bundle/src</parameter>
+        <parameter key="path">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/maker-bundle/src</parameter>
         <parameter key="namespace">Symfony\Bundle\MakerBundle</parameter>
       </parameter>
       <parameter key="SensioFrameworkExtraBundle" type="collection">
-        <parameter key="path">/Users/loic/Dev/symfony/balade_parfumes_api/vendor/sensio/framework-extra-bundle/src</parameter>
+        <parameter key="path">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/sensio/framework-extra-bundle/src</parameter>
         <parameter key="namespace">Sensio\Bundle\FrameworkExtraBundle</parameter>
       </parameter>
       <parameter key="SymfonyCastsVerifyEmailBundle" type="collection">
-        <parameter key="path">/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src</parameter>
+        <parameter key="path">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src</parameter>
         <parameter key="namespace">SymfonyCasts\Bundle\VerifyEmail</parameter>
       </parameter>
       <parameter key="LexikJWTAuthenticationBundle" type="collection">
-        <parameter key="path">/Users/loic/Dev/symfony/balade_parfumes_api/vendor/lexik/jwt-authentication-bundle</parameter>
+        <parameter key="path">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/lexik/jwt-authentication-bundle</parameter>
         <parameter key="namespace">Lexik\Bundle\JWTAuthenticationBundle</parameter>
       </parameter>
       <parameter key="NelmioCorsBundle" type="collection">
-        <parameter key="path">/Users/loic/Dev/symfony/balade_parfumes_api/vendor/nelmio/cors-bundle</parameter>
+        <parameter key="path">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/nelmio/cors-bundle</parameter>
         <parameter key="namespace">Nelmio\CorsBundle</parameter>
       </parameter>
     </parameter>
@@ -119,18 +119,18 @@
     <parameter key="asset.request_context.base_path">null</parameter>
     <parameter key="asset.request_context.secure">null</parameter>
     <parameter key="translator.logging">false</parameter>
-    <parameter key="translator.default_path">/Users/loic/Dev/symfony/balade_parfumes_api/translations</parameter>
+    <parameter key="translator.default_path">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/translations</parameter>
     <parameter key="debug.error_handler.throw_at">-1</parameter>
-    <parameter key="debug.container.dump">/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/App_KernelDevDebugContainer.xml</parameter>
+    <parameter key="debug.container.dump">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/App_KernelDevDebugContainer.xml</parameter>
     <parameter key="router.request_context.host">localhost</parameter>
     <parameter key="router.request_context.scheme">http</parameter>
     <parameter key="router.request_context.base_url"></parameter>
     <parameter key="router.resource">kernel::loadRoutes</parameter>
-    <parameter key="router.cache_dir">/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev</parameter>
+    <parameter key="router.cache_dir">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev</parameter>
     <parameter key="request_listener.http_port">80</parameter>
     <parameter key="request_listener.https_port">443</parameter>
-    <parameter key="serializer.mapping.cache.file">/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/serialization.php</parameter>
-    <parameter key="cache.prefix.seed">_/Users/loic/Dev/symfony/balade_parfumes_api.App_KernelDevDebugContainer</parameter>
+    <parameter key="serializer.mapping.cache.file">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/serialization.php</parameter>
+    <parameter key="cache.prefix.seed">_/Users/loic/Dev/symfony/bld_parfumee-api_hostinger.App_KernelDevDebugContainer</parameter>
     <parameter key="session.metadata.storage_key">_sf2_meta</parameter>
     <parameter key="session.storage.options" type="collection">
       <parameter key="cache_limiter" type="string">0</parameter>
@@ -143,11 +143,11 @@
     <parameter key="session.metadata.update_threshold">0</parameter>
     <parameter key="form.type_extension.csrf.enabled">true</parameter>
     <parameter key="form.type_extension.csrf.field_name">_token</parameter>
-    <parameter key="validator.mapping.cache.file">/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/validation.php</parameter>
+    <parameter key="validator.mapping.cache.file">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/validation.php</parameter>
     <parameter key="validator.translation_domain">validators</parameter>
     <parameter key="profiler_listener.only_exceptions">false</parameter>
     <parameter key="profiler_listener.only_main_requests">false</parameter>
-    <parameter key="profiler.storage.dsn">file:/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/profiler</parameter>
+    <parameter key="profiler.storage.dsn">file:/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/profiler</parameter>
     <parameter key="doctrine.dbal.configuration.class">Doctrine\DBAL\Configuration</parameter>
     <parameter key="doctrine.data_collector.class">Doctrine\Bundle\DoctrineBundle\DataCollector\DoctrineDataCollector</parameter>
     <parameter key="doctrine.dbal.connection.event_manager.class">Symfony\Bridge\Doctrine\ContainerAwareEventManager</parameter>
@@ -212,7 +212,7 @@
     <parameter key="doctrine.orm.second_level_cache.regions_configuration.class">Doctrine\ORM\Cache\RegionsConfiguration</parameter>
     <parameter key="doctrine.orm.auto_generate_proxy_classes">true</parameter>
     <parameter key="doctrine.orm.enable_lazy_ghost_objects">true</parameter>
-    <parameter key="doctrine.orm.proxy_dir">/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/doctrine/orm/Proxies</parameter>
+    <parameter key="doctrine.orm.proxy_dir">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/doctrine/orm/Proxies</parameter>
     <parameter key="doctrine.orm.proxy_namespace">Proxies</parameter>
     <parameter key="doctrine.migrations.preferred_em">null</parameter>
     <parameter key="doctrine.migrations.preferred_connection">null</parameter>
@@ -220,7 +220,7 @@
     <parameter key="twig.form.resources" type="collection">
       <parameter>form_div_layout.html.twig</parameter>
     </parameter>
-    <parameter key="twig.default_path">/Users/loic/Dev/symfony/balade_parfumes_api/templates</parameter>
+    <parameter key="twig.default_path">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/templates</parameter>
     <parameter key="web_profiler.debug_toolbar.intercept_redirects">false</parameter>
     <parameter key="web_profiler.debug_toolbar.mode">2</parameter>
     <parameter key="security.role_hierarchy.roles" type="collection"/>
@@ -405,7 +405,7 @@
       <argument>%env(ID_STRIPE_SUBSCRIPTION_QUARTERLY)%</argument>
       <argument>%env(ID_STRIPE_SUBSCRIPTION_FREE)%</argument>
       <call method="setContainer">
-        <argument type="service" id=".service_locator._FWhGxE.App\Controller\AdminController"/>
+        <argument type="service" id=".service_locator..UjS3SV.App\Controller\AdminController"/>
       </call>
     </service>
     <service id="App\Controller\CheckListController" class="App\Controller\CheckListController" public="true" autowire="true" autoconfigure="true">
@@ -415,7 +415,7 @@
       <argument type="service" id="App\Repository\FragranceRepository"/>
       <argument type="service" id="App\Repository\UserRepository"/>
       <call method="setContainer">
-        <argument type="service" id=".service_locator._FWhGxE.App\Controller\CheckListController"/>
+        <argument type="service" id=".service_locator..UjS3SV.App\Controller\CheckListController"/>
       </call>
     </service>
     <service id="App\Controller\FragranceController" class="App\Controller\FragranceController" public="true" autowire="true" autoconfigure="true">
@@ -425,7 +425,7 @@
       <argument type="service" id="App\Repository\FragranceRepository"/>
       <argument type="service" id="App\Repository\UserRepository"/>
       <call method="setContainer">
-        <argument type="service" id=".service_locator._FWhGxE.App\Controller\FragranceController"/>
+        <argument type="service" id=".service_locator..UjS3SV.App\Controller\FragranceController"/>
       </call>
     </service>
     <service id="App\Controller\LayeringsController" class="App\Controller\LayeringsController" public="true" autowire="true" autoconfigure="true">
@@ -435,7 +435,7 @@
       <argument type="service" id="App\Repository\FragranceRepository"/>
       <argument type="service" id="App\Repository\UserRepository"/>
       <call method="setContainer">
-        <argument type="service" id=".service_locator._FWhGxE.App\Controller\LayeringsController"/>
+        <argument type="service" id=".service_locator..UjS3SV.App\Controller\LayeringsController"/>
       </call>
     </service>
     <service id="App\Controller\MailChimpController" class="App\Controller\MailChimpController" public="true" autowire="true" autoconfigure="true">
@@ -443,7 +443,7 @@
       <tag name="container.service_subscriber"/>
       <argument type="service" id="mailchimp.api"/>
       <call method="setContainer">
-        <argument type="service" id=".service_locator._FWhGxE.App\Controller\MailChimpController"/>
+        <argument type="service" id=".service_locator..UjS3SV.App\Controller\MailChimpController"/>
       </call>
     </service>
     <service id="App\Controller\PerfumeTrialSheetController" class="App\Controller\PerfumeTrialSheetController" public="true" autowire="true" autoconfigure="true">
@@ -453,7 +453,7 @@
       <argument type="service" id="App\Repository\FragranceRepository"/>
       <argument type="service" id="App\Repository\UserRepository"/>
       <call method="setContainer">
-        <argument type="service" id=".service_locator._FWhGxE.App\Controller\PerfumeTrialSheetController"/>
+        <argument type="service" id=".service_locator..UjS3SV.App\Controller\PerfumeTrialSheetController"/>
       </call>
     </service>
     <service id="App\Controller\ProfilController" class="App\Controller\ProfilController" public="true" autowire="true" autoconfigure="true">
@@ -465,7 +465,7 @@
       <argument type="service" id="App\Repository\FragranceRepository"/>
       <argument type="service" id="App\Repository\UserRepository"/>
       <call method="setContainer">
-        <argument type="service" id=".service_locator._FWhGxE.App\Controller\ProfilController"/>
+        <argument type="service" id=".service_locator..UjS3SV.App\Controller\ProfilController"/>
       </call>
     </service>
     <service id="App\Controller\ReviewPerfumeNoteController" class="App\Controller\ReviewPerfumeNoteController" public="true" autowire="true" autoconfigure="true">
@@ -475,7 +475,7 @@
       <argument type="service" id="App\Repository\FragranceRepository"/>
       <argument type="service" id="App\Repository\UserRepository"/>
       <call method="setContainer">
-        <argument type="service" id=".service_locator._FWhGxE.App\Controller\ReviewPerfumeNoteController"/>
+        <argument type="service" id=".service_locator..UjS3SV.App\Controller\ReviewPerfumeNoteController"/>
       </call>
     </service>
     <service id="App\Controller\StripeController" class="App\Controller\StripeController" public="true" autowire="true" autoconfigure="true">
@@ -487,7 +487,7 @@
       <argument>%env(ID_STRIPE_SUBSCRIPTION_QUARTERLY)%</argument>
       <argument>%env(ID_STRIPE_SUBSCRIPTION_FREE)%</argument>
       <call method="setContainer">
-        <argument type="service" id=".service_locator._FWhGxE.App\Controller\StripeController"/>
+        <argument type="service" id=".service_locator..UjS3SV.App\Controller\StripeController"/>
       </call>
     </service>
     <service id="App\Controller\UserController" class="App\Controller\UserController" public="true" autowire="true" autoconfigure="true">
@@ -497,7 +497,7 @@
       <argument type="service" id="doctrine.orm.default_entity_manager"/>
       <argument type="service" id="Twilio\Rest\Client"/>
       <call method="setContainer">
-        <argument type="service" id=".service_locator._FWhGxE.App\Controller\UserController"/>
+        <argument type="service" id=".service_locator..UjS3SV.App\Controller\UserController"/>
       </call>
     </service>
     <service id="App\Form\RegistrationFormType" class="App\Form\RegistrationFormType" autowire="true" autoconfigure="true">
@@ -569,8 +569,8 @@
       <argument type="service" id="doctrine.orm.default_entity_manager"/>
     </service>
     <service id="App\Services\FileService" class="App\Services\FileService" autowire="true" autoconfigure="true">
-      <tag name="container.error" message="The autoloader expected class &quot;App\Services\FileService&quot; to be defined in file &quot;/Users/loic/Dev/symfony/balade_parfumes_api/vendor/composer/../../src/Services/FileService.php&quot;. The file was found but the class was not in it, the class name or namespace probably has a typo."/>
-      <tag name="container.error" message="Invalid service &quot;App\Services\FileService&quot;: the autoloader expected class &quot;App\Services\FileService&quot; to be defined in file &quot;/Users/loic/Dev/symfony/balade_parfumes_api/vendor/composer/../../src/Services/FileService.php&quot;. The file was found but the class was not in it, the class name or namespace probably has a typo."/>
+      <tag name="container.error" message="The autoloader expected class &quot;App\Services\FileService&quot; to be defined in file &quot;/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/composer/../../src/Services/FileService.php&quot;. The file was found but the class was not in it, the class name or namespace probably has a typo."/>
+      <tag name="container.error" message="Invalid service &quot;App\Services\FileService&quot;: the autoloader expected class &quot;App\Services\FileService&quot; to be defined in file &quot;/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/composer/../../src/Services/FileService.php&quot;. The file was found but the class was not in it, the class name or namespace probably has a typo."/>
     </service>
     <service id="App\Services\MailChimpService" class="App\Services\MailChimpService" autowire="true" autoconfigure="true">
       <argument type="service" id="mailchimp.api"/>
@@ -600,7 +600,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
       <tag name="controller.argument_value_resolver" priority="-50"/>
-      <argument type="service" id=".service_locator.aRLTR9S"/>
+      <argument type="service" id=".service_locator.TnRXv_j"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
       <tag name="controller.argument_value_resolver" priority="-100"/>
@@ -678,7 +678,7 @@
       </argument>
     </service>
     <service id="http_cache.store" class="Symfony\Component\HttpKernel\HttpCache\Store">
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/http_cache</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/http_cache</argument>
     </service>
     <service id="url_helper" class="Symfony\Component\HttpFoundation\UrlHelper">
       <argument type="service" id="request_stack"/>
@@ -688,7 +688,7 @@
       <tag name="container.no_preload"/>
       <argument type="tagged_iterator" tag="kernel.cache_warmer"/>
       <argument>true</argument>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/App_KernelDevDebugContainerDeprecations.log</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/App_KernelDevDebugContainerDeprecations.log</argument>
     </service>
     <service id="cache_clearer" class="Symfony\Component\HttpKernel\CacheClearer\ChainCacheClearer">
       <argument type="tagged_iterator" tag="kernel.cache_clearer"/>
@@ -918,7 +918,7 @@
       </argument>
       <argument>UTF-8</argument>
       <argument type="service" id="debug.file_link_formatter" on-invalid="null"/>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger</argument>
       <argument type="service">
         <service>
           <argument type="service" id="request_stack"/>
@@ -951,7 +951,7 @@
       <tag name="console.command"/>
       <tag name="container.no_preload"/>
       <argument type="service" id="filesystem"/>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger</argument>
       <call method="setName">
         <argument>assets:install</argument>
       </call>
@@ -1134,7 +1134,7 @@
       <tag name="console.command"/>
       <tag name="container.no_preload"/>
       <argument>dev</argument>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger</argument>
       <call method="setName">
         <argument>debug:dotenv</argument>
       </call>
@@ -1329,16 +1329,16 @@
       <argument type="service" id="translator.data_collector"/>
       <argument type="service" id="translation.reader"/>
       <argument type="service" id="translation.extractor"/>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/translations</argument>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/templates</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/translations</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/templates</argument>
       <argument type="collection">
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations</argument>
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations</argument>
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations</argument>
       </argument>
       <argument type="collection">
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/twig-bridge/Resources/views/Email</argument>
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/twig-bridge/Resources/views/Form</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/twig-bridge/Resources/views/Email</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/twig-bridge/Resources/views/Form</argument>
       </argument>
       <argument type="collection"/>
       <call method="setName">
@@ -1355,16 +1355,16 @@
       <argument type="service" id="translation.reader"/>
       <argument type="service" id="translation.extractor"/>
       <argument>en</argument>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/translations</argument>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/templates</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/translations</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/templates</argument>
       <argument type="collection">
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations</argument>
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations</argument>
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations</argument>
       </argument>
       <argument type="collection">
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/twig-bridge/Resources/views/Email</argument>
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/twig-bridge/Resources/views/Form</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/twig-bridge/Resources/views/Email</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/twig-bridge/Resources/views/Form</argument>
       </argument>
       <argument type="collection"/>
       <call method="setName">
@@ -1593,7 +1593,7 @@
       <argument></argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/pools/system</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/pools/system</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -1612,7 +1612,7 @@
       <tag name="monolog.logger" channel="cache"/>
       <argument></argument>
       <argument>0</argument>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/pools/app</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/pools/app</argument>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
         <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
@@ -1902,335 +1902,335 @@
         </argument>
       </argument>
       <argument type="collection">
-        <argument key="cache_dir">/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/translations</argument>
+        <argument key="cache_dir">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/translations</argument>
         <argument key="debug">true</argument>
         <argument key="resource_files" type="collection">
           <argument key="af" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.af.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.af.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.af.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.af.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.af.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.af.xlf</argument>
           </argument>
           <argument key="ar" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.ar.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.ar.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.ar.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.ar.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.ar.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.ar.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.ar.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.ar.xlf</argument>
           </argument>
           <argument key="az" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.az.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.az.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.az.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.az.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.az.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.az.xlf</argument>
           </argument>
           <argument key="be" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.be.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.be.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.be.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.be.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.be.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.be.xlf</argument>
           </argument>
           <argument key="bg" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.bg.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.bg.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.bg.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.bg.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.bg.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.bg.xlf</argument>
           </argument>
           <argument key="bs" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.bs.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.bs.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.bs.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.bs.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.bs.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.bs.xlf</argument>
           </argument>
           <argument key="ca" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.ca.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.ca.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.ca.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.ca.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.ca.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.ca.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.ca.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.ca.xlf</argument>
           </argument>
           <argument key="cs" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.cs.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.cs.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.cs.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.cs.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.cs.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.cs.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.cs.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.cs.xlf</argument>
           </argument>
           <argument key="cy" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.cy.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.cy.xlf</argument>
           </argument>
           <argument key="da" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.da.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.da.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.da.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.da.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.da.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.da.xlf</argument>
           </argument>
           <argument key="de" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.de.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.de.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.de.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.de.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.de.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.de.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.de.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.de.xlf</argument>
           </argument>
           <argument key="el" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.el.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.el.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.el.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.el.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.el.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.el.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.el.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.el.xlf</argument>
           </argument>
           <argument key="en" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.en.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.en.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.en.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.en.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.en.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.en.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.en.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.en.xlf</argument>
           </argument>
           <argument key="es" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.es.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.es.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.es.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.es.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.es.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.es.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.es.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.es.xlf</argument>
           </argument>
           <argument key="et" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.et.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.et.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.et.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.et.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.et.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.et.xlf</argument>
           </argument>
           <argument key="eu" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.eu.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.eu.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.eu.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.eu.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.eu.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.eu.xlf</argument>
           </argument>
           <argument key="fa" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.fa.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.fa.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.fa.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.fa.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.fa.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.fa.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.fa.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.fa.xlf</argument>
           </argument>
           <argument key="fi" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.fi.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.fi.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.fi.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.fi.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.fi.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.fi.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.fi.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.fi.xlf</argument>
           </argument>
           <argument key="fr" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.fr.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.fr.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.fr.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.fr.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.fr.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.fr.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.fr.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.fr.xlf</argument>
           </argument>
           <argument key="gl" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.gl.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.gl.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.gl.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.gl.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.gl.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.gl.xlf</argument>
           </argument>
           <argument key="he" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.he.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.he.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.he.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.he.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.he.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.he.xlf</argument>
           </argument>
           <argument key="hr" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.hr.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.hr.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.hr.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.hr.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.hr.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.hr.xlf</argument>
           </argument>
           <argument key="hu" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.hu.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.hu.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.hu.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.hu.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.hu.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.hu.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.hu.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.hu.xlf</argument>
           </argument>
           <argument key="hy" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.hy.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.hy.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.hy.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.hy.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.hy.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.hy.xlf</argument>
           </argument>
           <argument key="id" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.id.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.id.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.id.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.id.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.id.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.id.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.id.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.id.xlf</argument>
           </argument>
           <argument key="it" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.it.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.it.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.it.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.it.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.it.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.it.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.it.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.it.xlf</argument>
           </argument>
           <argument key="ja" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.ja.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.ja.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.ja.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.ja.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.ja.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.ja.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.ja.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.ja.xlf</argument>
           </argument>
           <argument key="lb" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.lb.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.lb.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.lb.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.lb.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.lb.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.lb.xlf</argument>
           </argument>
           <argument key="lt" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.lt.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.lt.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.lt.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.lt.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.lt.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.lt.xlf</argument>
           </argument>
           <argument key="lv" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.lv.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.lv.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.lv.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.lv.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.lv.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.lv.xlf</argument>
           </argument>
           <argument key="mn" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.mn.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.mn.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.mn.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.mn.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.mn.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.mn.xlf</argument>
           </argument>
           <argument key="my" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.my.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.my.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.my.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.my.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.my.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.my.xlf</argument>
           </argument>
           <argument key="nb" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.nb.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.nb.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.nb.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.nb.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.nb.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.nb.xlf</argument>
           </argument>
           <argument key="nl" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.nl.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.nl.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.nl.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle+intl-icu.nl.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.nl.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.nl.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.nl.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle+intl-icu.nl.xlf</argument>
           </argument>
           <argument key="nn" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.nn.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.nn.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.nn.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.nn.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.nn.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.nn.xlf</argument>
           </argument>
           <argument key="no" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.no.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.no.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.no.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.no.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.no.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.no.xlf</argument>
           </argument>
           <argument key="pl" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.pl.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.pl.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.pl.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.pl.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.pl.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.pl.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.pl.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.pl.xlf</argument>
           </argument>
           <argument key="pt" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.pt.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.pt.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.pt.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.pt.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.pt.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.pt.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.pt.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.pt.xlf</argument>
           </argument>
           <argument key="pt_BR" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.pt_BR.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.pt_BR.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.pt_BR.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.pt_BR.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.pt_BR.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.pt_BR.xlf</argument>
           </argument>
           <argument key="ro" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.ro.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.ro.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.ro.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.ro.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.ro.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.ro.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.ro.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.ro.xlf</argument>
           </argument>
           <argument key="ru" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.ru.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.ru.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.ru.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.ru.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.ru.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.ru.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.ru.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.ru.xlf</argument>
           </argument>
           <argument key="sk" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.sk.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.sk.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.sk.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.sk.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.sk.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.sk.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.sk.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.sk.xlf</argument>
           </argument>
           <argument key="sl" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.sl.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.sl.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.sl.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.sl.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.sl.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.sl.xlf</argument>
           </argument>
           <argument key="sq" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.sq.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.sq.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.sq.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.sq.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.sq.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.sq.xlf</argument>
           </argument>
           <argument key="sr_Cyrl" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.sr_Cyrl.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.sr_Cyrl.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.sr_Cyrl.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.sr_Cyrl.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.sr_Cyrl.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.sr_Cyrl.xlf</argument>
           </argument>
           <argument key="sr_Latn" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.sr_Latn.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.sr_Latn.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.sr_Latn.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.sr_Latn.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.sr_Latn.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.sr_Latn.xlf</argument>
           </argument>
           <argument key="sv" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.sv.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.sv.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.sv.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.sv.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.sv.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.sv.xlf</argument>
           </argument>
           <argument key="th" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.th.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.th.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.th.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.th.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.th.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.th.xlf</argument>
           </argument>
           <argument key="tl" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.tl.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.tl.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.tl.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.tl.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.tl.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.tl.xlf</argument>
           </argument>
           <argument key="tr" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.tr.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.tr.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.tr.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.tr.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.tr.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.tr.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.tr.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.tr.xlf</argument>
           </argument>
           <argument key="uk" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.uk.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.uk.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.uk.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.uk.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.uk.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.uk.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.uk.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.uk.xlf</argument>
           </argument>
           <argument key="ur" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.ur.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.ur.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.ur.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.ur.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.ur.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.ur.xlf</argument>
           </argument>
           <argument key="uz" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.uz.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.uz.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.uz.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.uz.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.uz.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.uz.xlf</argument>
           </argument>
           <argument key="vi" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.vi.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.vi.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.vi.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.vi.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.vi.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.vi.xlf</argument>
           </argument>
           <argument key="zh_CN" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.zh_CN.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.zh_CN.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.zh_CN.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.zh_CN.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.zh_CN.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.zh_CN.xlf</argument>
           </argument>
           <argument key="zh_TW" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations/validators.zh_TW.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations/validators.zh_TW.xlf</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations/security.zh_TW.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.zh_TW.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.zh_TW.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.zh_TW.xlf</argument>
           </argument>
           <argument key="mk" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.mk.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.mk.xlf</argument>
           </argument>
           <argument key="sr" type="collection">
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.sr.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.sr.xlf</argument>
           </argument>
         </argument>
         <argument key="scanned_directories" type="collection">
-          <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/validator/Resources/translations</argument>
-          <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/translations</argument>
-          <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-core/Resources/translations</argument>
-          <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfonycasts/verify-email-bundle/src/Resources/translations</argument>
-          <argument>/Users/loic/Dev/symfony/balade_parfumes_api/translations</argument>
-          <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/framework-bundle/translations</argument>
-          <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/doctrine/doctrine-bundle/translations</argument>
-          <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/doctrine/doctrine-migrations-bundle/translations</argument>
-          <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/debug-bundle/translations</argument>
-          <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/twig-bundle/translations</argument>
-          <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/web-profiler-bundle/translations</argument>
-          <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/twig/extra-bundle/translations</argument>
-          <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-bundle/translations</argument>
-          <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/monolog-bundle/translations</argument>
-          <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/maker-bundle/src/translations</argument>
-          <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/sensio/framework-extra-bundle/src/translations</argument>
-          <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/lexik/jwt-authentication-bundle/translations</argument>
-          <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/nelmio/cors-bundle/translations</argument>
+          <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations</argument>
+          <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations</argument>
+          <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations</argument>
+          <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations</argument>
+          <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/translations</argument>
+          <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/framework-bundle/translations</argument>
+          <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/doctrine/doctrine-bundle/translations</argument>
+          <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/doctrine/doctrine-migrations-bundle/translations</argument>
+          <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/debug-bundle/translations</argument>
+          <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/twig-bundle/translations</argument>
+          <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/web-profiler-bundle/translations</argument>
+          <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/twig/extra-bundle/translations</argument>
+          <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-bundle/translations</argument>
+          <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/monolog-bundle/translations</argument>
+          <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/maker-bundle/src/translations</argument>
+          <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/sensio/framework-extra-bundle/src/translations</argument>
+          <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/lexik/jwt-authentication-bundle/translations</argument>
+          <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/nelmio/cors-bundle/translations</argument>
         </argument>
         <argument key="cache_vary" type="collection">
           <argument key="scanned_directories" type="collection">
@@ -2576,7 +2576,7 @@
     <service id="debug.file_link_formatter" class="Symfony\Component\HttpKernel\Debug\FileLinkFormatter">
       <argument>%env(default::SYMFONY_IDE)%</argument>
       <argument type="service" id="request_stack" on-invalid="ignore"/>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger</argument>
       <argument type="service_closure" id="debug.file_link_formatter.url_format"/>
     </service>
     <service id="debug.stopwatch" class="Symfony\Component\Stopwatch\Stopwatch">
@@ -3207,7 +3207,7 @@
     </service>
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
-      <argument type="service" id=".service_locator.aRLTR9S"/>
+      <argument type="service" id=".service_locator.TnRXv_j"/>
     </service>
     <service id="debug.log_processor" class="Symfony\Bridge\Monolog\Processor\DebugProcessor">
       <argument type="service" id="request_stack"/>
@@ -3306,7 +3306,7 @@
       <argument type="service" id=".service_locator.i7B9_Ni.router.default"/>
       <argument>kernel::loadRoutes</argument>
       <argument type="collection">
-        <argument key="cache_dir">/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev</argument>
+        <argument key="cache_dir">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev</argument>
         <argument key="debug">true</argument>
         <argument key="generator_class">Symfony\Component\Routing\Generator\CompiledUrlGenerator</argument>
         <argument key="generator_dumper_class">Symfony\Component\Routing\Generator\Dumper\CompiledUrlGeneratorDumper</argument>
@@ -3355,7 +3355,7 @@
       <argument type="service" id="request_stack"/>
       <argument type="service" id="router.request_context" on-invalid="ignore"/>
       <argument type="service" id="monolog.logger.request" on-invalid="ignore"/>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger</argument>
       <argument>true</argument>
     </service>
     <service id="Symfony\Bundle\FrameworkBundle\Controller\RedirectController" class="Symfony\Bundle\FrameworkBundle\Controller\RedirectController" public="true">
@@ -3398,13 +3398,13 @@
     <service id="annotations.cache_warmer" class="Symfony\Bundle\FrameworkBundle\CacheWarmer\AnnotationsCacheWarmer">
       <tag name="kernel.cache_warmer"/>
       <argument type="service" id="annotations.reader"/>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/annotations.php</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/annotations.php</argument>
       <argument>#^Symfony\\(?:Component\\HttpKernel\\|Bundle\\FrameworkBundle\\Controller\\(?!.*Controller$))#</argument>
       <argument>true</argument>
     </service>
     <service id="annotations.cache_adapter" class="Symfony\Component\Cache\Adapter\PhpArrayAdapter" constructor="create">
       <tag name="container.hot_path"/>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/annotations.php</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/annotations.php</argument>
       <argument type="service" id="cache.annotations"/>
     </service>
     <service id="property_accessor" class="Symfony\Component\PropertyAccess\PropertyAccessor">
@@ -3416,7 +3416,7 @@
     </service>
     <service id="secrets.vault" class="Symfony\Bundle\FrameworkBundle\Secrets\SodiumVault">
       <tag name="container.env_var_loader"/>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/config/secrets/%env(default:kernel.environment:APP_RUNTIME_ENV)%</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/config/secrets/%env(default:kernel.environment:APP_RUNTIME_ENV)%</argument>
       <argument type="service" id="secrets.decryption_key" on-invalid="ignore"/>
     </service>
     <service id="secrets.decryption_key" class="Symfony\Component\String\LazyString" constructor="fromCallable">
@@ -3424,7 +3424,7 @@
       <argument>base64:default::SYMFONY_DECRYPTION_SECRET</argument>
     </service>
     <service id="secrets.local_vault" class="Symfony\Bundle\FrameworkBundle\Secrets\DotenvVault">
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/.env.dev.local</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/.env.dev.local</argument>
     </service>
     <service id="serializer.mapping.class_discriminator_resolver" class="Symfony\Component\Serializer\Mapping\ClassDiscriminatorFromClassMetadata">
       <argument type="service" id="serializer.mapping.class_metadata_factory"/>
@@ -3457,10 +3457,10 @@
           </service>
         </argument>
       </argument>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/serialization.php</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/serialization.php</argument>
     </service>
     <service id="serializer.mapping.cache.symfony" class="Psr\Cache\CacheItemPoolInterface">
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/serialization.php</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/serialization.php</argument>
       <argument type="service" id="cache.serializer"/>
       <factory class="Symfony\Component\Cache\Adapter\PhpArrayAdapter" method="create"/>
     </service>
@@ -3575,7 +3575,7 @@
       <argument>true</argument>
     </service>
     <service id="session.storage.factory.mock_file" class="Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorageFactory">
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/sessions</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/sessions</argument>
       <argument>MOCKSESSID</argument>
       <argument type="service">
         <service class="Symfony\Component\HttpFoundation\Session\Storage\MetadataBag">
@@ -3752,7 +3752,7 @@
       </call>
       <call method="addXmlMappings">
         <argument type="collection">
-          <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/form/Resources/config/validation.xml</argument>
+          <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/config/validation.xml</argument>
         </argument>
       </call>
       <call method="enableAnnotationMapping">
@@ -3780,10 +3780,10 @@
     <service id="validator.mapping.cache_warmer" class="Symfony\Bundle\FrameworkBundle\CacheWarmer\ValidatorCacheWarmer">
       <tag name="kernel.cache_warmer"/>
       <argument type="service" id="validator.builder"/>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/validation.php</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/validation.php</argument>
     </service>
     <service id="validator.mapping.cache.adapter" class="Symfony\Component\Cache\Adapter\PhpArrayAdapter" constructor="create">
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/validation.php</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/validation.php</argument>
       <argument type="service" id="cache.validator"/>
     </service>
     <service id="validator.validator_factory" class="Symfony\Component\Validator\ContainerConstraintValidatorFactory">
@@ -4416,7 +4416,7 @@
       </call>
     </service>
     <service id="profiler.storage" class="Symfony\Component\HttpKernel\Profiler\FileProfilerStorage">
-      <argument>file:/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/profiler</argument>
+      <argument>file:/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/profiler</argument>
     </service>
     <service id="profiler_listener" class="Symfony\Component\HttpKernel\EventListener\ProfilerListener">
       <tag name="kernel.event_subscriber"/>
@@ -4463,7 +4463,7 @@
       <tag name="monolog.logger" channel="profiler"/>
       <tag name="data_collector" template="@WebProfiler/Collector/logger.html.twig" id="logger" priority="300"/>
       <argument type="service" id="monolog.logger.profiler" on-invalid="ignore"/>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/App_KernelDevDebugContainer</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/App_KernelDevDebugContainer</argument>
       <argument type="service" id="request_stack" on-invalid="ignore"/>
     </service>
     <service id="data_collector.time" class="Symfony\Component\HttpKernel\DataCollector\TimeDataCollector">
@@ -4822,7 +4822,7 @@
       <tag name="doctrine.event_listener" event="onSchemaCreateTable"/>
       <argument type="tagged_iterator" tag="messenger.receiver"/>
     </service>
-    <service id=".1_ServiceLocator~.jMRsSn" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".1_ServiceLocator~xwqvJQD" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <argument type="collection"/>
     </service>
     <service id="doctrine.orm.proxy_cache_warmer" class="Symfony\Bridge\Doctrine\CacheWarmer\ProxyCacheWarmer">
@@ -5041,7 +5041,7 @@
         <argument type="service" id=".doctrine.orm.default_metadata_driver"/>
       </call>
       <call method="setProxyDir">
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/doctrine/orm/Proxies</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/doctrine/orm/Proxies</argument>
       </call>
       <call method="setProxyNamespace">
         <argument>Proxies</argument>
@@ -5076,7 +5076,7 @@
     </service>
     <service id="doctrine.orm.default_attribute_metadata_driver" class="Doctrine\ORM\Mapping\Driver\AttributeDriver">
       <argument type="collection">
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/src/Entity</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/src/Entity</argument>
       </argument>
       <argument>false</argument>
     </service>
@@ -5140,7 +5140,7 @@
     <service id="doctrine.migrations.configuration" class="Doctrine\Migrations\Configuration\Configuration">
       <call method="addMigrationsDirectory">
         <argument>DoctrineMigrations</argument>
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/migrations</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/migrations</argument>
       </call>
       <call method="setAllOrNothing">
         <argument>false</argument>
@@ -5321,7 +5321,7 @@
         <argument key="source" type="service">
           <service class="Symfony\Component\VarDumper\Dumper\ContextProvider\SourceContextProvider">
             <argument>UTF-8</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger</argument>
             <argument type="service" id="debug.file_link_formatter" on-invalid="null"/>
           </service>
         </argument>
@@ -5343,7 +5343,7 @@
         <argument key="source" type="service">
           <service class="Symfony\Component\VarDumper\Dumper\ContextProvider\SourceContextProvider">
             <argument>UTF-8</argument>
-            <argument>/Users/loic/Dev/symfony/balade_parfumes_api</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger</argument>
             <argument type="service" id="debug.file_link_formatter" on-invalid="null"/>
           </service>
         </argument>
@@ -5407,7 +5407,7 @@
       <argument type="service" id="twig.loader.native_filesystem"/>
       <argument type="collection">
         <argument key="autoescape">name</argument>
-        <argument key="cache">/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/twig</argument>
+        <argument key="cache">/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/twig</argument>
         <argument key="charset">UTF-8</argument>
         <argument key="debug">true</argument>
         <argument key="strict_variables">true</argument>
@@ -5513,10 +5513,10 @@
     <service id="twig.template_iterator" class="Symfony\Bundle\TwigBundle\TemplateIterator">
       <argument type="service" id="kernel"/>
       <argument type="collection">
-        <argument key="/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/twig-bridge/Resources/views/Email">email</argument>
-        <argument key="/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/twig-bridge/Resources/views/Form">null</argument>
+        <argument key="/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/twig-bridge/Resources/views/Email">email</argument>
+        <argument key="/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/twig-bridge/Resources/views/Form">null</argument>
       </argument>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/templates</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/templates</argument>
       <argument type="collection"/>
     </service>
     <service id="twig.template_cache_warmer" class="Symfony\Bundle\TwigBundle\CacheWarmer\TemplateCacheWarmer">
@@ -5528,60 +5528,60 @@
     <service id="twig.loader.native_filesystem" class="Twig\Loader\FilesystemLoader">
       <tag name="twig.loader"/>
       <argument type="collection"/>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger</argument>
       <call method="addPath">
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/doctrine/doctrine-bundle/Resources/views</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/doctrine/doctrine-bundle/Resources/views</argument>
         <argument>Doctrine</argument>
       </call>
       <call method="addPath">
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/doctrine/doctrine-bundle/Resources/views</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/doctrine/doctrine-bundle/Resources/views</argument>
         <argument>!Doctrine</argument>
       </call>
       <call method="addPath">
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/doctrine/doctrine-migrations-bundle/Resources/views</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/doctrine/doctrine-migrations-bundle/Resources/views</argument>
         <argument>DoctrineMigrations</argument>
       </call>
       <call method="addPath">
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/doctrine/doctrine-migrations-bundle/Resources/views</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/doctrine/doctrine-migrations-bundle/Resources/views</argument>
         <argument>!DoctrineMigrations</argument>
       </call>
       <call method="addPath">
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/debug-bundle/Resources/views</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/debug-bundle/Resources/views</argument>
         <argument>Debug</argument>
       </call>
       <call method="addPath">
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/debug-bundle/Resources/views</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/debug-bundle/Resources/views</argument>
         <argument>!Debug</argument>
       </call>
       <call method="addPath">
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/web-profiler-bundle/Resources/views</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/web-profiler-bundle/Resources/views</argument>
         <argument>WebProfiler</argument>
       </call>
       <call method="addPath">
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/web-profiler-bundle/Resources/views</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/web-profiler-bundle/Resources/views</argument>
         <argument>!WebProfiler</argument>
       </call>
       <call method="addPath">
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-bundle/Resources/views</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-bundle/Resources/views</argument>
         <argument>Security</argument>
       </call>
       <call method="addPath">
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/security-bundle/Resources/views</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-bundle/Resources/views</argument>
         <argument>!Security</argument>
       </call>
       <call method="addPath">
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/templates</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/templates</argument>
       </call>
       <call method="addPath">
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/twig-bridge/Resources/views/Email</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/twig-bridge/Resources/views/Email</argument>
         <argument>email</argument>
       </call>
       <call method="addPath">
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/twig-bridge/Resources/views/Email</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/twig-bridge/Resources/views/Email</argument>
         <argument>!email</argument>
       </call>
       <call method="addPath">
-        <argument>/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/twig-bridge/Resources/views/Form</argument>
+        <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/twig-bridge/Resources/views/Form</argument>
       </call>
     </service>
     <service id="twig.loader.chain" class="Twig\Loader\ChainLoader"/>
@@ -5607,7 +5607,7 @@
     <service id="twig.extension.code" class="Symfony\Bridge\Twig\Extension\CodeExtension">
       <tag name="twig.extension"/>
       <argument type="service" id="debug.file_link_formatter" on-invalid="ignore"/>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger</argument>
       <argument>UTF-8</argument>
     </service>
     <service id="twig.extension.routing" class="Symfony\Bridge\Twig\Extension\RoutingExtension">
@@ -5700,9 +5700,9 @@
       <tag name="console.command"/>
       <tag name="container.no_preload"/>
       <argument type="service" id="twig"/>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger</argument>
       <argument>%kernel.bundles_metadata%</argument>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/templates</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/templates</argument>
       <argument type="service" id="debug.file_link_formatter" on-invalid="null"/>
       <call method="setName">
         <argument>debug:twig</argument>
@@ -5739,7 +5739,7 @@
       <argument type="service" id="twig"/>
       <argument>%data_collector.templates%</argument>
       <argument type="service" id="web_profiler.csp.handler"/>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger</argument>
     </service>
     <service id="web_profiler.controller.router" class="Symfony\Bundle\WebProfilerBundle\Controller\RouterController" public="true">
       <argument type="service" id="profiler" on-invalid="null"/>
@@ -6568,7 +6568,7 @@
     <service id="monolog.processor.psr_log_message" class="Monolog\Processor\PsrLogMessageProcessor"/>
     <service id="monolog.handler.main" class="Monolog\Handler\StreamHandler">
       <tag name="kernel.reset" method="reset"/>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/var/log/dev.log</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/log/dev.log</argument>
       <argument>100</argument>
       <argument>true</argument>
       <argument>null</argument>
@@ -6590,8 +6590,8 @@
       <argument type="service" id="filesystem"/>
       <argument type="service" id="maker.autoloader_util"/>
       <argument type="service" id="maker.file_link_formatter"/>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api</argument>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/templates</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/templates</argument>
     </service>
     <service id="maker.autoloader_finder" class="Symfony\Bundle\MakerBundle\Util\ComposerAutoloaderFinder">
       <argument>App</argument>
@@ -6756,7 +6756,7 @@
     </service>
     <service id="maker.maker.make_migration" class="Symfony\Bundle\MakerBundle\Maker\MakeMigration">
       <tag name="maker.command"/>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger</argument>
       <argument type="service" id="maker.file_link_formatter"/>
     </service>
     <service id="maker.maker.make_stimulus_controller" class="Symfony\Bundle\MakerBundle\Maker\MakeStimulusController">
@@ -6965,12 +6965,12 @@
     <service id="lexik_jwt_authentication.security.jwt_user_provider" class="Lexik\Bundle\JWTAuthenticationBundle\Security\User\JWTUserProvider">
       <argument></argument>
     </service>
-    <service id=".1_TokenStorage~IXAdoTl" class="Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage"/>
+    <service id=".1_TokenStorage~CXcJg7w" class="Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage"/>
     <service id="lexik_jwt_authentication.security.guard.jwt_token_authenticator" class="Lexik\Bundle\JWTAuthenticationBundle\Security\Guard\JWTTokenAuthenticator">
       <argument type="service" id="lexik_jwt_authentication.jwt_manager"/>
       <argument type="service" id="debug.event_dispatcher"/>
       <argument type="service" id="lexik_jwt_authentication.extractor.chain_extractor"/>
-      <argument type="service" id=".1_TokenStorage~IXAdoTl"/>
+      <argument type="service" id=".1_TokenStorage~CXcJg7w"/>
       <argument type="service" id="translator.data_collector" on-invalid="null"/>
       <deprecated package="lexik/jwt-authentication-bundle" version="2.7">The "%service_id%" service is deprecated and will be removed in 3.0, use the new "jwt" authenticator instead.</deprecated>
     </service>
@@ -7626,12 +7626,11 @@
         <argument key="userRepository" type="service_closure" id="App\Repository\UserRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.aRLTR9S" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.TnRXv_j" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\AdminController::addContentExclusive" type="service_closure" id=".service_locator.E9w1.nG"/>
         <argument key="App\Controller\AdminController::addNotification" type="service_closure" id=".service_locator.4nyxpRk"/>
-        <argument key="App\Controller\AdminController::addTags" type="service_closure" id=".service_locator.rtvJSVs"/>
         <argument key="App\Controller\AdminController::deleteNotification" type="service_closure" id=".service_locator.qza7_MB"/>
         <argument key="App\Controller\AdminController::getAllNotification" type="service_closure" id=".service_locator.eD04aH."/>
         <argument key="App\Controller\AdminController::getAllTag" type="service_closure" id=".service_locator.rtvJSVs"/>
@@ -7673,7 +7672,6 @@
         <argument key="kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="App\Controller\AdminController:addContentExclusive" type="service_closure" id=".service_locator.E9w1.nG"/>
         <argument key="App\Controller\AdminController:addNotification" type="service_closure" id=".service_locator.4nyxpRk"/>
-        <argument key="App\Controller\AdminController:addTags" type="service_closure" id=".service_locator.rtvJSVs"/>
         <argument key="App\Controller\AdminController:deleteNotification" type="service_closure" id=".service_locator.qza7_MB"/>
         <argument key="App\Controller\AdminController:getAllNotification" type="service_closure" id=".service_locator.eD04aH."/>
         <argument key="App\Controller\AdminController:getAllTag" type="service_closure" id=".service_locator.rtvJSVs"/>
@@ -8260,7 +8258,7 @@
         <argument key="translation.loader.yml" type="service_closure" id="translation.loader.yml"/>
       </argument>
     </service>
-    <service id=".service_locator._FWhGxE" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator..UjS3SV" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="form.factory" type="service_closure" id="form.factory" on-invalid="ignore"/>
@@ -8275,65 +8273,65 @@
         <argument key="twig" type="service_closure" id="twig" on-invalid="ignore"/>
       </argument>
     </service>
-    <service id=".service_locator._FWhGxE.App\Controller\AdminController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator..UjS3SV.App\Controller\AdminController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\AdminController"/>
       <argument>App\Controller\AdminController</argument>
       <argument type="service" id="service_container"/>
-      <factory service=".service_locator._FWhGxE" method="withContext"/>
+      <factory service=".service_locator..UjS3SV" method="withContext"/>
     </service>
-    <service id=".service_locator._FWhGxE.App\Controller\CheckListController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator..UjS3SV.App\Controller\CheckListController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\CheckListController"/>
       <argument>App\Controller\CheckListController</argument>
       <argument type="service" id="service_container"/>
-      <factory service=".service_locator._FWhGxE" method="withContext"/>
+      <factory service=".service_locator..UjS3SV" method="withContext"/>
     </service>
-    <service id=".service_locator._FWhGxE.App\Controller\FragranceController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator..UjS3SV.App\Controller\FragranceController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\FragranceController"/>
       <argument>App\Controller\FragranceController</argument>
       <argument type="service" id="service_container"/>
-      <factory service=".service_locator._FWhGxE" method="withContext"/>
+      <factory service=".service_locator..UjS3SV" method="withContext"/>
     </service>
-    <service id=".service_locator._FWhGxE.App\Controller\LayeringsController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator..UjS3SV.App\Controller\LayeringsController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\LayeringsController"/>
       <argument>App\Controller\LayeringsController</argument>
       <argument type="service" id="service_container"/>
-      <factory service=".service_locator._FWhGxE" method="withContext"/>
+      <factory service=".service_locator..UjS3SV" method="withContext"/>
     </service>
-    <service id=".service_locator._FWhGxE.App\Controller\MailChimpController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator..UjS3SV.App\Controller\MailChimpController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\MailChimpController"/>
       <argument>App\Controller\MailChimpController</argument>
       <argument type="service" id="service_container"/>
-      <factory service=".service_locator._FWhGxE" method="withContext"/>
+      <factory service=".service_locator..UjS3SV" method="withContext"/>
     </service>
-    <service id=".service_locator._FWhGxE.App\Controller\PerfumeTrialSheetController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator..UjS3SV.App\Controller\PerfumeTrialSheetController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\PerfumeTrialSheetController"/>
       <argument>App\Controller\PerfumeTrialSheetController</argument>
       <argument type="service" id="service_container"/>
-      <factory service=".service_locator._FWhGxE" method="withContext"/>
+      <factory service=".service_locator..UjS3SV" method="withContext"/>
     </service>
-    <service id=".service_locator._FWhGxE.App\Controller\ProfilController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator..UjS3SV.App\Controller\ProfilController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\ProfilController"/>
       <argument>App\Controller\ProfilController</argument>
       <argument type="service" id="service_container"/>
-      <factory service=".service_locator._FWhGxE" method="withContext"/>
+      <factory service=".service_locator..UjS3SV" method="withContext"/>
     </service>
-    <service id=".service_locator._FWhGxE.App\Controller\ReviewPerfumeNoteController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator..UjS3SV.App\Controller\ReviewPerfumeNoteController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\ReviewPerfumeNoteController"/>
       <argument>App\Controller\ReviewPerfumeNoteController</argument>
       <argument type="service" id="service_container"/>
-      <factory service=".service_locator._FWhGxE" method="withContext"/>
+      <factory service=".service_locator..UjS3SV" method="withContext"/>
     </service>
-    <service id=".service_locator._FWhGxE.App\Controller\StripeController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator..UjS3SV.App\Controller\StripeController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\StripeController"/>
       <argument>App\Controller\StripeController</argument>
       <argument type="service" id="service_container"/>
-      <factory service=".service_locator._FWhGxE" method="withContext"/>
+      <factory service=".service_locator..UjS3SV" method="withContext"/>
     </service>
-    <service id=".service_locator._FWhGxE.App\Controller\UserController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator..UjS3SV.App\Controller\UserController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\UserController"/>
       <argument>App\Controller\UserController</argument>
       <argument type="service" id="service_container"/>
-      <factory service=".service_locator._FWhGxE" method="withContext"/>
+      <factory service=".service_locator..UjS3SV" method="withContext"/>
     </service>
     <service id=".service_locator.fuYM_Z." class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
@@ -9431,86 +9429,86 @@
       </argument>
     </service>
     <service id="cache.app.recorder_inner" class="Symfony\Component\Cache\Adapter\FilesystemAdapter">
-      <argument>7fL+qjS-+z</argument>
+      <argument>nn6WJqB0pK</argument>
       <argument>0</argument>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/pools/app</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/pools/app</argument>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
         <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       </call>
     </service>
     <service id="cache.system.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface">
-      <argument>jSHSHdfdvB</argument>
+      <argument>sLU4CRY+8C</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/pools/system</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/pools/system</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.validator.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface">
-      <argument>GEgGoSEzR4</argument>
+      <argument>-v5-oHnfXO</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/pools/system</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/pools/system</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.serializer.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface">
-      <argument>mnmUgDPmQy</argument>
+      <argument>WjWuZEJVxR</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/pools/system</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/pools/system</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.annotations.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface">
-      <argument>pJF85bZCFg</argument>
+      <argument>LY+VllKi+U</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/pools/system</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/pools/system</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.property_info.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface">
-      <argument>huBisAmsd8</argument>
+      <argument>mYsmEclOeE</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/pools/system</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/pools/system</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.messenger.restart_workers_signal.recorder_inner" class="Symfony\Component\Cache\Adapter\FilesystemAdapter">
-      <argument>I0Rn-1+AL6</argument>
+      <argument>YO5nQTXhrT</argument>
       <argument>0</argument>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/pools/app</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/pools/app</argument>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
         <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       </call>
     </service>
     <service id="cache.validator_expression_language.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface">
-      <argument>3PvFGSucmd</argument>
+      <argument>FyCMhhJL95</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/pools/system</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/pools/system</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.doctrine.orm.default.result.recorder_inner" class="Symfony\Component\Cache\Adapter\ArrayAdapter"/>
     <service id="cache.doctrine.orm.default.query.recorder_inner" class="Symfony\Component\Cache\Adapter\ArrayAdapter"/>
     <service id="cache.security_expression_language.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface">
-      <argument>cT-6tnUJY0</argument>
+      <argument>Mag+bKvCJf</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/pools/system</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/pools/system</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.security_is_granted_attribute_expression_language.recorder_inner" class="Symfony\Component\Cache\Adapter\AdapterInterface">
-      <argument>H9flREgKQb</argument>
+      <argument>IeNBTLjpY6</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>/Users/loic/Dev/symfony/balade_parfumes_api/var/cache/dev/pools/system</argument>
+      <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/var/cache/dev/pools/system</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -9678,7 +9676,7 @@
     <service id="lexik_jwt_authentication.key_loader" alias="lexik_jwt_authentication.key_loader.raw" public="true"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.7nzbL4K" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.aRLTR9S"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.TnRXv_j"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
@@ -9707,12 +9705,12 @@
     <service id=".service_locator.rdp95UR" alias=".service_locator.6MtxQHl"/>
     <service id=".service_locator.r2YMPOV" alias=".service_locator.unpIcZj"/>
     <service id=".service_locator.V6D1oJY" alias=".service_locator.e_4zbH4"/>
-    <service id=".service_locator.6v9Qt3Q" alias=".service_locator.aRLTR9S"/>
+    <service id=".service_locator.V9x7WjH" alias=".service_locator.TnRXv_j"/>
     <service id=".service_locator.9XMoc9I" alias=".service_locator.kzegaci"/>
     <service id=".service_locator.yj07qm_" alias=".service_locator.ZyXYEQR"/>
     <service id=".service_locator.jij13qc" alias=".service_locator.PBToVFE"/>
     <service id=".service_locator.O24_MAy" alias=".service_locator.yY.p4P7"/>
-    <service id=".service_locator.ON8mpux" alias=".service_locator._FWhGxE"/>
+    <service id=".service_locator.B9WzKt1" alias=".service_locator..UjS3SV"/>
     <service id="validator" alias="debug.validator"/>
     <service id="http_client" alias=".debug.http_client"/>
     <service id="event_dispatcher" alias="debug.event_dispatcher" public="true"/>
@@ -9771,7 +9769,7 @@
     <service id=".service_locator.g__dTW3" alias=".service_locator.unpIcZj"/>
     <service id=".service_locator.qnm_CJ1" alias=".service_locator.e_4zbH4"/>
     <service id=".service_locator.vWiWdqV" alias=".service_locator.920S.Ym"/>
-    <service id=".service_locator.wUhpJyc" alias=".service_locator._FWhGxE"/>
+    <service id=".service_locator.lqbqsSD" alias=".service_locator..UjS3SV"/>
     <service id=".service_locator.5Uamvy3" alias=".service_locator.DKUVNKG"/>
     <service id=".service_locator.u6DWx23" alias=".service_locator.cXsfP3P"/>
     <service id=".service_locator.hnz5ZNh" alias=".service_locator.0TACwl3"/>

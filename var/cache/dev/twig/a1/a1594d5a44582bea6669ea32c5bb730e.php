@@ -194,6 +194,6 @@ class __TwigTemplate_3994b5ff96d42bc3ac661ea5acb6e2cd extends Template
         {% block body %}{% endblock %}
     </body>
 </html>
-", "base.html.twig", "/Users/loic/Dev/symfony/balade_parfumes_api/templates/base.html.twig");
+", "base.html.twig", "/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/templates/base.html.twig");
     }
 }

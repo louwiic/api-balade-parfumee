@@ -99,6 +99,6 @@ class __TwigTemplate_b06ee2a1a8d52744214df4e4f03bcb8e extends Template
 .container.body_default {
     border-top: 8px solid #aaaaaa;
 }
-", "@email/zurb_2/notification/local.css", "/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/twig-bridge/Resources/views/Email/zurb_2/notification/local.css");
+", "@email/zurb_2/notification/local.css", "/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/twig-bridge/Resources/views/Email/zurb_2/notification/local.css");
     }
 }
