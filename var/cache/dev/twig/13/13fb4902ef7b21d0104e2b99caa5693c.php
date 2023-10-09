@@ -71,6 +71,6 @@ class __TwigTemplate_a29a093f7fc9707f9a490574d25440b0 extends Template
     <path d=\"M14 3v4a1 1 0 0 0 1 1h4\"></path>
     <path d=\"M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z\"></path>
 </svg>
-", "@WebProfiler/Icon/file.svg", "/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/web-profiler-bundle/Resources/views/Icon/file.svg");
+", "@WebProfiler/Icon/file.svg", "/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/web-profiler-bundle/Resources/views/Icon/file.svg");
     }
 }

@@ -16,7 +16,6 @@ return [
     '_profiler_router' => [['token'], ['_controller' => 'web_profiler.controller.router::panelAction'], [], [['text', '/router'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], [], []],
     '_profiler_exception' => [['token'], ['_controller' => 'web_profiler.controller.exception_panel::body'], [], [['text', '/exception'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], [], []],
     '_profiler_exception_css' => [['token'], ['_controller' => 'web_profiler.controller.exception_panel::stylesheet'], [], [['text', '/exception.css'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], [], []],
-    'app_addDefaultTag' => [[], ['_controller' => 'App\\Controller\\AdminController::addTags'], [], [['text', '/api/admin/addTag']], [], [], []],
     'app_getAllTag' => [[], ['_controller' => 'App\\Controller\\AdminController::getAllTag'], [], [['text', '/api/admin/getAllTag']], [], [], []],
     'app_addContentExclusive' => [[], ['_controller' => 'App\\Controller\\AdminController::addContentExclusive'], [], [['text', '/api/admin/addContentExclusive']], [], [], []],
     'app_updateContentExclusive' => [['contentExclusive'], ['_controller' => 'App\\Controller\\AdminController::removeContentExclusive'], [], [['variable', '/', '[^/]++', 'contentExclusive', true], ['text', '/api/admin/contentExclusive']], [], [], []],

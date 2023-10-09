@@ -73,6 +73,6 @@ class __TwigTemplate_de2c660f238caeacb153cc3a0ef32925 extends Template
     <line x1=\"4\" y1=\"8\" x2=\"20\" y2=\"8\"></line>
     <line x1=\"8\" y1=\"4\" x2=\"8\" y2=\"8\"></line>
 </svg>
-", "@WebProfiler/Icon/request.svg", "/Users/loic/Dev/symfony/balade_parfumes_api/vendor/symfony/web-profiler-bundle/Resources/views/Icon/request.svg");
+", "@WebProfiler/Icon/request.svg", "/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/web-profiler-bundle/Resources/views/Icon/request.svg");
     }
 }

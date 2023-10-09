@@ -73,6 +73,6 @@ class __TwigTemplate_6dbb2aaeb32df71896c92440e1925377 extends Template
     <path d=\"M4 6v6a8 3 0 0 0 16 0v-6\"></path>
     <path d=\"M4 12v6a8 3 0 0 0 16 0v-6\"></path>
 </svg>
-", "@Doctrine/Collector/database.svg", "/Users/loic/Dev/symfony/balade_parfumes_api/vendor/doctrine/doctrine-bundle/Resources/views/Collector/database.svg");
+", "@Doctrine/Collector/database.svg", "/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/doctrine/doctrine-bundle/Resources/views/Collector/database.svg");
     }
 }

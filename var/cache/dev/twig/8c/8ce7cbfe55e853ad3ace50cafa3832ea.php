@@ -94,6 +94,6 @@ class __TwigTemplate_02ecca0dbdcd14d5e28914665bbbbf0f extends Template
 <p>
     Cheers!
 </p>
-", "registration/confirmation_email.html.twig", "/Users/loic/Dev/symfony/balade_parfumes_api/templates/registration/confirmation_email.html.twig");
+", "registration/confirmation_email.html.twig", "/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/templates/registration/confirmation_email.html.twig");
     }
 }
