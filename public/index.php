@@ -7,7 +7,7 @@ require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
 if ($_SERVER['APP_DEBUG']) {
     header('Access-Control-Allow-Origin:'.rtrim($_SERVER['HTTP_REFERER'], '/'));
 } else {
-    header('Access-Control-Allow-Origin:https://api.balade-parfumee.xyz/public');
+    header('Access-Control-Allow-Origin:https://balade-parfumee-2ydzvfltv-loics-projects-c950e0a8.vercel.app');
 }
 header('Access-Control-Allow-Headers:*');
 header('Access-Control-Allow-Credentials:true');
