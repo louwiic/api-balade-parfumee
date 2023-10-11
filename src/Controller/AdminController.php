@@ -104,7 +104,9 @@ class AdminController extends AbstractController
 
     #[Route('api/admin/addContentExclusive', name: 'app_addContentExclusive', methods: "POST")]
     public function addContentExclusive(Request $request, ValidatorInterface $validator, ContentTagRepository $contentTagRepository): JsonResponse
-    {
+    { 
+        
+        
         if (!$this->isGranted('ROLE_ADMIN')) {
             return new JsonResponse([
                 'message' => 'Vous n\'avez pas les droits pour effectuer cette action.'
@@ -167,7 +169,6 @@ class AdminController extends AbstractController
             return $this->json(['message' => $violations[0]->getMessage()], 400);
         }
 
-
         $contentExclusive = new ContentExclusive();
         $contentExclusive->setTag($contentTag);
         $contentExclusive->setTitle($title);
@@ -175,11 +176,16 @@ class AdminController extends AbstractController
         $contentExclusive->setLink($contentTag->getId() === 3 ? $link : '');
 
         try {
-            $result = $this->getUniqueFileName($imageSrc);
-            if ($result['isFailed']) {
+ 
+            $uniqueNameImage = $this->getUniqueFileName($imageSrc);
+            if ($uniqueNameImage['isFailed']) {
                 return new JsonResponse(['error' => 'Impossible de générer un nom de fichier unique après 50 tentatives. Veuillez réessayer.'], 400);
+            }else{
+                $contentExclusive->setImageSrc($uniqueNameImage['nameFile']);
+                $imageSrc->move($this->publicDir, $uniqueNameImage['nameFile']);
+                $contentExclusive->setImageSrc($uniqueNameImage['nameFile']);
             }
-            $contentExclusive->setImageSrc($result['nameFile']);
+
             if ($contentTag->getId() === 2 || $contentTag->getId() === 1) {
                 $result = $this->getUniqueFileName($file);
                 if ($result['isFailed']) {
