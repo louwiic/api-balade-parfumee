@@ -21,6 +21,7 @@ use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -260,6 +261,7 @@ class AdminController extends AbstractController
         return new JsonResponse(['message' => 'Notification supprimé avec succès']);
     }
 
+
     #[Route('api/admin/addNotification', name: 'app_addNotification', methods: "POST")]
     public function addNotification(Request $request, UserRepository $userRepository, CategoryNotificationRepository $categoryNotificationRepository): JsonResponse
     {
@@ -299,6 +301,7 @@ class AdminController extends AbstractController
         $this->em->flush();
         return new JsonResponse(['message' => 'Notification ajoutée avec succès']);
     }
+
     #[Route('api/admin/notification/{notification}', name: 'app_updateNotification', methods: "PUT")]
     public function updateNotification(Notification $notification, Request $request) {
         if (!$this->isGranted('ROLE_ADMIN')) {
