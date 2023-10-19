@@ -105,6 +105,7 @@ class UserController extends AbstractController
         $user->setPhone($jsonData['phone']);
         $user->setFirstName($jsonData['firstName']);
         $user->setTypeSubscription(3);
+        
         //$user->setRoles(['ROLE_ADMIN']);
         $user->setPassword(
                 $userPasswordHasher->hashPassword(
