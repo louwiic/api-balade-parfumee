@@ -49,6 +49,8 @@ class ProfilController extends AbstractController
         $fragrance = $profil->getMySymbolicFragrance();
         return new JsonResponse([
             'firstName' => $user->getFirstName(),
+            'lastName' => $user->getLastName(),
+            'email' => $user->getEmail(),
             'notesToDiscover' => $profil->getNotesToDiscover(),
             'childhoodScents'=> $profil->getChildhoodScents(),
             'mySymbolicFragrance' => $fragrance ? [
