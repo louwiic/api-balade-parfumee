@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\Fragrance;
 use App\Entity\MyFavoriteTypesOfPerfumes;
 use App\Entity\Profil;
+use App\Repository\ContentExclusiveRepository;
 use App\Repository\FragranceRepository;
 use App\Repository\ProfilRepository;
 use App\Repository\UserRepository;
+use App\Security\AccessDecisionManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,19 +25,27 @@ class ProfilController extends AbstractController
     private EntityManagerInterface $entityManager;
     private FragranceRepository $fragranceRepository;
     private UserRepository $userRepository;
+    private ContentExclusiveRepository $contentExclusiveRepository;
+    private $accessDecisionManager;
+
 
     public function __construct(
         private NormalizerInterface $normalizer,
         ProfilRepository $profilRepository,
         EntityManagerInterface $entityManager,
         FragranceRepository $fragranceRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        ContentExclusiveRepository $contentExclusiveRepository,
+        AccessDecisionManager $accessDecisionManager
     )
     {
         $this->profilRepository = $profilRepository;
         $this->entityManager = $entityManager;
         $this->fragranceRepository = $fragranceRepository;
         $this->userRepository = $userRepository;
+        $this->contentExclusiveRepository = $contentExclusiveRepository;
+        $this->accessDecisionManager = $accessDecisionManager;
+
     }
     #[Route('/api/profil', name: 'app_getProfil')]
     public function getProfil(Request $request): Response
@@ -162,5 +172,30 @@ class ProfilController extends AbstractController
     public function aze(Request $request): Response
     {
         return new Response('eezez', Response::HTTP_OK);
+    }
+
+    #[Route('/api/contentExclusive', name: 'app_content_exclusive_data', methods: 'GET')]
+    public function getAllContentExclusive(Request $request, StripeController $stripe): Response {
+        
+        $res = $stripe->checkSubscription(userRepository:$this->userRepository);
+
+        
+        if($res["subscription_is_not_expired"] === false || $res['subscription']['status'] !== "active"){
+            return new Response('Veuillez souscrire à un abonnement pour voir les contenus exclusif', Response::HTTP_NOT_FOUND);
+        }
+        
+        
+        $page = $request->query->getInt('page', 1); 
+        $limit = $request->query->getInt('limit', 10);        
+        $offset = ($page - 1) * $limit;
+
+        $contents = $this->contentExclusiveRepository->createQueryBuilder('ce')
+        ->select('ce.id, ce.imageSrc, ce.title, ce.description, ce.audio, ce.link, ce.desktopPdf, ce.createdAt')
+        ->setFirstResult($offset)
+        ->setMaxResults($limit)
+        ->getQuery()
+        ->getResult();
+        //$contents = $contentExclusiveRepository->findAll();
+        return new JsonResponse($contents, Response::HTTP_OK);
     }
 }

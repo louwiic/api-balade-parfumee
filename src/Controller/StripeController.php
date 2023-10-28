@@ -24,6 +24,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Attributes as OA;
 use Psr\Log\LoggerInterface;
+use Stripe\PaymentIntent;
 
 class StripeController extends AbstractController
 {
@@ -41,7 +42,6 @@ class StripeController extends AbstractController
         $this->endpoint_secret = $_ENV['ENDPOINT_SECRET'];
         Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
     }
-
 
 
     #[Route('/api/getInvoice', name: 'get lists invoice')]
@@ -78,7 +78,7 @@ class StripeController extends AbstractController
     {
         $user = $userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
         $subscriptions = Subscription::all(['customer' => $user->getIdClientStripe()]);
-        
+
         // Vérifier s'il y a un abonnement lié au client
         if ($subscriptions->total_count === 0) {
             return new Response("Aucun abonnement trouvé pour ce client.", 400);
@@ -127,6 +127,8 @@ class StripeController extends AbstractController
         //   return $this->freeSubscription;
         return false;
     }
+
+
     #[Route('/api/updateCreditCard', name: 'updateCreditCard', methods: ['PUT'])]
     #[OA\Parameter(name: 'cardId', in: "query", required: true)]
     public function updateCreditCard(userRepository $userRepository, Request $request): JsonResponse
@@ -147,6 +149,7 @@ class StripeController extends AbstractController
         }
     }
 
+
     #[Route('/api/changeSubscription', name: 'changeSubscription', methods: ['PUT'])]
     #[OA\Parameter(name: 'subscriptionSelected', in: "query", required: true)]
     public function changeSubscription(userRepository $userRepository, Request $request, EntityManagerInterface $entityManager)
@@ -157,11 +160,14 @@ class StripeController extends AbstractController
         $user = $userRepository->findOneUserByEmail($userEmail);
         $customerStripeId = $user->getIdClientStripe();
         $data = json_decode($request->getContent(), true);
+
+        $subscriptionSelected = $data['subscriptionSelected'];
+
         $planSubscriptionSelected = $this->getPlanSubscriptionSelected($data['subscriptionSelected']);
 
         if ($planSubscriptionSelected === false)
             return new Response("Veuillez sélectionner un abonnement existant", 400);
-
+ 
 
         if ($customerStripeId === null) {
             // Créez un client Stripe
@@ -175,10 +181,10 @@ class StripeController extends AbstractController
             $user->setIdClientStripe($stripeCustomerId);
             $entityManager->persist($user);
             $entityManager->flush();
-
             $newStripeCustomerId = $user->getIdClientStripe();
 
             $currentSubscription = Subscription::all(['customer' => $newStripeCustomerId]);
+
             if (count($currentSubscription->data) === 0) {
                 $subscription = Subscription::create([
                     'customer' =>  $newStripeCustomerId,
@@ -191,9 +197,45 @@ class StripeController extends AbstractController
                     'payment_settings' => ['save_default_payment_method' => 'on_subscription'],
                     'expand' => ['latest_invoice.payment_intent'],
                 ]);
+
+                $user->setIdSubscriptionStripe($subscription->id);
+                $entityManager->persist($user);
+                $entityManager->flush();
+
                 return new Response(json_encode($subscription),  200, ['Content-Type' => 'application/json']);
             }
         }
+    
+        
+        // Check if abonnement is not completed
+        $subscription = Subscription::retrieve($user->getIdSubscriptionStripe());
+        if ($subscription->status === 'incomplete') {
+            // L'abonnement est incomplet et a une facture en attente de paiement
+            $invoiceId = $subscription->latest_invoice;
+        
+            // Récupérez la facture en utilisant son ID
+            $invoice = Invoice::retrieve($invoiceId);
+
+            // Vérifiez si la facture a un paiement intention (payment intent)
+            if ($invoice->payment_intent) {
+                $paymentIntentId = $invoice->payment_intent;
+        
+                // Utilisez l'ID du paiement intention pour relancer le paiement
+                $paymentIntent = PaymentIntent::retrieve($paymentIntentId);
+                
+                return new JsonResponse(["latest_invoice" => [
+                    "payment_intent" => [
+                        "client_secret"=> $paymentIntent->client_secret
+                    ]
+                ]]);
+
+                // Mettez à jour le paiement intention pour effectuer une nouvelle tentative de paiement
+                $paymentIntent->confirm();
+        
+            }
+        }
+
+        //Update abonnement
 
         $subscriptions = Subscription::all(['customer' => $user->getIdClientStripe()]);
         $subscriptionId = $subscriptions->data[0]->id;
@@ -201,7 +243,6 @@ class StripeController extends AbstractController
         $planId = $subscription->items->data[0]->id;
 
         try {
-
             $customerId = $user->getIdClientStripe();
             $customer = Customer::retrieve($customerId);
             $defaultPaymentMethod = $customer->invoice_settings->default_payment_method;
@@ -215,17 +256,45 @@ class StripeController extends AbstractController
                 ],
                 'proration_behavior' => 'create_prorations',
             ];
-            
+
             if ($defaultPaymentMethod) {
                 $subscriptionUpdateData['default_payment_method'] = $defaultPaymentMethod;
             }
             $subscription = Subscription::update($subscriptionId, $subscriptionUpdateData);
 
-            return new JsonResponse(['message' => 'Mise à jour de l\'abonnement réussie.']);
+            $user->setIdSubscriptionStripe($subscription->id);
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            return new JsonResponse(['message' => 'Mise à jour de l\'abonnement réussie.', 'data' => $subscription]);
         } catch (ApiErrorException $e) {
             return new JsonResponse(['message' => 'Erreur lors de la mise à jour de l\'abonnement.', 'data' => $e], 400);
         }
     }
+
+
+
+    #[Route('/api/check-subscription', name: 'check_subscription', methods: ['GET'])]
+    public function checkSubscription(userRepository $userRepository)
+    {
+        // Configurez la clé secrète de l'API Stripe
+        $userEmail = $this->getUser()->getUserIdentifier();
+        $user = $userRepository->findOneUserByEmail($userEmail);
+
+        try {
+            // Récupérez les informations de l'abonnement Stripe
+            $subscription = Subscription::retrieve($user->getIdSubscriptionStripe());
+
+            // Récupérez la date de fin de l'abonnement
+            $endDate = date('Y-m-d', $subscription->current_period_end);
+            $currentDate = date('Y-m-d');
+
+            return ["subscription_is_not_expired" => $endDate > $currentDate ? true : false, "endDate" => $endDate, "currentDate" => $currentDate, "subscription"=>$subscription];
+        } catch (\Exception $e) {
+            //return $this->json(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
 
     /**
      * @throws ApiErrorException

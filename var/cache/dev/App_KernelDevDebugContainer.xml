@@ -406,6 +406,12 @@
       <tag name="controller.service_arguments"/>
       <tag name="routing.route_loader"/>
     </service>
+    <service id="App\Security\AccessDecisionManager" class="App\Security\AccessDecisionManager" autowire="true" autoconfigure="true">
+      <argument type="service" id="debug.security.access.decision_manager"/>
+      <argument type="service" id="kernel"/>
+      <argument type="service" id="doctrine.orm.default_entity_manager"/>
+      <argument type="service" id="App\Repository\UserRepository"/>
+    </service>
     <service id="App\Entity" class="App\Entity" abstract="true">
       <tag name="container.excluded" source="in &quot;config/services.yaml&quot;"/>
     </service>
@@ -480,6 +486,8 @@
       <argument type="service" id="doctrine.orm.default_entity_manager"/>
       <argument type="service" id="App\Repository\FragranceRepository"/>
       <argument type="service" id="App\Repository\UserRepository"/>
+      <argument type="service" id="App\Repository\ContentExclusiveRepository"/>
+      <argument type="service" id="App\Security\AccessDecisionManager"/>
       <call method="setContainer">
         <argument type="service" id=".service_locator..UjS3SV.App\Controller\ProfilController"/>
       </call>
@@ -616,7 +624,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
       <tag name="controller.argument_value_resolver" priority="-50"/>
-      <argument type="service" id=".service_locator.TnRXv_j"/>
+      <argument type="service" id=".service_locator.KufcGng"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
       <tag name="controller.argument_value_resolver" priority="-100"/>
@@ -3223,7 +3231,7 @@
     </service>
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
-      <argument type="service" id=".service_locator.TnRXv_j"/>
+      <argument type="service" id=".service_locator.KufcGng"/>
     </service>
     <service id="debug.log_processor" class="Symfony\Bridge\Monolog\Processor\DebugProcessor">
       <argument type="service" id="request_stack"/>
@@ -7602,6 +7610,12 @@
         <argument key="myFavoriteTypesOfPerfumes" type="service_closure" id=".errored..service_locator.Yv6xARz.App\Entity\MyFavoriteTypesOfPerfumes"/>
       </argument>
     </service>
+    <service id=".service_locator.wvO140S" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="stripe" type="service_closure" id="App\Controller\StripeController"/>
+      </argument>
+    </service>
     <service id=".service_locator.6MtxQHl" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -7628,6 +7642,19 @@
         <argument key="reviewPerfumeNote" type="service_closure" id=".errored..service_locator.unpIcZj.App\Entity\ReviewPerfumeNote"/>
       </argument>
     </service>
+    <service id=".service_locator.NjUBG3v" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="entityManager" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+        <argument key="userRepository" type="service_closure" id="App\Repository\UserRepository"/>
+      </argument>
+    </service>
+    <service id=".service_locator.xiCCC7r" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="codeValidationRepository" type="service_closure" id="App\Repository\CodeValidationRepository"/>
+      </argument>
+    </service>
     <service id=".service_locator.e_4zbH4" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -7642,7 +7669,7 @@
         <argument key="userRepository" type="service_closure" id="App\Repository\UserRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.TnRXv_j" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.KufcGng" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\AdminController::addContentExclusive" type="service_closure" id=".service_locator.E9w1.nG"/>
@@ -7665,6 +7692,7 @@
         <argument key="App\Controller\PerfumeTrialSheetController::getPerfumeTrialSheet" type="service_closure" id=".service_locator.Hrw847H"/>
         <argument key="App\Controller\PerfumeTrialSheetController::putPerfumeTrialSheet" type="service_closure" id=".service_locator.J38_oCQ"/>
         <argument key="App\Controller\ProfilController::editMyFavoriteTypesOfPerfumes" type="service_closure" id=".service_locator.Yv6xARz"/>
+        <argument key="App\Controller\ProfilController::getAllContentExclusive" type="service_closure" id=".service_locator.wvO140S"/>
         <argument key="App\Controller\ProfilController::removeMyFavoriteTypesOfPerfumes" type="service_closure" id=".service_locator.Yv6xARz"/>
         <argument key="App\Controller\ReviewPerfumeNoteController::addFragrancesReviewPerfumeNote" type="service_closure" id=".service_locator.6MtxQHl"/>
         <argument key="App\Controller\ReviewPerfumeNoteController::addPerfumeInNote" type="service_closure" id=".service_locator.unpIcZj"/>
@@ -7674,13 +7702,15 @@
         <argument key="App\Controller\ReviewPerfumeNoteController::putReviewPerfumeNote" type="service_closure" id=".service_locator.ltbHfWK"/>
         <argument key="App\Controller\ReviewPerfumeNoteController::removeFragranceReviewPerfumeNote" type="service_closure" id=".service_locator.6MtxQHl"/>
         <argument key="App\Controller\StripeController::cancelSubscription" type="service_closure" id=".service_locator.kPUOGb8"/>
-        <argument key="App\Controller\StripeController::changeSubscription" type="service_closure" id=".service_locator.kPUOGb8"/>
+        <argument key="App\Controller\StripeController::changeSubscription" type="service_closure" id=".service_locator.NjUBG3v"/>
+        <argument key="App\Controller\StripeController::checkSubscription" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\StripeController::getCurrentSubscription" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\StripeController::getInvoicesAction" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\StripeController::getLastFourDigits" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\StripeController::updateCard" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\StripeController::updateCreditCard" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\UserController::register" type="service_closure" id=".service_locator.e_4zbH4"/>
+        <argument key="App\Controller\UserController::verifyCode" type="service_closure" id=".service_locator.xiCCC7r"/>
         <argument key="App\Controller\UserController::verifyUserEmail" type="service_closure" id=".service_locator.920S.Ym"/>
         <argument key="App\Kernel::loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="App\Kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
@@ -7706,6 +7736,7 @@
         <argument key="App\Controller\PerfumeTrialSheetController:getPerfumeTrialSheet" type="service_closure" id=".service_locator.Hrw847H"/>
         <argument key="App\Controller\PerfumeTrialSheetController:putPerfumeTrialSheet" type="service_closure" id=".service_locator.J38_oCQ"/>
         <argument key="App\Controller\ProfilController:editMyFavoriteTypesOfPerfumes" type="service_closure" id=".service_locator.Yv6xARz"/>
+        <argument key="App\Controller\ProfilController:getAllContentExclusive" type="service_closure" id=".service_locator.wvO140S"/>
         <argument key="App\Controller\ProfilController:removeMyFavoriteTypesOfPerfumes" type="service_closure" id=".service_locator.Yv6xARz"/>
         <argument key="App\Controller\ReviewPerfumeNoteController:addFragrancesReviewPerfumeNote" type="service_closure" id=".service_locator.6MtxQHl"/>
         <argument key="App\Controller\ReviewPerfumeNoteController:addPerfumeInNote" type="service_closure" id=".service_locator.unpIcZj"/>
@@ -7715,13 +7746,15 @@
         <argument key="App\Controller\ReviewPerfumeNoteController:putReviewPerfumeNote" type="service_closure" id=".service_locator.ltbHfWK"/>
         <argument key="App\Controller\ReviewPerfumeNoteController:removeFragranceReviewPerfumeNote" type="service_closure" id=".service_locator.6MtxQHl"/>
         <argument key="App\Controller\StripeController:cancelSubscription" type="service_closure" id=".service_locator.kPUOGb8"/>
-        <argument key="App\Controller\StripeController:changeSubscription" type="service_closure" id=".service_locator.kPUOGb8"/>
+        <argument key="App\Controller\StripeController:changeSubscription" type="service_closure" id=".service_locator.NjUBG3v"/>
+        <argument key="App\Controller\StripeController:checkSubscription" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\StripeController:getCurrentSubscription" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\StripeController:getInvoicesAction" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\StripeController:getLastFourDigits" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\StripeController:updateCard" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\StripeController:updateCreditCard" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\UserController:register" type="service_closure" id=".service_locator.e_4zbH4"/>
+        <argument key="App\Controller\UserController:verifyCode" type="service_closure" id=".service_locator.xiCCC7r"/>
         <argument key="App\Controller\UserController:verifyUserEmail" type="service_closure" id=".service_locator.920S.Ym"/>
         <argument key="kernel:loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="kernel:registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
@@ -9692,7 +9725,7 @@
     <service id="lexik_jwt_authentication.key_loader" alias="lexik_jwt_authentication.key_loader.raw" public="true"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.7nzbL4K" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.TnRXv_j"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.KufcGng"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
@@ -9720,8 +9753,9 @@
     <service id=".service_locator.e0LSn5E" alias=".service_locator.J38_oCQ"/>
     <service id=".service_locator.rdp95UR" alias=".service_locator.6MtxQHl"/>
     <service id=".service_locator.r2YMPOV" alias=".service_locator.unpIcZj"/>
+    <service id=".service_locator.8IbU9zc" alias=".service_locator.NjUBG3v"/>
     <service id=".service_locator.V6D1oJY" alias=".service_locator.e_4zbH4"/>
-    <service id=".service_locator.V9x7WjH" alias=".service_locator.TnRXv_j"/>
+    <service id=".service_locator.xeraYKL" alias=".service_locator.KufcGng"/>
     <service id=".service_locator.9XMoc9I" alias=".service_locator.kzegaci"/>
     <service id=".service_locator.yj07qm_" alias=".service_locator.ZyXYEQR"/>
     <service id=".service_locator.jij13qc" alias=".service_locator.PBToVFE"/>
@@ -9779,10 +9813,13 @@
     <service id=".service_locator.K4D_hQe" alias=".service_locator.aBN7K1Y"/>
     <service id=".service_locator.5cJpTNN" alias=".service_locator.Hrw847H"/>
     <service id=".service_locator.ND6ND0o" alias=".service_locator.Yv6xARz"/>
+    <service id=".service_locator.YmRDAmZ" alias=".service_locator.wvO140S"/>
     <service id=".service_locator.VTVziqw" alias=".service_locator.6MtxQHl"/>
     <service id=".service_locator.k71uHG." alias=".service_locator.ltbHfWK"/>
     <service id=".service_locator.QnxpW09" alias=".service_locator.d1gTJrc"/>
     <service id=".service_locator.g__dTW3" alias=".service_locator.unpIcZj"/>
+    <service id=".service_locator.SPFAmCQ" alias=".service_locator.NjUBG3v"/>
+    <service id=".service_locator.xHcLn8X" alias=".service_locator.xiCCC7r"/>
     <service id=".service_locator.qnm_CJ1" alias=".service_locator.e_4zbH4"/>
     <service id=".service_locator.vWiWdqV" alias=".service_locator.920S.Ym"/>
     <service id=".service_locator.TZ87Fd6" alias=".service_locator..UjS3SV"/>

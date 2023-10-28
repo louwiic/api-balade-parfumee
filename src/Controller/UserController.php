@@ -6,6 +6,7 @@ use App\Entity\CodeValidation;
 use App\Entity\Profil;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Repository\CodeValidationRepository;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,18 +30,18 @@ class UserController extends AbstractController
     private MailChimp $mailchimp;
     private EntityManagerInterface $entityManager;
     private Client $client;
- //   public function __construct(EmailVerifier $emailVerifier)
-   // {
-     //   $this->emailVerifier = $emailVerifier;
+    //   public function __construct(EmailVerifier $emailVerifier)
+    // {
+    //   $this->emailVerifier = $emailVerifier;
     //}
-    public function __construct(MailChimp $mailchimp,EntityManagerInterface $entityManager, Client $client)
+    public function __construct(MailChimp $mailchimp, EntityManagerInterface $entityManager, Client $client)
     {
         $this->mailchimp = $mailchimp;
-        $this->entityManager =$entityManager;
+        $this->entityManager = $entityManager;
         $this->client = $client;
     }
 
-        #[Route('/generate_code', name: 'generate_code', methods: ['POST'])]
+    #[Route('/generate_code', name: 'generate_code', methods: ['POST'])]
     public function generateCode(Request $request): Response
     {
         // Récupérer les données JSON
@@ -52,24 +53,73 @@ class UserController extends AbstractController
         // Générer un code de validation de six chiffres
         $validationCode = mt_rand(100000, 999999);
 
+        $expirationDate = new \DateTimeImmutable();
+        $expirationDate->modify('+2 minutes');
+
         // Créer une nouvelle instance de l'entité CodeValidation
         $codeValidation = new CodeValidation();
         $codeValidation->setSource($phoneNumber);
         $codeValidation->setCode((string)$validationCode);
+        $codeValidation->setExpiredAt($expirationDate);
         $this->entityManager->persist($codeValidation);
         $this->entityManager->flush();
-        $twilio_number = "+12178583731";
+        $twilio_number = "+16193778287";
 
+        //return new JsonResponse(['message' =>  $this->client]);
         $this->client->messages->create(
-        // Where to send a text message (your cell phone?)
+            // Where to send a text message (your cell phone?)
             $codeValidation->getSource(),
             array(
                 'from' => $twilio_number,
-                'body' => "Voici le code pour avoir accès à votre carnet olfactif : " . $codeValidation->getCode()
+                'body' => "Voici le code pour avoir accès à votre carnet olfactif : " . $validationCode
             )
         );
+
+        $response = [
+            'success' => true,
+            'code' => $codeValidation
+        ];
+
+        return new Response(json_encode($response), 200, ['Content-Type' => 'application/json']);
+    }
+
+    #[Route('/verify_code', name: 'verify_code', methods: ['POST'])]
+    public function verifyCode(Request $request, CodeValidationRepository $codeValidationRepository): Response
+    {
+
+        // Récupérer les données JSON
+        $jsonData = json_decode($request->getContent(), true);
+
+        // Vérifier si le code est présent dans les données JSON
+        if (!isset($jsonData['code'])) {
+            return new JsonResponse(['success' => false, 'message' => 'Code is missing'], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Récupérer le numéro de téléphone depuis les données JSON
+        $codeValidation = $jsonData['code'];
+
+        $code = $codeValidationRepository->findOneBy(["code" => $codeValidation]);
+
+        if (!$code) {
+            return new JsonResponse(['success' => false, 'message' => 'Code not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $now = new \DateTimeImmutable();
+        $expirationDate = $code->getExpiredAt();
+        $expirationLimit = $expirationDate->modify('+2 minutes');
+
+        if ($code && $now > $expirationLimit) {
+            // Soit le code n'a pas été trouvé, soit il a expiré
+            $response = [
+                'success' => false,
+                'message' => $code ? 'Code has expired' : 'Code not found'
+            ];
+            return new JsonResponse($response, Response::HTTP_NOT_FOUND);
+        }
+
         $response = [
             'succes' => true,
+            'code' => $code->getCode()
         ];
 
         return new Response(json_encode($response), 200, ['Content-Type' => 'application/json']);
@@ -97,9 +147,35 @@ class UserController extends AbstractController
     #[OA\Parameter(name: 'phone', in: "phone", required: true)]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
+
         $user = new User();
         $list_id = "11f0aee7a2";
         $jsonData = json_decode($request->getContent(), true);
+
+        $existingUserByEmail = $entityManager->getRepository(User::class)->findOneBy(['email' => $jsonData['email']]);
+        if ($existingUserByEmail) {
+            // L'e-mail existe déjà, renvoyer un message d'erreur
+            return new Response(json_encode(["error" => true, "message" => 'L\'e-mail existe déjà.']), 400);
+        }
+
+        // Vérifier si le numéro de téléphone existe déjà
+        $existingUserByPhone = $entityManager->getRepository(User::class)->findOneBy(['phone' => $jsonData['phone']]);
+        if ($existingUserByPhone) {
+            // Le numéro de téléphone existe déjà, renvoyer un message d'erreur
+            return new Response(json_encode(["error" => true, "message" => 'Le numéro de téléphone existe déjà.']), 400);
+        }
+
+        /* 
+         $subscription = $jsonData['subscriptionSelected'];
+        $abo ='Abonné COD gratuit';
+        if($subscription === 1){
+            $abo="Abonnement mensuel";
+        }else if($subscription === 2){
+            $abo="Abonnement trimestriel";
+        }
+        return new Response(json_encode(["ok" => $abo]),  200);
+         */
+
         $user->setEmail($jsonData['email']);
         $user->setLastName($jsonData['lastName']);
         $user->setPhone($jsonData['phone']);
@@ -107,24 +183,24 @@ class UserController extends AbstractController
         $user->setTypeSubscription(3);
         //$user->setRoles(['ROLE_ADMIN']);
         $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $jsonData['password']
-                )
+            $userPasswordHasher->hashPassword(
+                $user,
+                $jsonData['password']
+            )
         );
         $p = new Profil();
         $user->setProfil($p);
         $entityManager->persist($p);
         $entityManager->persist($user);
         $entityManager->flush();
-        $this->addSubscriberWithTags($list_id, $user->getEmail(), $user->getFirstName(), $user->getLastName(),'Abonné COD gratuit');
-        return new Response('Inscription réussie !');
+        $this->addSubscriberWithTags($list_id, $user->getEmail(), $user->getFirstName(), $user->getLastName(), 'Abonné COD gratuit');
+        return new Response(json_encode(["ok" => true, "message" => 'Inscription réussie !']),  200);
     }
 
     #[Route('/api/iSConnected', name: 'app_iSConnected')]
     public function iSConnected(Request $request): Response
     {
-      return new JsonResponse(["succes" => true]);
+        return new JsonResponse(["succes" => true]);
     }
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository): Response
