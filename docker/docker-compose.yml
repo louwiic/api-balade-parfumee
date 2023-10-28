@@ -4,11 +4,11 @@ services:
       image: mysql
       container_name: db_docker_symfony
       environment:
-            #MYSQL_ALLOW_EMPTY_PASSWORD: 'yes' 
-            MYSQL_ROOT_PASSWORD: 
-            MYSQL_DATABASE: rnkj8918_bld_parfume #.env file ${DB_DATABASE} 
-            MYSQL_USER: loic
-            MYSQL_PASSWORD: admin    
+            MYSQL_ALLOW_EMPTY_PASSWORD: 'yes' 
+            #MYSQL_ROOT_PASSWORD: 
+            #MYSQL_DATABASE: rnkj8918_bld_parfume
+            #MYSQL_USER: loic
+            #MYSQL_PASSWORD: admin    
       ports:
         - "4306:3306"      
       restart: always
@@ -28,8 +28,8 @@ services:
       ports:
         - "8080:80" 
       environment:
-          #DATABASE_URL: mysql://root@database/rnkj8918_bld_parfume?serverVersion=5.7
-          DATABASE_URL: mysql://loic:admin@db_docker_symfony/rnkj8918_bld_parfume?serverVersion=5.7
+          DATABASE_URL: mysql://root@database/rnkj8918_bld_parfume?serverVersion=5.7
+          #DATABASE_URL: mysql://loic:admin@db_docker_symfony/rnkj8918_bld_parfume?serverVersion=5.7
 networks:
     dev:
     
