@@ -41,7 +41,7 @@ class UserController extends AbstractController
         $this->client = $client;
     }
 
-    #[Route('/generate_code', name: 'generate_code', methods: ['POST'])]
+    #[Route('/api/generate_code', name: 'generate_code', methods: ['POST'])]
     public function generateCode(Request $request): Response
     {
         // Récupérer les données JSON
@@ -83,7 +83,7 @@ class UserController extends AbstractController
         return new Response(json_encode($response), 200, ['Content-Type' => 'application/json']);
     }
 
-    #[Route('/verify_code', name: 'verify_code', methods: ['POST'])]
+    #[Route('/api/verify_code', name: 'verify_code', methods: ['POST'])]
     public function verifyCode(Request $request, CodeValidationRepository $codeValidationRepository): Response
     {
 
