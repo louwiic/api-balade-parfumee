@@ -34,15 +34,33 @@ class CheckListController extends AbstractController
     }
     
     #[Route('api/checkList/{m}/{Y}', name: 'app_create_checkList', methods: "POST")]
-    public function createCheckList($m = false, $Y = false): Response {
+    public function createCheckList(Request $request, $m = false, $Y = false): Response {
+        $fragrance = json_decode($request->getContent(), true);
+
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
         $checkList = new CheckList();
         if ($m && $Y)
             $checkList->setCreateAt(DateTimeImmutable::createFromFormat('d/m/Y', "01/$m/$Y"));
         else
             $checkList->setCreateAt(new DateTimeImmutable());
+        
+        /* if($fragrance["name"])  
+            $fg = new Fragrance();
+            $fg->setCreateAt(new DateTimeImmutable());
+            $fg->setName($fragrance["name"]);            
+            $fg->setBrand($fragrance["brand"]);
+            $fg->setDescription($fragrance["description"]);            
+            $fg->setValue($fragrance["value"]);            
+            $fg->setImg("test.pgn");
+            $fg->setConcentration($fragrance["concentration"]);    
+            
+            $this->entityManager->persist($fg);
+            $this->entityManager->flush();
+            $checkList->setFragrance($fg); */
+        
         $checkList->setUser($user);
         $checkList->setState('try');
+        
         $this->entityManager->persist($checkList);
         $this->entityManager->flush();
         return new JsonResponse(["id" => $checkList->getId(), "createAt" => $checkList->getCreateAt()->format('m/Y')], Response::HTTP_OK);
