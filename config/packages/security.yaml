@@ -26,6 +26,8 @@ security:
     access_control:
         - { path: ^/api/fragrance, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api/auth/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/auth/generate_code, roles: PUBLIC_ACCESS }
+        - { path: ^/api/auth/verify_code, roles: PUBLIC_ACCESS }
         - { path: ^/api/auth/refresh-token, roles: PUBLIC_ACCESS }
         - { path: ^/api/, roles: ROLE_USER }
         # - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }

@@ -55,25 +55,43 @@ class FragranceController extends AbstractController
         return new JsonResponse($val, Response::HTTP_OK);
     }
 
-    #[Route('api/wishlist/{fragrance}', name: 'app_create_wishlist',methods: "POST")]
-    public function createWishlist(Fragrance $fragrance = null): Response {
+    #[Route('api/wishlist', name: 'app_create_wishlist',methods: "POST")]
+    public function createWishlist(Request $request, Fragrance $f = null): Response {
+        $fragrance = json_decode($request->getContent(), true);
+
+        //return new JsonResponse(($fragrance));
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
-        $wishlist = new Wishlist();
+        $wishlist = new Wishlist();        
         $wishlist->setCreateAt(new DateTimeImmutable());
         $wishlist->setUser($user);
 
-        if($fragrance)
-            $wishlist->setFragrance($fragrance);
+        /* if($fragrance)  
+            $fg = new Fragrance();
+            $fg->setCreateAt(new DateTimeImmutable());
+            $fg->setName($fragrance["name"]);            
+            $fg->setBrand($fragrance["brand"]);
+            $fg->setDescription($fragrance["description"]);            
+            $fg->setValue($fragrance["value"]);            
+            $fg->setImg("test.pgn");
+            $fg->setConcentration($fragrance["concentration"]);    
+            
+            $this->entityManager->persist($fg);
+            $this->entityManager->flush();        
+        
+            $wishlist->setFragrance($fg); */
+        
         $this->entityManager->persist($wishlist);
         $this->entityManager->flush();
         return new JsonResponse(["id" => $wishlist->getId()], Response::HTTP_OK);
     }
+
     #[Route('api/wishlist/{wishlist}/{fragrance}', name: 'app_put_wishlist',methods: "PUT")]
     #[OA\Parameter(name: 'fragrance', in: "path", required: false)]
     public function PUTWishlist(Wishlist $wishlist, Fragrance $fragrance = null): Response {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
         if ($wishlist->getUser() !== $user)
             return new JsonResponse("not access", Response::HTTP_FORBIDDEN);
+            
 
         $wishlist->setFragrance($fragrance);
         $wishlist->setUser($user);
