@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\CheckList;
 use App\Entity\Fragrance;
+use App\Entity\PerfumeTrialSheet;
 use App\Entity\ReviewPerfumeNote;
 use App\Entity\Wishlist;
 use App\Repository\FragranceRepository;
@@ -37,8 +38,33 @@ class ReviewPerfumeNoteController extends AbstractController
         $this->userRepository = $userRepository;
     }
     #[Route('api/reviewPerfumeNote/{m}/{Y}', name: 'app_create_ReviewPerfumeNote', methods: "POST")]
-    public function createReviewPerfumeNote($m, $Y): Response {
+    public function createReviewPerfumeNote($m, $Y, StripeController $stripe): Response {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
+        $reviewPerfumeNotes = $user->getReviewPerfumeNotes();
+        $list = [];
+        
+        foreach ($reviewPerfumeNotes as $reviewPerfumeNote) {
+            if ($reviewPerfumeNote instanceof ReviewPerfumeNote && !$reviewPerfumeNote->getDeleteAt()) {        
+                $list[] =  [
+                    "id" => $reviewPerfumeNote->getId(),
+                ];
+            }
+        }
+
+        $subscribed = $stripe->checkSubscription(userRepository:$this->userRepository);
+
+        if(!isset($subscribed) && count($list) >= 5){
+            return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
+        }
+        
+        if(isset($subscribed) && count($list) >= 5){
+            if($subscribed["subscription_is_not_expired"] === false || $subscribed['subscription']['status'] !== "active"){
+                return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
+            }
+        }
+
+  
+
         $ReviewPerfumeNote = new ReviewPerfumeNote();
         if ($m && $Y)
             $ReviewPerfumeNote->setCreateAt(DateTimeImmutable::createFromFormat('d/m/Y', "01/$m/$Y"));
