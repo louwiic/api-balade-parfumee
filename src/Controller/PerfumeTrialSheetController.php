@@ -29,15 +29,37 @@ class PerfumeTrialSheetController extends AbstractController
         EntityManagerInterface $entityManager,
         FragranceRepository $fragranceRepository,
         UserRepository $userRepository
-    )
-    {
+    ) {
         $this->entityManager = $entityManager;
         $this->fragranceRepository = $fragranceRepository;
         $this->userRepository = $userRepository;
     }
     #[Route('api/perfumeTrialSheet/{m}/{Y}', name: 'app_create_perfumeTrialSheet', methods: "POST")]
-    public function createPerfumeTrialSheet($m, $Y): Response {
+    public function createPerfumeTrialSheet($m, $Y, StripeController $stripe): Response
+    {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
+        $list = [];
+        foreach ($user->getPerfumeTrialSheets() as $perfumeTrialSheet) {
+            if ($perfumeTrialSheet instanceof PerfumeTrialSheet && !$perfumeTrialSheet->getDeleteAt()) {        
+                $list[] =  [
+                    "id" => $perfumeTrialSheet->getId(),
+                ];
+            }
+        }
+
+        $subscribed = $stripe->checkSubscription(userRepository:$this->userRepository);
+ 
+
+        if(!isset($subscribed) && count($list) >= 5){
+            return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
+        }
+        
+        if(isset($subscribed) && count($list) >= 5){
+            if($subscribed["subscription_is_not_expired"] === false || $subscribed['subscription']['status'] !== "active"){
+                return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
+            }
+        }
+        
         $perfumeTrialSheet = new PerfumeTrialSheet();
         if ($m && $Y)
             $perfumeTrialSheet->setCreateAt(DateTimeImmutable::createFromFormat('d/m/Y', "01/$m/$Y"));
@@ -54,7 +76,7 @@ class PerfumeTrialSheetController extends AbstractController
         $this->entityManager->persist($perfumeTrialSheet);
         $this->entityManager->flush();
 
-        return new JsonResponse( [
+        return new JsonResponse([
             "id" => $perfumeTrialSheet->getId(),
             "createAt" =>  $perfumeTrialSheet->getCreateAt()->format('m/Y'),
             "dominantNotes" =>  $perfumeTrialSheet->getDominantNotes(),
@@ -81,7 +103,8 @@ class PerfumeTrialSheetController extends AbstractController
     #[OA\Parameter(name: 'perfumePerformance', in: "query", required: false)]
     #[OA\Parameter(name: 'dominantNotes', in: "query", required: false)]
 
-    public function putPerfumeTrialSheet(PerfumeTrialSheet $perfumeTrialSheet, Fragrance $fragrance = null, Request $request): Response {
+    public function putPerfumeTrialSheet(PerfumeTrialSheet $perfumeTrialSheet, Fragrance $fragrance = null, Request $request): Response
+    {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
         if ($perfumeTrialSheet->getUser() !== $user)
             return new JsonResponse("not access", Response::HTTP_FORBIDDEN);
@@ -104,9 +127,10 @@ class PerfumeTrialSheetController extends AbstractController
         return new Response(true, Response::HTTP_OK);
     }
 
-    #[Route('api/perfumeTrialSheet/{perfumeTrialSheet}', name: 'app_DELETE_checkList',methods: "DELETE")]
+    #[Route('api/perfumeTrialSheet/{perfumeTrialSheet}', name: 'app_DELETE_checkList', methods: "DELETE")]
     #[OA\Parameter(name: 'perfumeTrialSheet', in: "path", required: true)]
-    public function deletePerfumeTrialSheet(PerfumeTrialSheet $perfumeTrialSheet): Response {
+    public function deletePerfumeTrialSheet(PerfumeTrialSheet $perfumeTrialSheet): Response
+    {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
         if ($perfumeTrialSheet->getUser() !== $user)
             return new JsonResponse("not access", Response::HTTP_FORBIDDEN);
@@ -116,7 +140,8 @@ class PerfumeTrialSheetController extends AbstractController
         return new Response(true, Response::HTTP_OK);
     }
     #[Route('api/perfumeTrialSheet', name: 'app_get_perfumeTrialSheet')]
-    public function getPerfumeTrialSheet(WishlistRepository $wishlistRepository): Response {
+    public function getPerfumeTrialSheet(WishlistRepository $wishlistRepository): Response
+    {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
         $list = [];
         $wishlistId = [];
@@ -128,10 +153,10 @@ class PerfumeTrialSheetController extends AbstractController
         }
         foreach ($user->getPerfumeTrialSheets() as $perfumeTrialSheet) {
             if ($perfumeTrialSheet instanceof PerfumeTrialSheet && !$perfumeTrialSheet->getDeleteAt()) {
-
+            
                 $fragrance = $perfumeTrialSheet->getFragrance();
 
-                $list [] =  [
+                $list[] =  [
                     "id" => $perfumeTrialSheet->getId(),
                     "createAt" =>  $perfumeTrialSheet->getCreateAt()->format('m/Y'),
                     "dominantNotes" =>  $perfumeTrialSheet->getDominantNotes(),
@@ -142,16 +167,15 @@ class PerfumeTrialSheetController extends AbstractController
                     "idFragrance" => $fragrance ? $fragrance->getId() : "",
                     'isInWishlist' => $fragrance && in_array($fragrance->getId(), $wishlistId),
                     "brand" =>  $fragrance ? $fragrance->getBrand() : "",
-                    "concentration" =>  $fragrance ? $fragrance->getConcentration(): "",
-                    "value" =>  $fragrance ? $fragrance->getName(): "",
-                    "name" =>  $fragrance ? $fragrance->getName(): "",
-                    "img" =>  $fragrance ? $fragrance->getImg(): "/pictogrammeParfum.png",
-                    "description" =>  $fragrance ? $fragrance->getDescription(): "",
+                    "concentration" =>  $fragrance ? $fragrance->getConcentration() : "",
+                    "value" =>  $fragrance ? $fragrance->getName() : "",
+                    "name" =>  $fragrance ? $fragrance->getName() : "",
+                    "img" =>  $fragrance ? $fragrance->getImg() : "/pictogrammeParfum.png",
+                    "description" =>  $fragrance ? $fragrance->getDescription() : "",
                     "dateFragrance" => $fragrance ? $fragrance->getCreateAt()->format('m/y') : "",
                 ];
             }
         }
         return new JsonResponse($list, Response::HTTP_OK);
     }
-
 }
