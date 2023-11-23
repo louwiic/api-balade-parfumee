@@ -44,3 +44,8 @@
 
 # Composer PHAR
 /composer.phar
+
+# Ignore .env file
+.env
+.env.local
+.env.prod
