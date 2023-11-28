@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\CheckList;
 use App\Entity\Fragrance;
+use App\Entity\PerfumeTrialSheet;
 use App\Repository\FragranceRepository;
 use App\Repository\UserRepository;
 use DateTimeImmutable;
@@ -34,10 +35,47 @@ class CheckListController extends AbstractController
     }
     
     #[Route('api/checkList/{m}/{Y}', name: 'app_create_checkList', methods: "POST")]
-    public function createCheckList(Request $request, $m = false, $Y = false): Response {
+    public function createCheckList(Request $request, $m = false, $Y = false,StripeController $stripe): Response {
         $fragrance = json_decode($request->getContent(), true);
 
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
+
+        $list = [];
+        foreach ($user->getCheckLists() as $checkList) {
+            if ($checkList instanceof checkList && !$checkList->getDeleteAt()) {        
+                $list[] =  [
+                    "id" => $checkList->getId(),
+                ];
+            }
+        }
+
+        $subscribed = $stripe->checkSubscription(userRepository:$this->userRepository);
+
+        if(!isset($subscribed) && count($list) >= 5){
+            return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
+        }
+
+        if(isset($subscribed) && count($list) >= 5){
+            if($subscribed["subscription_is_not_expired"] === false || $subscribed['subscription']['status'] !== "active"){
+                return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
+            }
+        }
+
+ 
+        /* $subscribed = $stripe->checkSubscription(userRepository:$this->userRepository);
+ 
+
+        if(!isset($subscribed) && count($list) >= 5){
+            return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
+        }
+        
+        if(isset($subscribed) && count($list) >= 5){
+            if($subscribed["subscription_is_not_expired"] === false || $subscribed['subscription']['status'] !== "active"){
+                return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
+            }
+        } */
+        
+
         $checkList = new CheckList();
         if ($m && $Y)
             $checkList->setCreateAt(DateTimeImmutable::createFromFormat('d/m/Y', "01/$m/$Y"));
@@ -87,7 +125,9 @@ class CheckListController extends AbstractController
         return new Response(true, Response::HTTP_OK);
     }
 
-    #[Route('api/checkList/{checkList}', name: 'app_DELETE_checkList',methods: "DELETE")]
+  
+
+    #[Route('api/checkList/delete/{checkList}', name: 'app_delete_checkList',methods: "DELETE")]
     #[OA\Parameter(name: 'checkList', in: "path", required: true)]
     public function deleteCheckList(CheckList $checkList): Response {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
@@ -98,6 +138,7 @@ class CheckListController extends AbstractController
         $this->entityManager->flush();
         return new Response(true, Response::HTTP_OK);
     }
+
     #[Route('api/checkList', name: 'app_get_checkList')]
     public function getCheckList(): Response {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());

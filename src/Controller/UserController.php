@@ -6,9 +6,11 @@ use App\Entity\CodeValidation;
 use App\Entity\Profil;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Kernel;
 use App\Repository\CodeValidationRepository;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use DrewM\MailChimp\MailChimp;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -23,6 +25,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use Twilio\Rest\Client;
 use OpenApi\Attributes as OA;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UserController extends AbstractController
 {
@@ -30,15 +33,20 @@ class UserController extends AbstractController
     private MailChimp $mailchimp;
     private EntityManagerInterface $entityManager;
     private Client $client;
+    private string $publicDir;
+    private $adminController;
+
     //   public function __construct(EmailVerifier $emailVerifier)
     // {
     //   $this->emailVerifier = $emailVerifier;
     //}
-    public function __construct(MailChimp $mailchimp, EntityManagerInterface $entityManager, Client $client)
+    public function __construct(MailChimp $mailchimp, EntityManagerInterface $entityManager, Client $client, Kernel $kernel,AdminController $adminController)
     {
         $this->mailchimp = $mailchimp;
         $this->entityManager = $entityManager;
         $this->client = $client;
+        $this->adminController = $adminController;
+        $this->publicDir = $kernel->getProjectDir() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'avatar';
     }
 
     #[Route('/api/auth/generate_code', name: 'generate_code', methods: ['POST'])]
@@ -140,11 +148,79 @@ class UserController extends AbstractController
 
         return $this->mailchimp->success();
     }
+
+    private function getUniqueFileName(UploadedFile $file): array
+    {
+        $maxAttempts = 50;
+
+        $attempts = 0;
+        $nameFile = '';
+        while ($attempts < $maxAttempts) {
+            $nameFile = $this->adminController->getRandomString() . "." . $file->getClientOriginalExtension();
+            $filePath = $this->publicDir . DIRECTORY_SEPARATOR . "$nameFile";
+            if (!file_exists($filePath)) {
+                break;
+            }
+            $attempts++;
+        }
+        return ['isFailed' => $attempts === $maxAttempts, 'nameFile' => $nameFile, 'filePath' => $filePath];
+    }
+
+
+
+    #[Route('/api/update-user', name: 'update_user',methods:['POST'])]
+    public function _updateUser(Request $request, userRepository $userRepository,EntityManagerInterface $entityManager): JsonResponse
+    {
+        
+        $userEmail = $this->getUser()->getUserIdentifier();
+        $user = $userRepository->findOneUserByEmail($userEmail);
+        
+        //$jsonData = json_decode($request->getContent(), true);
+        $imageSrc = $request->files->get('image');
+        $email = $request->request->get('email');
+        $firstName = $request->request->get('firstname');
+        $lastName = $request->request->get('lastname');
+
+ 
+        if (!$imageSrc instanceof UploadedFile) {
+            return $this->json(['message' => 'image not found']);
+        }
+        
+        $uniqueNameImage = $this->getUniqueFileName($imageSrc);
+        if ($uniqueNameImage['isFailed']) {
+            return new JsonResponse(['error' => 'Impossible de générer un nom de fichier unique après 50 tentatives. Veuillez réessayer.'], 400);
+        }else{
+            if(isset($imageSrc)){
+                $imageSrc->move($this->publicDir, $uniqueNameImage['nameFile']);
+            }
+            
+            $user->setAvatar($uniqueNameImage['nameFile']);
+            if(isset($firstName)){
+                $user->setFirstName($firstName);
+            }
+
+            if(isset($lastName)){
+                $user->setLastName($lastName);
+            }
+            if(isset($email)){
+                $user->setEmail($email);
+            }
+
+            $entityManager->flush();
+         }
+
+ 
+        return new JsonResponse(["messages" => 'success', "data" =>$imageSrc]);
+    }
+
     #[Route('/register', name: 'app_register', methods: 'POST')]
     #[OA\Parameter(name: 'email', in: "email", required: true)]
     #[OA\Parameter(name: 'lastName', in: "lastName", required: true)]
     #[OA\Parameter(name: 'firstName', in: "firstName", required: true)]
     #[OA\Parameter(name: 'phone', in: "phone", required: true)]
+    #[OA\Parameter(name: 'cguValided', in: "cguValided", required: true)]
+    #[OA\Parameter(name: 'cgvValided', in: "cgvValided", required: true)]
+    #[OA\Parameter(name: 'politicsValided', in: "politicsValided", required: true)]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
 
@@ -158,6 +234,15 @@ class UserController extends AbstractController
             return new Response(json_encode(["error" => true, "message" => 'L\'e-mail existe déjà.']), 400);
         }
 
+        if (!isset($jsonData["cguAccepted"])) {
+            return new Response(json_encode(["error" => true, "message" => 'cgu is not accepted']), Response::HTTP_NOT_FOUND);
+        }
+        if (!isset($jsonData["cgvAccepted"])) {
+            return new Response(json_encode(["error" => true, "message" => 'cgv is not accepted']), Response::HTTP_NOT_FOUND);
+        }
+        if (!isset($jsonData["politicsAccpeted"])) {
+            return new Response(json_encode(["error" => true, "message" => 'politics is not accepted']), Response::HTTP_NOT_FOUND);
+        }
         // Vérifier si le numéro de téléphone existe déjà
         $existingUserByPhone = $entityManager->getRepository(User::class)->findOneBy(['phone' => $jsonData['phone']]);
         if ($existingUserByPhone) {
@@ -165,22 +250,15 @@ class UserController extends AbstractController
             return new Response(json_encode(["error" => true, "message" => 'Le numéro de téléphone existe déjà.']), 400);
         }
 
-        /* 
-         $subscription = $jsonData['subscriptionSelected'];
-        $abo ='Abonné COD gratuit';
-        if($subscription === 1){
-            $abo="Abonnement mensuel";
-        }else if($subscription === 2){
-            $abo="Abonnement trimestriel";
-        }
-        return new Response(json_encode(["ok" => $abo]),  200);
-         */
 
         $user->setEmail($jsonData['email']);
         $user->setLastName($jsonData['lastName']);
         $user->setPhone($jsonData['phone']);
         $user->setFirstName($jsonData['firstName']);
         $user->setTypeSubscription(3);
+        $user->setCguAccepted($jsonData['cguAccepted']);
+        $user->setCgvAccepted($jsonData['cgvAccepted']);
+        $user->setPoliticsAccepted($jsonData['politicsAccpeted']);
         //$user->setRoles(['ROLE_ADMIN']);
         $user->setPassword(
             $userPasswordHasher->hashPassword(
