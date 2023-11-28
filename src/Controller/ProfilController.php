@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Attributes as OA;
+use phpDocumentor\Reflection\Types\Boolean;
 use Stripe\Subscription;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -62,6 +63,7 @@ class ProfilController extends AbstractController
             'email' => $user->getEmail(),
             'notesToDiscover' => $profil->getNotesToDiscover(),
             'childhoodScents' => $profil->getChildhoodScents(),
+            'feltOnMyCollection'=>$profil->getFeltOnMyCollection(),
             'mySymbolicFragrance' => $fragrance ? [
                 "id" => $fragrance->getId(),
                 "brand" => $fragrance->getBrand(),
@@ -104,9 +106,10 @@ class ProfilController extends AbstractController
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
         $data = json_decode($request->getContent(), true);
         $profil = $user->getProfil();
-        $profil->setFeltOnMyCollection($data['feltOnMyCollection']);
+        $profil->setFeltOnMyCollection(filter_var($data['feltOnMyCollection'], FILTER_VALIDATE_BOOLEAN));
+
         $this->entityManager->flush();
-        return new Response('feltOnMyCollection mis à jour', Response::HTTP_OK);
+        return new JsonResponse(["message" => 'feltOnMyCollection updated', "data"=>$data['feltOnMyCollection']], Response::HTTP_OK);
     }
     #[Route('/api/profil/tag', name: 'app_add_tag', methods: 'POST')]
     public function addMyFavoriteTypesOfPerfumes(Request $request): Response

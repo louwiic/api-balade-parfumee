@@ -51,6 +51,11 @@ class Profil
         return $this->childhood_scents;
     }
 
+    public function getFeltOnMyCollection(): ?string
+    {
+        return $this->feltOnMyCollection;
+    }
+
     public function setChildhoodScents(?string $childhood_scents): static
     {
         $this->childhood_scents = $childhood_scents;

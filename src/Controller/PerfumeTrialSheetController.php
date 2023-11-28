@@ -102,7 +102,6 @@ class PerfumeTrialSheetController extends AbstractController
     #[OA\Parameter(name: 'impression', in: "query", required: false)]
     #[OA\Parameter(name: 'perfumePerformance', in: "query", required: false)]
     #[OA\Parameter(name: 'dominantNotes', in: "query", required: false)]
-
     public function putPerfumeTrialSheet(PerfumeTrialSheet $perfumeTrialSheet, Fragrance $fragrance = null, Request $request): Response
     {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());

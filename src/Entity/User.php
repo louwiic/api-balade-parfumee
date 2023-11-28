@@ -83,6 +83,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Layering::class)]
     private Collection $layerings;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $cguAccepted = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $cgvAccepted = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $politicsAccepted = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $avatar = null;
+
     public function __construct()
     {
         $this->myFavoriteTypesOfPerfumes = new ArrayCollection();
@@ -491,6 +503,54 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $layering->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isCguAccepted(): ?bool
+    {
+        return $this->cguAccepted;
+    }
+
+    public function setCguAccepted(?bool $cguAccepted): static
+    {
+        $this->cguAccepted = $cguAccepted;
+
+        return $this;
+    }
+
+    public function isCgvAccepted(): ?bool
+    {
+        return $this->cgvAccepted;
+    }
+
+    public function setCgvAccepted(?bool $cgvAccepted): static
+    {
+        $this->cgvAccepted = $cgvAccepted;
+
+        return $this;
+    }
+
+    public function isPoliticsAccepted(): ?bool
+    {
+        return $this->politicsAccepted;
+    }
+
+    public function setPoliticsAccepted(?bool $politicsAccepted): static
+    {
+        $this->politicsAccepted = $politicsAccepted;
+
+        return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): static
+    {
+        $this->avatar = $avatar;
 
         return $this;
     }
