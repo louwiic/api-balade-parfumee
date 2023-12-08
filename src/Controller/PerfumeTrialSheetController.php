@@ -47,8 +47,9 @@ class PerfumeTrialSheetController extends AbstractController
             }
         }
 
-        $subscribed = $stripe->checkSubscription(userRepository:$this->userRepository);
+        $subscribed = $stripe->_checkSubscription(userRepository:$this->userRepository);
  
+        //return new JsonResponse(["message" => $subscribed ], Response::HTTP_ACCEPTED);
 
         if(!isset($subscribed) && count($list) >= 5){
             return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);

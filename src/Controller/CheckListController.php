@@ -41,6 +41,25 @@ class CheckListController extends AbstractController
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
 
         $list = [];
+        foreach ($user->getPerfumeTrialSheets() as $perfumeTrialSheet) {
+            if ($perfumeTrialSheet instanceof PerfumeTrialSheet && !$perfumeTrialSheet->getDeleteAt()) {        
+                $list[] =  [
+                    "id" => $perfumeTrialSheet->getId(),
+                ];
+            }
+        }
+        $subscribed = $stripe->_checkSubscription(userRepository:$this->userRepository);
+        if(!isset($subscribed) && count($list) >= 5){
+            return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
+        }
+        if(isset($subscribed) && count($list) >= 5){
+            if($subscribed["subscription_is_not_expired"] === false || $subscribed['subscription']['status'] !== "active"){
+                return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
+            }
+        }
+
+        $list = [];
+
         foreach ($user->getCheckLists() as $checkList) {
             if ($checkList instanceof checkList && !$checkList->getDeleteAt()) {        
                 $list[] =  [
@@ -49,7 +68,7 @@ class CheckListController extends AbstractController
             }
         }
 
-        $subscribed = $stripe->checkSubscription(userRepository:$this->userRepository);
+        $subscribed = $stripe->_checkSubscription(userRepository:$this->userRepository);
 
         if(!isset($subscribed) && count($list) >= 5){
             return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
@@ -62,7 +81,7 @@ class CheckListController extends AbstractController
         }
 
  
-        /* $subscribed = $stripe->checkSubscription(userRepository:$this->userRepository);
+        /* $subscribed = $stripe->_checkSubscription(userRepository:$this->userRepository);
  
 
         if(!isset($subscribed) && count($list) >= 5){

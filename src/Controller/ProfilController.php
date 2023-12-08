@@ -47,10 +47,44 @@ class ProfilController extends AbstractController
         $this->contentExclusiveRepository = $contentExclusiveRepository;
         $this->accessDecisionManager = $accessDecisionManager;
     }
+
+    private function checkSubscription()
+    {
+        $userEmail = $this->getUser()->getUserIdentifier();
+        $user = $this->userRepository->findOneUserByEmail($userEmail);
+        $subscriptionId = $user->getIdSubscriptionStripe();
+
+        try {
+            // Récupérez les informations de l'abonnement Stripe
+            $subscription = Subscription::retrieve($subscriptionId);
+
+            // Récupérez la date de fin de l'abonnement
+            $endDate = date('Y-m-d', $subscription->current_period_end);
+            $currentDate = date('Y-m-d');
+            $data = (["subscription_is_not_expired" => $endDate > $currentDate ? true : false, "endDate" => $endDate, "currentDate" => $currentDate, "subscription" => $subscription]);
+
+            return $data;
+        } catch (\Exception $e) {
+           //return $this->json(['error' => $e )], Response::HTTP_BAD_REQUEST);
+        }
+    }
+    
     #[Route('/api/profil', name: 'app_getProfil')]
-    public function getProfil(Request $request): Response
+    public function getProfil(Request $request, StripeController $stripe): Response
     {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
+        $checksubscription = $stripe->_checkSubscription($this->userRepository);
+        $isSubscribed = true;
+        if (!isset($checksubscription)) {
+            $isSubscribed = false;
+        } else {
+            if ($checksubscription["subscription_is_not_expired"] === false || $checksubscription['subscription']['status'] !== "active") {
+                $isSubscribed = false;
+            }else{
+                $isSubscribed = true;
+            }
+        }
+
         $profil = $user->getProfil();
 
         if (!$profil) {
@@ -64,6 +98,8 @@ class ProfilController extends AbstractController
             'notesToDiscover' => $profil->getNotesToDiscover(),
             'childhoodScents' => $profil->getChildhoodScents(),
             'feltOnMyCollection'=>$profil->getFeltOnMyCollection(),
+            'isSubscribed'=> $isSubscribed,
+            'avatar'=>$user->getAvatar(),
             'mySymbolicFragrance' => $fragrance ? [
                 "id" => $fragrance->getId(),
                 "brand" => $fragrance->getBrand(),
@@ -99,6 +135,7 @@ class ProfilController extends AbstractController
 
         return new Response('Profil mis à jour', Response::HTTP_OK);
     }
+    
     #[Route('/api/profil/feltOnMyCollection', name: 'app_get_feltOnMyCollection', methods: 'PUT')]
     #[OA\Parameter(name: 'feltOnMyCollection', in: "query", required: true)]
     public function getFeltOnMyCollection(Request $request): Response
@@ -181,34 +218,13 @@ class ProfilController extends AbstractController
         return new Response('eezez', Response::HTTP_OK);
     }
 
-    private function checkSubscription()
-    {
-        // Configurez la clé secrète de l'API Stripe
-        $userEmail = $this->getUser()->getUserIdentifier();
-        $user = $this->userRepository->findOneUserByEmail($userEmail);
-        $subscriptionId = $user->getIdSubscriptionStripe();
-
-        try {
-            // Récupérez les informations de l'abonnement Stripe
-            $subscription = Subscription::retrieve($subscriptionId);
-
-            // Récupérez la date de fin de l'abonnement
-            $endDate = date('Y-m-d', $subscription->current_period_end);
-            $currentDate = date('Y-m-d');
-            $data = (["subscription_is_not_expired" => $endDate > $currentDate ? true : false, "endDate" => $endDate, "currentDate" => $currentDate, "subscription" => $subscription]);
-
-            return $data;
-        } catch (\Exception $e) {
-            //return $this->json(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
-        }
-    }
-
 
     #[Route('/api/contentExclusive', name: 'app_content_exclusive_data', methods: 'GET')]
     public function getAllContentExclusive(Request $request, StripeController $stripe): Response
     {
 
-        $checksubscription = $this->checkSubscription();
+       $checksubscription = $stripe->_checkSubscription($this->userRepository);
+
 
         if (!isset($checksubscription)) {
             return new Response('Veuillez souscrire à un abonnement pour voir les contenus exclusif', Response::HTTP_NOT_FOUND);
