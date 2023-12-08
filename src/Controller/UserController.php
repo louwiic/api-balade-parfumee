@@ -40,7 +40,7 @@ class UserController extends AbstractController
     // {
     //   $this->emailVerifier = $emailVerifier;
     //}
-    public function __construct(MailChimp $mailchimp, EntityManagerInterface $entityManager, Client $client, Kernel $kernel,AdminController $adminController)
+    public function __construct(MailChimp $mailchimp, EntityManagerInterface $entityManager, Client $client, Kernel $kernel, AdminController $adminController)
     {
         $this->mailchimp = $mailchimp;
         $this->entityManager = $entityManager;
@@ -133,20 +133,33 @@ class UserController extends AbstractController
         return new Response(json_encode($response), 200, ['Content-Type' => 'application/json']);
     }
 
-    private function addSubscriberWithTags($listId, $email, $firstName, $lastName, $tags): bool
+    private function addSubscriberWithTags($listId, $email, $firstName, $lastName, $tags): JsonResponse
     {
-        $subscriber = array(
-            'email_address' => $email,
-            'status'        => 'subscribed',
-            'merge_fields'  => array(
-                'FNAME'     => $firstName,
-                'LNAME'     => $lastName
-            ),
-            'tags'          => $tags
-        );
-        $result = $this->mailchimp->post("lists/$listId/members", $subscriber);
 
-        return $this->mailchimp->success();
+        // Vérifiez si les paramètres nécessaires sont fournis
+        if (empty($listId) || empty($email) || empty($firstName) || empty($lastName) || empty($tags)) {
+            return $this->json(['message' => 'Paramètres manquants'], 400);
+        }
+
+        // Données du membre à ajouter
+        $membre = [
+            'email_address' => $email,
+            'status' => 'subscribed',
+            'merge_fields' => [
+                'FNAME' => $firstName,
+                'LNAME' => $lastName,
+            ],
+            'tags' => $tags,
+        ];
+        // Ajouter le membre à l'audience
+        $response = $this->mailchimp->post("lists/$listId/members", $membre);
+        // Gérer la réponse de Mailchimp
+        if (!$this->mailchimp->success()) {
+            // Échec, gérer les erreurs
+            return $this->json(['message' => $this->mailchimp->getLastError()], 500);
+        }
+        // Succès, membre ajouté avec succès
+        return $this->json(['message' => 'Membre ajouté avec succès']);
     }
 
     private function getUniqueFileName(UploadedFile $file): array
@@ -168,49 +181,55 @@ class UserController extends AbstractController
 
 
 
-    #[Route('/api/update-user', name: 'update_user',methods:['POST'])]
-    public function _updateUser(Request $request, userRepository $userRepository,EntityManagerInterface $entityManager): JsonResponse
+    #[Route('/api/update-user', name: 'update_user', methods: ['POST'])]
+    public function _updateUser(Request $request, userRepository $userRepository, EntityManagerInterface $entityManager): JsonResponse
     {
-        
+
         $userEmail = $this->getUser()->getUserIdentifier();
         $user = $userRepository->findOneUserByEmail($userEmail);
-        
+        $listId = "f9470226d5";
         //$jsonData = json_decode($request->getContent(), true);
         $imageSrc = $request->files->get('image');
         $email = $request->request->get('email');
         $firstName = $request->request->get('firstname');
         $lastName = $request->request->get('lastname');
 
- 
-        if (!$imageSrc instanceof UploadedFile) {
-            return $this->json(['message' => 'image not found']);
-        }
-        
-        $uniqueNameImage = $this->getUniqueFileName($imageSrc);
-        if ($uniqueNameImage['isFailed']) {
-            return new JsonResponse(['error' => 'Impossible de générer un nom de fichier unique après 50 tentatives. Veuillez réessayer.'], 400);
-        }else{
-            if(isset($imageSrc)){
-                $imageSrc->move($this->publicDir, $uniqueNameImage['nameFile']);
-            }
-            
+        if ($imageSrc instanceof UploadedFile) {
+            $uniqueNameImage = $this->getUniqueFileName($imageSrc);
+            $imageSrc->move($this->publicDir, $uniqueNameImage['nameFile']);
             $user->setAvatar($uniqueNameImage['nameFile']);
-            if(isset($firstName)){
-                $user->setFirstName($firstName);
-            }
+        }
 
-            if(isset($lastName)){
-                $user->setLastName($lastName);
-            }
-            if(isset($email)){
-                $user->setEmail($email);
-            }
+        if (isset($firstName)) {
+            $user->setFirstName($firstName);
+        }
 
-            $entityManager->flush();
-         }
+        if (isset($lastName)) {
+            $user->setLastName($lastName);
+        }
+        if (isset($email)) {
+            $user->setEmail($email);
 
- 
-        return new JsonResponse(["messages" => 'success', "data" =>$imageSrc]);
+            // Récupérez l'ID du membre dans l'audience
+
+            $subscriber_hash = $this->mailchimp ->subscriberHash($userEmail);
+            $endpoint = 'lists/'.$listId.'/members/'.$subscriber_hash;
+
+            $this->mailchimp-> delete($endpoint);
+            $newendpoint = 'lists/'.$listId.'/members';
+
+            $result = $this->mailchimp->post($newendpoint, [
+                'email_address' => $email,
+                'status' => 'subscribed'
+            ]);
+
+
+            //return new JsonResponse(["messages" => 'success', 'currentEmail' => $userEmail ,"data" => $result]);            
+        }
+
+        $entityManager->flush();
+
+        return new JsonResponse(["messages" => 'success', "data" => $imageSrc]);
     }
 
     #[Route('/register', name: 'app_register', methods: 'POST')]
@@ -225,7 +244,7 @@ class UserController extends AbstractController
     {
 
         $user = new User();
-        $list_id = "11f0aee7a2";
+        $list_id = "f9470226d5";
         $jsonData = json_decode($request->getContent(), true);
 
         $existingUserByEmail = $entityManager->getRepository(User::class)->findOneBy(['email' => $jsonData['email']]);
@@ -266,12 +285,14 @@ class UserController extends AbstractController
                 $jsonData['password']
             )
         );
+        $tag = ['Abonné COD gratuit'];
+
         $p = new Profil();
         $user->setProfil($p);
         $entityManager->persist($p);
         $entityManager->persist($user);
         $entityManager->flush();
-        $this->addSubscriberWithTags($list_id, $user->getEmail(), $user->getFirstName(), $user->getLastName(), 'Abonné COD gratuit');
+        //$this->addSubscriberWithTags($list_id, $user->getEmail(), $user->getFirstName(), $user->getLastName(),$tag);
         return new Response(json_encode(["ok" => true, "message" => 'Inscription réussie !']),  200);
     }
 

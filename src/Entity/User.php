@@ -95,6 +95,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $avatar = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $mailchimp_tag = null;
+
     public function __construct()
     {
         $this->myFavoriteTypesOfPerfumes = new ArrayCollection();
@@ -551,6 +554,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAvatar(?string $avatar): static
     {
         $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    public function getMailchimpTag(): ?string
+    {
+        return $this->mailchimp_tag;
+    }
+
+    public function setMailchimpTag(?string $mailchimp_tag): static
+    {
+        $this->mailchimp_tag = $mailchimp_tag;
 
         return $this;
     }

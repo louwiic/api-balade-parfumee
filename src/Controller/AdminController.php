@@ -338,7 +338,7 @@ class AdminController extends AbstractController
         $totalPage = ceil(count($userRepository->findAll()) / $usersPerPage);
         $listUsers = [];
         // boucle pour récupérer les utilisateurs
-        foreach ($users as $user) {
+        foreach ($users as $user) {      
             $listUsers [] = [
                 "id" => $user->getId(),
                 "firstName" => $user->getFirstName(),

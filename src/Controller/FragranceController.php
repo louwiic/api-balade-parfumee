@@ -88,10 +88,12 @@ class FragranceController extends AbstractController
     #[Route('api/wishlist/{wishlist}/{fragrance}', name: 'app_put_wishlist',methods: "PUT")]
     #[OA\Parameter(name: 'fragrance', in: "path", required: false)]
     public function PUTWishlist(Wishlist $wishlist, Fragrance $fragrance = null): Response {
+             
+     
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
         if ($wishlist->getUser() !== $user)
             return new JsonResponse("not access", Response::HTTP_FORBIDDEN);
-            
+   
 
         $wishlist->setFragrance($fragrance);
         $wishlist->setUser($user);
@@ -109,6 +111,7 @@ class FragranceController extends AbstractController
         $this->entityManager->flush();
         return new Response(true, Response::HTTP_OK);
     }
+    
     #[Route('api/wishlist', name: 'app_getWishlist')]
     public function getWishlist(): Response {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());

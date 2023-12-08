@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Kernel;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use DrewM\MailChimp\MailChimp;
 use Stripe\Card;
 use Stripe\Customer;
 use Stripe\Event;
@@ -26,16 +27,21 @@ use OpenApi\Attributes as OA;
 use Psr\Log\LoggerInterface;
 use Stripe\PaymentIntent;
 
+use function PHPUnit\Framework\isNull;
+
 class StripeController extends AbstractController
 {
     private string $endpoint_secret;
+    private MailChimp $mailchimp;
     public function __construct(
+        MailChimp $mailchimp,
         Kernel $kernel,
-        EntityManagerInterface $entityManager,
+        EntityManagerInterface $entityManager,        
         public  $monthlySubscription,
         public  $quarterlySubscription,
         public  $freeSubscription,
     ) {
+        $this->mailchimp = $mailchimp;
         $dotenv = new Dotenv();
         $dotenv->load($kernel->getProjectDir() . DIRECTORY_SEPARATOR . '.env');
         $this->entityManager = $entityManager;
@@ -43,7 +49,7 @@ class StripeController extends AbstractController
         Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
     }
 
-    private function _checkSubscription(userRepository $userRepository)
+    public function _checkSubscription(userRepository $userRepository)
     {
         // Configurez la clé secrète de l'API Stripe
         $userEmail = $this->getUser()->getUserIdentifier();
@@ -188,17 +194,61 @@ class StripeController extends AbstractController
         }
     }
 
+    #[Route('/api/changeTagMailChimp', name: 'addMailChimpMember', methods: ['POST'])]
+    #[OA\Parameter(name: 'isFreeAccount', in: "query", required: true)]
+    public function addMailChimpMember(Request $request, userRepository $userRepository, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $user = $userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
+        $listId = "f9470226d5";
+        $jsonData = json_decode($request->getContent(), true);
+
+        $email = $user->getEmail();
+        $firstName =$user->getFirstName();
+        $lastName = $user->getLastName();
+
+        if (!isset($jsonData['isFreeAccount'] )) {
+            return $this->json(['message' => 'isFreeAccount doit être définie à true ou false'], 409);
+        }
+        $tags = $jsonData['isFreeAccount'] ? ['Abonné COD gratuit'] :  ['Abonné COD paying'];
+
+        $member = [
+            'email_address' => $email,
+            'status' => 'subscribed',
+            'merge_fields' => [
+                'FNAME' => $firstName,
+                'LNAME' => $lastName,
+            ],
+            'tags' => $tags,
+        ];
+
+        if(($user->getMailchimpTag() === null)){
+            $this->mailchimp->post("lists/$listId/members", $member);
+            if (!$this->mailchimp->success()) {
+                return $this->json(['message' => $this->mailchimp->getLastError()], 500);
+            }
+            $user->setMailchimpTag(json_encode($tags));
+            $entityManager->flush();
+            return new JsonResponse(['message' => 'Membre ajouté avec succès']);            
+        }else{
+            return new JsonResponse(['message'=>"Ce membre a déjà été rajouté à la liste mailchimp"], 400);
+        }
+     
+    }
+    
+
 
     #[Route('/api/changeSubscription', name: 'changeSubscription', methods: ['PUT'])]
     #[OA\Parameter(name: 'subscriptionSelected', in: "query", required: true)]
     public function changeSubscription(userRepository $userRepository, Request $request, EntityManagerInterface $entityManager)
     {
+        $list_id = "f9470226d5";
         $price_id_mensuel = "price_1NwqwRFnV1sRkwn0cRKvCyLc"; //9.99 eur
         $price_id_trimestriel = "price_1NwqvOFnV1sRkwn0yaK0jhlH"; //26.99 eur 
         $userEmail = $this->getUser()->getUserIdentifier();
         $user = $userRepository->findOneUserByEmail($userEmail);
         $customerStripeId = $user->getIdClientStripe();
         $data = json_decode($request->getContent(), true);
+        $tag = ['Abonné COD paying'];
 
 
         $planSubscriptionSelected = $this->getPlanSubscriptionSelected($data['subscriptionSelected']);
@@ -217,8 +267,8 @@ class StripeController extends AbstractController
             return new Response("Veuillez sélectionner un abonnement existant", 400);
 
 
+         if ($customerStripeId === null || !$isSubscribed) {
 
-        if ($customerStripeId === null || !$isSubscribed) {
             // Créez un client Stripe
             $stripeCustomer = Customer::create([
                 //'source' => 'tok_visa', // Test token representing a Visa card
