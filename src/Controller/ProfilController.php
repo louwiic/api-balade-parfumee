@@ -100,6 +100,7 @@ class ProfilController extends AbstractController
             'feltOnMyCollection'=>$profil->getFeltOnMyCollection(),
             'isSubscribed'=> $isSubscribed,
             'avatar'=>$user->getAvatar(),
+            'iAm'=>$profil->getIam(),
             'mySymbolicFragrance' => $fragrance ? [
                 "id" => $fragrance->getId(),
                 "brand" => $fragrance->getBrand(),

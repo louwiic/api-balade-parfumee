@@ -199,7 +199,7 @@ class StripeController extends AbstractController
     public function addMailChimpMember(Request $request, userRepository $userRepository, EntityManagerInterface $entityManager): JsonResponse
     {
         $user = $userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
-        $listId = "f9470226d5";
+        $listId = "b67100978a";
         $jsonData = json_decode($request->getContent(), true);
 
         $email = $user->getEmail();

@@ -29,6 +29,9 @@ class Profil
     #[ORM\Column(nullable: true)]
     private ?bool $feltOnMyCollection = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $iam = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -95,6 +98,18 @@ class Profil
     public function setFeltOnMyCollection(?bool $feltOnMyCollection): static
     {
         $this->feltOnMyCollection = $feltOnMyCollection;
+
+        return $this;
+    }
+
+    public function getIam(): ?string
+    {
+        return $this->iam;
+    }
+
+    public function setIam(?string $iam): static
+    {
+        $this->iam = $iam;
 
         return $this;
     }
