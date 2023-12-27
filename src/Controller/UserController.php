@@ -58,6 +58,8 @@ class UserController extends AbstractController
         // Récupérer le numéro de téléphone depuis les données JSON
         $phoneNumber = $jsonData['tel'];
 
+        // Rajouter a vérification du numéro de tel avant envoi de l'SMS
+
         // Générer un code de validation de six chiffres
         $validationCode = mt_rand(100000, 999999);
 
@@ -187,7 +189,7 @@ class UserController extends AbstractController
 
         $userEmail = $this->getUser()->getUserIdentifier();
         $user = $userRepository->findOneUserByEmail($userEmail);
-        $listId = "f9470226d5";
+        $listId = "b67100978a";
         //$jsonData = json_decode($request->getContent(), true);
         $imageSrc = $request->files->get('image');
         $email = $request->request->get('email');
@@ -288,12 +290,30 @@ class UserController extends AbstractController
         $tag = ['Abonné COD gratuit'];
 
         $p = new Profil();
+        if (isset($jsonData["iAm"])) {
+            $p->setIam($jsonData["iAm"]);
+        }
+
         $user->setProfil($p);
         $entityManager->persist($p);
         $entityManager->persist($user);
         $entityManager->flush();
         //$this->addSubscriberWithTags($list_id, $user->getEmail(), $user->getFirstName(), $user->getLastName(),$tag);
         return new Response(json_encode(["ok" => true, "message" => 'Inscription réussie !']),  200);
+    }
+
+    #[Route('/checkPhone', name: 'app_check_phone_exist', methods: 'POST')]
+    #[OA\Parameter(name: 'phone', in: "phone", required: true)]
+    public function checkPhoneExist(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    {
+        $jsonData = json_decode($request->getContent(), true);
+        $existingUserByPhone = $entityManager->getRepository(User::class)->findOneBy(['phone' => $jsonData['phone']]);
+        if ($existingUserByPhone) {
+            return new Response(json_encode(["success" => false, "message" =>  'Le numéro de téléphone existe déjà.']), 200);
+        }
+        
+        return new Response(json_encode(["success" => true, "message" => 'email do not exist']),  200);
+
     }
 
     #[Route('/api/iSConnected', name: 'app_iSConnected')]
