@@ -409,6 +409,9 @@
       <tag name="controller.service_arguments"/>
       <tag name="routing.route_loader"/>
     </service>
+    <service id="App\EventListener\JwtCreatedListener" class="App\EventListener\JwtCreatedListener" autowire="true" autoconfigure="true">
+      <tag name="kernel.event_listener" event="lexik_jwt_authentication.on_jwt_created" method="onJwtCreated"/>
+    </service>
     <service id="App\Security\AccessDecisionManager" class="App\Security\AccessDecisionManager" autowire="true" autoconfigure="true">
       <argument type="service" id="debug.security.access.decision_manager"/>
       <argument type="service" id="kernel"/>
@@ -426,6 +429,7 @@
       <argument type="service" id="doctrine.orm.default_entity_manager"/>
       <argument type="service" id="kernel"/>
       <argument type="service" id="doctrine.orm.default_entity_manager"/>
+      <argument type="service" id="App\Repository\UserRepository"/>
       <argument>%env(ID_STRIPE_SUBSCRIPTION_MONTHLY)%</argument>
       <argument>%env(ID_STRIPE_SUBSCRIPTION_QUARTERLY)%</argument>
       <argument>%env(ID_STRIPE_SUBSCRIPTION_FREE)%</argument>
@@ -508,6 +512,7 @@
     <service id="App\Controller\StripeController" class="App\Controller\StripeController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
+      <argument type="service" id="mailchimp.api"/>
       <argument type="service" id="kernel"/>
       <argument type="service" id="doctrine.orm.default_entity_manager"/>
       <argument>%env(ID_STRIPE_SUBSCRIPTION_MONTHLY)%</argument>
@@ -523,9 +528,15 @@
       <argument type="service" id="mailchimp.api"/>
       <argument type="service" id="doctrine.orm.default_entity_manager"/>
       <argument type="service" id="Twilio\Rest\Client"/>
+      <argument type="service" id="kernel"/>
+      <argument type="service" id="App\Controller\AdminController"/>
       <call method="setContainer">
         <argument type="service" id=".service_locator..UjS3SV.App\Controller\UserController"/>
       </call>
+    </service>
+    <service id="App\EventSubscriber\JWTCreatedSubscriber" class="App\EventSubscriber\JWTCreatedSubscriber" autowire="true" autoconfigure="true">
+      <tag name="container.error" message="The autoloader expected class &quot;App\EventSubscriber\JWTCreatedSubscriber&quot; to be defined in file &quot;/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/composer/../../src/EventSubscriber/JWTCreatedSubscriber.php&quot;. The file was found but the class was not in it, the class name or namespace probably has a typo."/>
+      <tag name="container.error" message="Invalid service &quot;App\EventSubscriber\JWTCreatedSubscriber&quot;: the autoloader expected class &quot;App\EventSubscriber\JWTCreatedSubscriber&quot; to be defined in file &quot;/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/composer/../../src/EventSubscriber/JWTCreatedSubscriber.php&quot;. The file was found but the class was not in it, the class name or namespace probably has a typo."/>
     </service>
     <service id="App\Form\RegistrationFormType" class="App\Form\RegistrationFormType" autowire="true" autoconfigure="true">
       <tag name="form.type"/>
@@ -627,7 +638,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
       <tag name="controller.argument_value_resolver" priority="-50"/>
-      <argument type="service" id=".service_locator.aMiXAap"/>
+      <argument type="service" id=".service_locator.Aa4pnNd"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
       <tag name="controller.argument_value_resolver" priority="-100"/>
@@ -2621,6 +2632,14 @@
       <argument type="service" id="monolog.logger.event" on-invalid="null"/>
       <argument type="service" id="request_stack" on-invalid="null"/>
       <call method="addListener">
+        <argument>lexik_jwt_authentication.on_jwt_created</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="App\EventListener\JwtCreatedListener"/>
+          <argument>onJwtCreated</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
         <argument>kernel.controller</argument>
         <argument type="collection">
           <argument type="service_closure" id="data_collector.router"/>
@@ -3234,7 +3253,7 @@
     </service>
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
-      <argument type="service" id=".service_locator.aMiXAap"/>
+      <argument type="service" id=".service_locator.Aa4pnNd"/>
     </service>
     <service id="debug.log_processor" class="Symfony\Bridge\Monolog\Processor\DebugProcessor">
       <argument type="service" id="request_stack"/>
@@ -7573,10 +7592,22 @@
         <argument key="userRepository" type="service_closure" id="App\Repository\UserRepository"/>
       </argument>
     </service>
+    <service id=".service_locator.sYJTJCw" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="categoryNotificationRepository" type="service_closure" id="App\Repository\CategoryNotificationRepository"/>
+      </argument>
+    </service>
     <service id=".service_locator.kPUOGb8" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="userRepository" type="service_closure" id="App\Repository\UserRepository"/>
+      </argument>
+    </service>
+    <service id=".service_locator.wvO140S" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="stripe" type="service_closure" id="App\Controller\StripeController"/>
       </argument>
     </service>
     <service id=".service_locator..aXEy8V" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -7617,12 +7648,6 @@
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="mailchimp" type="service_closure" id="mailchimp.api"/>
-      </argument>
-    </service>
-    <service id=".service_locator.wvO140S" class="Symfony\Component\DependencyInjection\ServiceLocator">
-      <tag name="container.service_locator"/>
-      <argument type="collection">
-        <argument key="stripe" type="service_closure" id="App\Controller\StripeController"/>
       </argument>
     </service>
     <service id=".service_locator.J38_oCQ" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -7702,7 +7727,7 @@
         <argument key="userRepository" type="service_closure" id="App\Repository\UserRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.aMiXAap" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.Aa4pnNd" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\AdminController::addContentExclusive" type="service_closure" id=".service_locator.E9w1.nG"/>
@@ -7711,9 +7736,12 @@
         <argument key="App\Controller\AdminController::getAllNotification" type="service_closure" id=".service_locator.eD04aH."/>
         <argument key="App\Controller\AdminController::getAllTag" type="service_closure" id=".service_locator.rtvJSVs"/>
         <argument key="App\Controller\AdminController::getAllUser" type="service_closure" id=".service_locator.kPUOGb8"/>
+        <argument key="App\Controller\AdminController::getAllUserNotification" type="service_closure" id=".service_locator.eD04aH."/>
         <argument key="App\Controller\AdminController::getUniqueFileName" type="service_closure" id=".service_locator.BjMlj7V"/>
         <argument key="App\Controller\AdminController::removeContentExclusive" type="service_closure" id=".service_locator.GZAaMB6"/>
-        <argument key="App\Controller\AdminController::updateNotification" type="service_closure" id=".service_locator.qza7_MB"/>
+        <argument key="App\Controller\AdminController::updateContentExclusive" type="service_closure" id=".service_locator.E9w1.nG"/>
+        <argument key="App\Controller\AdminController::updateNotification" type="service_closure" id=".service_locator.sYJTJCw"/>
+        <argument key="App\Controller\CheckListController::createCheckList" type="service_closure" id=".service_locator.wvO140S"/>
         <argument key="App\Controller\CheckListController::deleteCheckList" type="service_closure" id=".service_locator.3H4Toqp"/>
         <argument key="App\Controller\CheckListController::putCheckList" type="service_closure" id=".service_locator..aXEy8V"/>
         <argument key="App\Controller\FragranceController::DELETEWishlist" type="service_closure" id=".service_locator.OQsoty."/>
@@ -7727,6 +7755,7 @@
         <argument key="App\Controller\PerfumeTrialSheetController::putPerfumeTrialSheet" type="service_closure" id=".service_locator.J38_oCQ"/>
         <argument key="App\Controller\ProfilController::editMyFavoriteTypesOfPerfumes" type="service_closure" id=".service_locator.Yv6xARz"/>
         <argument key="App\Controller\ProfilController::getAllContentExclusive" type="service_closure" id=".service_locator.wvO140S"/>
+        <argument key="App\Controller\ProfilController::getProfil" type="service_closure" id=".service_locator.wvO140S"/>
         <argument key="App\Controller\ProfilController::removeMyFavoriteTypesOfPerfumes" type="service_closure" id=".service_locator.Yv6xARz"/>
         <argument key="App\Controller\ReviewPerfumeNoteController::addFragrancesReviewPerfumeNote" type="service_closure" id=".service_locator.6MtxQHl"/>
         <argument key="App\Controller\ReviewPerfumeNoteController::addPerfumeInNote" type="service_closure" id=".service_locator.unpIcZj"/>
@@ -7736,6 +7765,8 @@
         <argument key="App\Controller\ReviewPerfumeNoteController::getReviewPerfumeNote" type="service_closure" id=".service_locator.d1gTJrc"/>
         <argument key="App\Controller\ReviewPerfumeNoteController::putReviewPerfumeNote" type="service_closure" id=".service_locator.ltbHfWK"/>
         <argument key="App\Controller\ReviewPerfumeNoteController::removeFragranceReviewPerfumeNote" type="service_closure" id=".service_locator.6MtxQHl"/>
+        <argument key="App\Controller\StripeController::_checkSubscription" type="service_closure" id=".service_locator.kPUOGb8"/>
+        <argument key="App\Controller\StripeController::addMailChimpMember" type="service_closure" id=".service_locator.NjUBG3v"/>
         <argument key="App\Controller\StripeController::cancelSubscription" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\StripeController::changeSubscription" type="service_closure" id=".service_locator.NjUBG3v"/>
         <argument key="App\Controller\StripeController::checkSubscription" type="service_closure" id=".service_locator.kPUOGb8"/>
@@ -7744,6 +7775,8 @@
         <argument key="App\Controller\StripeController::getLastFourDigits" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\StripeController::updateCard" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\StripeController::updateCreditCard" type="service_closure" id=".service_locator.kPUOGb8"/>
+        <argument key="App\Controller\UserController::_updateUser" type="service_closure" id=".service_locator.NjUBG3v"/>
+        <argument key="App\Controller\UserController::checkPhoneExist" type="service_closure" id=".service_locator.e_4zbH4"/>
         <argument key="App\Controller\UserController::register" type="service_closure" id=".service_locator.e_4zbH4"/>
         <argument key="App\Controller\UserController::verifyCode" type="service_closure" id=".service_locator.xiCCC7r"/>
         <argument key="App\Controller\UserController::verifyUserEmail" type="service_closure" id=".service_locator.920S.Ym"/>
@@ -7757,9 +7790,12 @@
         <argument key="App\Controller\AdminController:getAllNotification" type="service_closure" id=".service_locator.eD04aH."/>
         <argument key="App\Controller\AdminController:getAllTag" type="service_closure" id=".service_locator.rtvJSVs"/>
         <argument key="App\Controller\AdminController:getAllUser" type="service_closure" id=".service_locator.kPUOGb8"/>
+        <argument key="App\Controller\AdminController:getAllUserNotification" type="service_closure" id=".service_locator.eD04aH."/>
         <argument key="App\Controller\AdminController:getUniqueFileName" type="service_closure" id=".service_locator.BjMlj7V"/>
         <argument key="App\Controller\AdminController:removeContentExclusive" type="service_closure" id=".service_locator.GZAaMB6"/>
-        <argument key="App\Controller\AdminController:updateNotification" type="service_closure" id=".service_locator.qza7_MB"/>
+        <argument key="App\Controller\AdminController:updateContentExclusive" type="service_closure" id=".service_locator.E9w1.nG"/>
+        <argument key="App\Controller\AdminController:updateNotification" type="service_closure" id=".service_locator.sYJTJCw"/>
+        <argument key="App\Controller\CheckListController:createCheckList" type="service_closure" id=".service_locator.wvO140S"/>
         <argument key="App\Controller\CheckListController:deleteCheckList" type="service_closure" id=".service_locator.3H4Toqp"/>
         <argument key="App\Controller\CheckListController:putCheckList" type="service_closure" id=".service_locator..aXEy8V"/>
         <argument key="App\Controller\FragranceController:DELETEWishlist" type="service_closure" id=".service_locator.OQsoty."/>
@@ -7773,6 +7809,7 @@
         <argument key="App\Controller\PerfumeTrialSheetController:putPerfumeTrialSheet" type="service_closure" id=".service_locator.J38_oCQ"/>
         <argument key="App\Controller\ProfilController:editMyFavoriteTypesOfPerfumes" type="service_closure" id=".service_locator.Yv6xARz"/>
         <argument key="App\Controller\ProfilController:getAllContentExclusive" type="service_closure" id=".service_locator.wvO140S"/>
+        <argument key="App\Controller\ProfilController:getProfil" type="service_closure" id=".service_locator.wvO140S"/>
         <argument key="App\Controller\ProfilController:removeMyFavoriteTypesOfPerfumes" type="service_closure" id=".service_locator.Yv6xARz"/>
         <argument key="App\Controller\ReviewPerfumeNoteController:addFragrancesReviewPerfumeNote" type="service_closure" id=".service_locator.6MtxQHl"/>
         <argument key="App\Controller\ReviewPerfumeNoteController:addPerfumeInNote" type="service_closure" id=".service_locator.unpIcZj"/>
@@ -7782,6 +7819,8 @@
         <argument key="App\Controller\ReviewPerfumeNoteController:getReviewPerfumeNote" type="service_closure" id=".service_locator.d1gTJrc"/>
         <argument key="App\Controller\ReviewPerfumeNoteController:putReviewPerfumeNote" type="service_closure" id=".service_locator.ltbHfWK"/>
         <argument key="App\Controller\ReviewPerfumeNoteController:removeFragranceReviewPerfumeNote" type="service_closure" id=".service_locator.6MtxQHl"/>
+        <argument key="App\Controller\StripeController:_checkSubscription" type="service_closure" id=".service_locator.kPUOGb8"/>
+        <argument key="App\Controller\StripeController:addMailChimpMember" type="service_closure" id=".service_locator.NjUBG3v"/>
         <argument key="App\Controller\StripeController:cancelSubscription" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\StripeController:changeSubscription" type="service_closure" id=".service_locator.NjUBG3v"/>
         <argument key="App\Controller\StripeController:checkSubscription" type="service_closure" id=".service_locator.kPUOGb8"/>
@@ -7790,6 +7829,8 @@
         <argument key="App\Controller\StripeController:getLastFourDigits" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\StripeController:updateCard" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\StripeController:updateCreditCard" type="service_closure" id=".service_locator.kPUOGb8"/>
+        <argument key="App\Controller\UserController:_updateUser" type="service_closure" id=".service_locator.NjUBG3v"/>
+        <argument key="App\Controller\UserController:checkPhoneExist" type="service_closure" id=".service_locator.e_4zbH4"/>
         <argument key="App\Controller\UserController:register" type="service_closure" id=".service_locator.e_4zbH4"/>
         <argument key="App\Controller\UserController:verifyCode" type="service_closure" id=".service_locator.xiCCC7r"/>
         <argument key="App\Controller\UserController:verifyUserEmail" type="service_closure" id=".service_locator.920S.Ym"/>
@@ -9762,7 +9803,7 @@
     <service id="lexik_jwt_authentication.key_loader" alias="lexik_jwt_authentication.key_loader.raw" public="true"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.7nzbL4K" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.aMiXAap"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.Aa4pnNd"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
@@ -9792,7 +9833,7 @@
     <service id=".service_locator.r2YMPOV" alias=".service_locator.unpIcZj"/>
     <service id=".service_locator.8IbU9zc" alias=".service_locator.NjUBG3v"/>
     <service id=".service_locator.V6D1oJY" alias=".service_locator.e_4zbH4"/>
-    <service id=".service_locator.l0XT5t8" alias=".service_locator.aMiXAap"/>
+    <service id=".service_locator.tRJReZQ" alias=".service_locator.Aa4pnNd"/>
     <service id=".service_locator.9XMoc9I" alias=".service_locator.kzegaci"/>
     <service id=".service_locator.yj07qm_" alias=".service_locator.ZyXYEQR"/>
     <service id=".service_locator.jij13qc" alias=".service_locator.PBToVFE"/>
@@ -9839,14 +9880,15 @@
     <service id=".service_locator.Ti5lv3v" alias=".service_locator.eD04aH."/>
     <service id=".service_locator.9FHrRmZ" alias=".service_locator.qza7_MB"/>
     <service id=".service_locator.vS7wZNv" alias=".service_locator.4nyxpRk"/>
+    <service id=".service_locator.JcuoIxr" alias=".service_locator.sYJTJCw"/>
     <service id=".service_locator.025Wi8b" alias=".service_locator.kPUOGb8"/>
+    <service id=".service_locator.YmRDAmZ" alias=".service_locator.wvO140S"/>
     <service id=".service_locator.aLywWTi" alias=".service_locator..aXEy8V"/>
     <service id=".service_locator.u2EKVB9" alias=".service_locator.3H4Toqp"/>
     <service id=".service_locator.bCgtj1x" alias=".service_locator.ZsQAMRz"/>
     <service id=".service_locator.Wxb6wKI" alias=".service_locator.OQsoty."/>
     <service id=".service_locator.4_fkKc3" alias=".service_locator.FZL4CLc"/>
     <service id=".service_locator.r4i1mlg" alias=".service_locator.lRCmSED"/>
-    <service id=".service_locator.YmRDAmZ" alias=".service_locator.wvO140S"/>
     <service id=".service_locator.AX7A1jQ" alias=".service_locator.J38_oCQ"/>
     <service id=".service_locator.K4D_hQe" alias=".service_locator.aBN7K1Y"/>
     <service id=".service_locator.5cJpTNN" alias=".service_locator.Hrw847H"/>
