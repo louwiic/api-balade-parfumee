@@ -36,7 +36,7 @@ class StripeController extends AbstractController
     public function __construct(
         MailChimp $mailchimp,
         Kernel $kernel,
-        EntityManagerInterface $entityManager,        
+        EntityManagerInterface $entityManager,
         public  $monthlySubscription,
         public  $quarterlySubscription,
         public  $freeSubscription,
@@ -104,6 +104,7 @@ class StripeController extends AbstractController
 
         $subscriptions = Subscription::all(['customer' => $customerId]);
 
+
         // Vérifier s'il y a un abonnement lié au client
         if ($subscriptions->total_count === 0) {
             return new JsonResponse("Aucun abonnement trouvé pour ce client.", 400);
@@ -111,20 +112,23 @@ class StripeController extends AbstractController
 
         $subscriptionId = $subscriptions->data[0]->id;
 
-        // Récupérer les détails de l'abonnement
         $subscription = Subscription::retrieve($subscriptionId);
+
+        if ($subscription->status === 'incomplete') {
+            return new JsonResponse("Aucun abonnement trouvé pour ce client.", 400);
+        }
 
         return new JsonResponse($subscription);
     }
-    
+
     #[Route('/api/cancelSubscription', name: 'cancelSubscription', methods: ['PUT'])]
     public function cancelSubscription(userRepository $userRepository)
     {
         $user = $userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
         $subscriptions = Subscription::all(['customer' => $user->getIdClientStripe()]);
 
-         // Vérifier s'il y a un abonnement lié au client
-         if ($subscriptions->total_count === 0) {
+        // Vérifier s'il y a un abonnement lié au client
+        if ($subscriptions->total_count === 0) {
             return new Response("Aucun abonnement trouvé pour ce client.", 400);
         }
         $subscriptionId = $subscriptions->data[0]->id;
@@ -203,10 +207,10 @@ class StripeController extends AbstractController
         $jsonData = json_decode($request->getContent(), true);
 
         $email = $user->getEmail();
-        $firstName =$user->getFirstName();
+        $firstName = $user->getFirstName();
         $lastName = $user->getLastName();
 
-        if (!isset($jsonData['isFreeAccount'] )) {
+        if (!isset($jsonData['isFreeAccount'])) {
             return $this->json(['message' => 'isFreeAccount doit être définie à true ou false'], 409);
         }
         $tags = $jsonData['isFreeAccount'] ? ['Abonné COD gratuit'] :  ['Abonné COD paying'];
@@ -221,20 +225,19 @@ class StripeController extends AbstractController
             'tags' => $tags,
         ];
 
-        if(($user->getMailchimpTag() === null)){
+        if (($user->getMailchimpTag() === null)) {
             $this->mailchimp->post("lists/$listId/members", $member);
             if (!$this->mailchimp->success()) {
                 return $this->json(['message' => $this->mailchimp->getLastError()], 500);
             }
             $user->setMailchimpTag(json_encode($tags));
             $entityManager->flush();
-            return new JsonResponse(['message' => 'Membre ajouté avec succès']);            
-        }else{
-            return new JsonResponse(['message'=>"Ce membre a déjà été rajouté à la liste mailchimp"], 400);
+            return new JsonResponse(['message' => 'Membre ajouté avec succès']);
+        } else {
+            return new JsonResponse(['message' => "Ce membre a déjà été rajouté à la liste mailchimp"], 400);
         }
-     
     }
-    
+
 
 
     #[Route('/api/changeSubscription', name: 'changeSubscription', methods: ['PUT'])]
@@ -255,10 +258,10 @@ class StripeController extends AbstractController
         $subscribed = $this->_checkSubscription(userRepository: $userRepository);
         $isSubscribed = true;
 
-        if(!isset($subscribed)){
+        if (!isset($subscribed)) {
             $isSubscribed = false;
-        }else{
-            if($subscribed['subscription']['status'] === "canceled"){
+        } else {
+            if ($subscribed['subscription']['status'] === "canceled") {
                 $isSubscribed = false;
             }
         }
@@ -267,7 +270,7 @@ class StripeController extends AbstractController
             return new Response("Veuillez sélectionner un abonnement existant", 400);
 
 
-         if ($customerStripeId === null || !$isSubscribed) {
+        if ($customerStripeId === null || !$isSubscribed) {
 
             // Créez un client Stripe
             $stripeCustomer = Customer::create([
@@ -392,7 +395,7 @@ class StripeController extends AbstractController
             $endDate = date('Y-m-d', $subscription->current_period_end);
             $currentDate = date('Y-m-d');
 
-            
+
 
             return new JsonResponse(["subscription_is_not_expired" => $endDate > $currentDate ? true : false, "endDate" => $endDate, "currentDate" => $currentDate, "subscription" => $subscription], 200);
         } catch (\Exception $e) {

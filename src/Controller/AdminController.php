@@ -360,9 +360,19 @@ class AdminController extends AbstractController
     public function getAllUserNotification(NotificationRepository $notificationRepository): JsonResponse
     {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
+        $subscriptionStripeId = $user->getIdSubscriptionStripe();
+        if ($subscriptionStripeId === null) {
+
+            $notifications = $notificationRepository->findBy(['categoryNotification' => [1, 4]], ['createAt' => 'DESC']);
+            $normalizedNotifications = $this->normalizer->normalize($notifications, null, ['ignored_attributes' => ['user'], 'groups' => 'notification:read']);
+
+            return new JsonResponse(['notifications' => $normalizedNotifications]);
+        }
+
         $subscription = Subscription::retrieve($user->getIdSubscriptionStripe());
         $currentSub = $subscription->items->data[0]->plan->id;
         $categoryFilter = null;
+
 
         switch ($currentSub) {
             case 'price_1NwqwRFnV1sRkwn0cRKvCyLc':
