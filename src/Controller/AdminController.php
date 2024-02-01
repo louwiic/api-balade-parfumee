@@ -6,11 +6,14 @@ use App\Entity\CategoryNotification;
 use App\Entity\ContentExclusive;
 use App\Entity\ContentTag;
 use App\Entity\Notification;
+use App\Entity\NotificationsUsers;
+use App\Entity\User;
 use App\Kernel;
 use App\Repository\CategoryNotificationRepository;
 use App\Repository\ContentExclusiveRepository;
 use App\Repository\ContentTagRepository;
 use App\Repository\NotificationRepository;
+use App\Repository\NotificationsUsersRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Stripe;
@@ -25,6 +28,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 use Symfony\Component\Validator\Constraints as Assert;
@@ -150,7 +154,7 @@ class AdminController extends AbstractController
                 'message' => 'Veuillez télécharger un fichier.'
             ]),
             new Assert\File([
-                'maxSize' => '500M',
+                'maxSize' => '50M',
                 'mimeTypes' => ['image/png', 'image/jpeg'],
                 'mimeTypesMessage' => 'Veuillez télécharger un fichier PNG ou JPEG valide.'
             ])
@@ -343,6 +347,31 @@ class AdminController extends AbstractController
         return new JsonResponse(['contentExclusives' => $contentExclusives, 'totalPage' => $totalPage]);
     }
 
+    #[Route('api/admin/deleteContentExclusive/{id}', name: 'deleteContentExclusive', methods: "DELETE")]
+    public function deleteContentExclusive(int $id)
+    {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return new JsonResponse([
+                'message' => 'Vous n\'avez pas les droits pour effectuer cette action.'
+            ], 403);
+        }
+
+        $contentExclusive = $this->contentExclusiveRepository->find($id);
+
+        if (!$contentExclusive) {
+            return new JsonResponse([
+                'message' => 'Contenu  non trouvé.'
+            ], 404);
+        }
+
+        $this->em->remove($contentExclusive);
+        $this->em->flush();
+
+        return new JsonResponse([
+            'message' => 'Contenu  supprimé avec succès.'
+        ], 200);
+    }
+
     #[Route('api/admin/getAllNotification', name: 'app_getAllNotification', methods: "GET")]
     public function getAllNotification(NotificationRepository $notificationRepository): JsonResponse
     {
@@ -449,6 +478,127 @@ class AdminController extends AbstractController
         $this->em->persist($notification);
         $this->em->flush();
         return new JsonResponse(['message' => 'Notification ajoutée avec succès']);
+    }
+
+    #[Route('api/read/notification', name: 'app_readNotification', methods: "PUT")]
+    public function readNotification(Request $request, SerializerInterface $serializer,  NotificationsUsersRepository $notificationsUsersRepository)
+    {
+        $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
+        $jsonData = json_decode($request->getContent(), true);
+        $notificationId = $jsonData['id'];
+        $userId = $user->getId();
+
+        $notification = $this->em->getRepository(Notification::class)->find($notificationId);
+
+        // Vérifier si la notification n'est pas déjà marquée comme lue
+        //$existingNotificationUser = $this->em->getRepository(NotificationsUsers::class)->findAll();
+
+        $existingNotificationUser = $notificationsUsersRepository->createQueryBuilder('nu')
+            ->where(':notificationId MEMBER OF nu.notification_id')
+            ->setParameter('notificationId', $notificationId)
+            ->getQuery()
+            ->getResult();
+
+        $alreadyRead = count($existingNotificationUser) > 0;
+
+        if ($alreadyRead) {
+            return new JsonResponse([
+                "success" => false,
+                'message' => 'You already read notification'
+            ], 200);
+        }
+
+        $notificationUser = new NotificationsUsers();
+        $notificationUser->addUserId($user);
+        $notificationUser->addNotificationId($notification);
+        $notificationUser->setIsRead(true);
+
+        $this->em->persist($notificationUser);
+        $this->em->flush();
+
+        return new JsonResponse([
+            'message' => 'notification is read',
+            "success" => true,
+            'user' => $user->getFirstName(),
+        ], 200);
+
+
+        /*  
+        $notificationUser = new NotificationsUsers();
+        $notificationUser->addUserId($user);
+        $notificationUser->addNotificationId($notification);
+        $notificationUser->setIsRead(true);
+
+        $this->em->persist($notificationUser);
+        $this->em->flush(); */
+
+        /* $notificationIsRead = $notificationsUsersRepository->findAll();
+        $listNotifications = [];
+        foreach ($notificationIsRead as $notificationUser) {
+            $notificationIds = [];
+            foreach ($notificationUser->getNotificationId() as $notification) {
+                if ($notification->getId() == $notificationId) {
+                    $notificationIds[] = $notification->getId();
+                }
+            }
+
+            if (!empty($notificationIds)) {
+                $listNotifications[] = [
+                    "id" => $notificationUser->getId(),
+                    "isRead" => $notificationUser->isIsRead(),
+                    'notification_id' => $notificationIds
+
+                ];
+            }
+        } */
+    }
+
+    #[Route('api/isRead/notification', name: 'app_isReadNotification')]
+    public function getNotificationIsRead(Request $request,  NotificationsUsersRepository $notificationsUsersRepository)
+    {
+        $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
+        //$jsonData = json_decode($request->getContent(), true);
+        //$userId = $user->getId();
+        $userId = $user->getId();
+        $listNotifications = $notificationsUsersRepository->findIsReadNotificationsForUser($userId);
+
+        return new JsonResponse([
+            "success" => true,
+            'listNotifications' => $listNotifications,
+        ], 200);
+
+
+
+        /* $notificationIsRead = $notificationsUsersRepository->findAll();
+        $listNotifications = [];
+        foreach ($notificationIsRead as $notificationUser) {
+            $userIds = [];
+            $notificationIds=[];
+            if ($notificationUser->isIsRead() == true) {
+                foreach ($notificationUser->getUserId() as $user) {
+                    if ($user->getId() == $userId) {
+                        $userIds[] = $user->getFirstName();
+                    }
+                }
+                foreach ($notificationUser->getNotificationid() as $notif) {                     
+                        $notificationIds[] = $user->getFirstName();                    
+                }
+            }
+
+            if (!empty($userIds)) {
+                $listNotifications[] = [
+                    "id" => $notificationUser->getId(),
+                    "isRead" => $notificationUser->isIsRead(),
+                    'user_id' => $userIds
+
+                ];
+            }
+        }
+
+        return new JsonResponse([
+            "success" => true,
+            'listNotifications' => $listNotifications
+        ], 200); */
     }
 
     #[Route('api/admin/update/notification', name: 'app_updateNotification', methods: "POST")]

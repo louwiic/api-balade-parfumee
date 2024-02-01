@@ -214,11 +214,11 @@ class UserController extends AbstractController
 
             // Récupérez l'ID du membre dans l'audience
 
-            $subscriber_hash = $this->mailchimp ->subscriberHash($userEmail);
-            $endpoint = 'lists/'.$listId.'/members/'.$subscriber_hash;
+            $subscriber_hash = $this->mailchimp->subscriberHash($userEmail);
+            $endpoint = 'lists/' . $listId . '/members/' . $subscriber_hash;
 
-            $this->mailchimp-> delete($endpoint);
-            $newendpoint = 'lists/'.$listId.'/members';
+            $this->mailchimp->delete($endpoint);
+            $newendpoint = 'lists/' . $listId . '/members';
 
             $result = $this->mailchimp->post($newendpoint, [
                 'email_address' => $email,
@@ -311,9 +311,8 @@ class UserController extends AbstractController
         if ($existingUserByPhone) {
             return new Response(json_encode(["success" => false, "message" =>  'Le numéro de téléphone existe déjà.']), 200);
         }
-        
-        return new Response(json_encode(["success" => true, "message" => 'email do not exist']),  200);
 
+        return new Response(json_encode(["success" => true, "message" => 'email do not exist']),  200);
     }
 
     #[Route('/api/iSConnected', name: 'app_iSConnected')]
@@ -321,6 +320,8 @@ class UserController extends AbstractController
     {
         return new JsonResponse(["succes" => true]);
     }
+
+
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository): Response
     {
