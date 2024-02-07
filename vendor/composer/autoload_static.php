@@ -166,6 +166,7 @@ class ComposerStaticInit3e1c27aa15a380671ab8d00b51a9128e
             'Doctrine\\Common\\' => 16,
             'Doctrine\\Bundle\\MigrationsBundle\\' => 33,
             'Doctrine\\Bundle\\DoctrineBundle\\' => 31,
+            'DoctrineMigrations\\' => 19,
             'DeepCopy\\' => 9,
         ),
         'A' => 
@@ -618,6 +619,10 @@ class ComposerStaticInit3e1c27aa15a380671ab8d00b51a9128e
         'Doctrine\\Bundle\\DoctrineBundle\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/doctrine-bundle',
+        ),
+        'DoctrineMigrations\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/migrations',
         ),
         'DeepCopy\\' => 
         array (

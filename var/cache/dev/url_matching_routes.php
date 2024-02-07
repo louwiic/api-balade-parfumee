@@ -18,8 +18,13 @@ return [
         '/api/admin/addContentExclusive' => [[['_route' => 'app_addContentExclusive', '_controller' => 'App\\Controller\\AdminController::addContentExclusive'], null, ['POST' => 0], null, false, false, null]],
         '/api/admin/getAllContentExclusive' => [[['_route' => 'getAllContentExclusive', '_controller' => 'App\\Controller\\AdminController::getAllContentExclusive'], null, ['GET' => 0], null, false, false, null]],
         '/api/admin/getAllNotification' => [[['_route' => 'app_getAllNotification', '_controller' => 'App\\Controller\\AdminController::getAllNotification'], null, ['GET' => 0], null, false, false, null]],
+        '/api/users/getAllNotification' => [[['_route' => 'app_getUsersAllNotification', '_controller' => 'App\\Controller\\AdminController::getAllUserNotification'], null, ['GET' => 0], null, false, false, null]],
         '/api/admin/addNotification' => [[['_route' => 'app_addNotification', '_controller' => 'App\\Controller\\AdminController::addNotification'], null, ['POST' => 0], null, false, false, null]],
+        '/api/read/notification' => [[['_route' => 'app_readNotification', '_controller' => 'App\\Controller\\AdminController::readNotification'], null, ['PUT' => 0], null, false, false, null]],
+        '/api/isRead/notification' => [[['_route' => 'app_isReadNotification', '_controller' => 'App\\Controller\\AdminController::getNotificationIsRead'], null, null, null, false, false, null]],
+        '/api/admin/update/notification' => [[['_route' => 'app_updateNotification', '_controller' => 'App\\Controller\\AdminController::updateNotification'], null, ['POST' => 0], null, false, false, null]],
         '/api/admin/getTotalSubscriptions' => [[['_route' => 'get_all_total_subscriptions', '_controller' => 'App\\Controller\\AdminController::getAllSubscriptions'], null, ['GET' => 0], null, false, false, null]],
+        '/api/checkList' => [[['_route' => 'app_get_checkList', '_controller' => 'App\\Controller\\CheckListController::getCheckList'], null, null, null, false, false, null]],
         '/api/fragrance' => [[['_route' => 'app_getAllFragrance', '_controller' => 'App\\Controller\\FragranceController::getAllFragrance'], null, null, null, false, false, null]],
         '/api/wishlist' => [
             [['_route' => 'app_create_wishlist', '_controller' => 'App\\Controller\\FragranceController::createWishlist'], null, ['POST' => 0], null, false, false, null],
@@ -45,6 +50,7 @@ return [
         '/api/getCurrentSubscription' => [[['_route' => 'getCurrentSubscription', '_controller' => 'App\\Controller\\StripeController::getCurrentSubscription'], null, ['GET' => 0], null, false, false, null]],
         '/api/cancelSubscription' => [[['_route' => 'cancelSubscription', '_controller' => 'App\\Controller\\StripeController::cancelSubscription'], null, ['PUT' => 0], null, false, false, null]],
         '/api/infoCreditCard' => [[['_route' => 'infoCreditCard', '_controller' => 'App\\Controller\\StripeController::getLastFourDigits'], null, ['GET' => 0], null, false, false, null]],
+        '/api/changeTagMailChimp' => [[['_route' => 'addMailChimpMember', '_controller' => 'App\\Controller\\StripeController::addMailChimpMember'], null, ['POST' => 0], null, false, false, null]],
         '/api/changeSubscription' => [[['_route' => 'changeSubscription', '_controller' => 'App\\Controller\\StripeController::changeSubscription'], null, ['PUT' => 0], null, false, false, null]],
         '/api/check-subscription' => [[['_route' => 'check_subscription', '_controller' => 'App\\Controller\\StripeController::checkSubscription'], null, ['GET' => 0], null, false, false, null]],
         '/api/updateCreditCard' => [[['_route' => 'updateCreditCard', '_controller' => 'App\\Controller\\StripeController::updateCard'], null, ['PUT' => 0], null, false, false, null]],
@@ -55,7 +61,9 @@ return [
         ],
         '/api/auth/generate_code' => [[['_route' => 'generate_code', '_controller' => 'App\\Controller\\UserController::generateCode'], null, ['POST' => 0], null, false, false, null]],
         '/api/auth/verify_code' => [[['_route' => 'verify_code', '_controller' => 'App\\Controller\\UserController::verifyCode'], null, ['POST' => 0], null, false, false, null]],
+        '/api/update-user' => [[['_route' => 'update_user', '_controller' => 'App\\Controller\\UserController::_updateUser'], null, ['POST' => 0], null, false, false, null]],
         '/register' => [[['_route' => 'app_register', '_controller' => 'App\\Controller\\UserController::register'], null, ['POST' => 0], null, false, false, null]],
+        '/checkPhone' => [[['_route' => 'app_check_phone_exist', '_controller' => 'App\\Controller\\UserController::checkPhoneExist'], null, ['POST' => 0], null, false, false, null]],
         '/api/iSConnected' => [[['_route' => 'app_iSConnected', '_controller' => 'App\\Controller\\UserController::iSConnected'], null, null, null, false, false, null]],
         '/verify/email' => [[['_route' => 'app_verify_email', '_controller' => 'App\\Controller\\UserController::verifyUserEmail'], null, null, null, false, false, null]],
         '/api/auth/login' => [[['_route' => 'api_login_check'], null, ['POST' => 0], null, false, false, null]],
@@ -79,47 +87,52 @@ return [
                 .')'
                 .'|/api/(?'
                     .'|admin/(?'
-                        .'|contentExclusive/([^/]++)(*:211)'
-                        .'|deleteNotification/([^/]++)(*:246)'
-                        .'|notification/([^/]++)(*:275)'
-                        .'|getUsers/([^/]++)(*:300)'
+                        .'|edit/contentExclusive/([^/]++)(*:216)'
+                        .'|contentExclusive/([^/]++)(*:249)'
+                        .'|delete(?'
+                            .'|ContentExclusive/([^/]++)(*:291)'
+                            .'|Notification/([^/]++)(*:320)'
+                        .')'
+                        .'|getUsers/([^/]++)(*:346)'
                     .')'
-                    .'|checkList(?'
-                        .'|(?:/([^/]++)(?:/([^/]++))?)?(*:349)'
-                        .'|/([^/]++)/([^/]++)(*:375)'
-                        .'|(*:383)'
+                    .'|checkList/(?'
+                        .'|([^/]++)/([^/]++)(?'
+                            .'|(*:388)'
+                            .'|(*:396)'
+                        .')'
+                        .'|delete/([^/]++)(*:420)'
                     .')'
                     .'|wishlist/([^/]++)(?'
-                        .'|(?:/([^/]++))?(*:426)'
-                        .'|(*:434)'
+                        .'|(?:/([^/]++))?(*:463)'
+                        .'|(*:471)'
                     .')'
                     .'|layerings/([^/]++)(?'
-                        .'|(*:464)'
+                        .'|(*:501)'
                     .')'
                     .'|p(?'
                         .'|erfumeTrialSheet/([^/]++)(?'
                             .'|/([^/]++)(?'
-                                .'|(*:517)'
-                                .'|(*:525)'
+                                .'|(*:554)'
+                                .'|(*:562)'
                             .')'
-                            .'|(*:534)'
+                            .'|(*:571)'
                         .')'
                         .'|rofil/tag/([^/]++)(?'
-                            .'|(*:564)'
+                            .'|(*:601)'
                         .')'
                     .')'
                     .'|reviewPerfumeNote(?'
                         .'|/([^/]++)(?'
                             .'|/(?'
-                                .'|([^/]++)(*:618)'
+                                .'|([^/]++)(*:655)'
                                 .'|fragrance/([^/]++)(?'
-                                    .'|(*:647)'
+                                    .'|(*:684)'
                                 .')'
                             .')'
-                            .'|(*:657)'
+                            .'|(*:694)'
                         .')'
-                        .'|AddFragrance/([^/]++)/([^/]++)(*:696)'
-                        .'|RemoveFragrance/([^/]++)/([^/]++)(*:737)'
+                        .'|AddFragrance/([^/]++)/([^/]++)(*:733)'
+                        .'|RemoveFragrance/([^/]++)/([^/]++)(*:774)'
                     .')'
                 .')'
             .')/?$}sDu',
@@ -132,37 +145,38 @@ return [
         136 => [[['_route' => '_profiler_exception', '_controller' => 'web_profiler.controller.exception_panel::body'], ['token'], null, null, false, false, null]],
         149 => [[['_route' => '_profiler_exception_css', '_controller' => 'web_profiler.controller.exception_panel::stylesheet'], ['token'], null, null, false, false, null]],
         159 => [[['_route' => '_profiler', '_controller' => 'web_profiler.controller.profiler::panelAction'], ['token'], null, null, false, true, null]],
-        211 => [[['_route' => 'app_updateContentExclusive', '_controller' => 'App\\Controller\\AdminController::removeContentExclusive'], ['contentExclusive'], ['DELETE' => 0], null, false, true, null]],
-        246 => [[['_route' => 'app_deleteNotification', '_controller' => 'App\\Controller\\AdminController::deleteNotification'], ['notification'], ['DELETE' => 0], null, false, true, null]],
-        275 => [[['_route' => 'app_updateNotification', '_controller' => 'App\\Controller\\AdminController::updateNotification'], ['notification'], ['PUT' => 0], null, false, true, null]],
-        300 => [[['_route' => 'app_admin_getAll_users', '_controller' => 'App\\Controller\\AdminController::getAllUser'], ['page'], ['GET' => 0], null, false, true, null]],
-        349 => [[['_route' => 'app_create_checkList', 'm' => false, 'Y' => false, '_controller' => 'App\\Controller\\CheckListController::createCheckList'], ['m', 'Y'], ['POST' => 0], null, false, true, null]],
-        375 => [[['_route' => 'app_put_checkList', '_controller' => 'App\\Controller\\CheckListController::putCheckList'], ['checkList', 'fragrance'], ['PUT' => 0], null, false, true, null]],
-        383 => [[['_route' => 'app_get_checkList', '_controller' => 'App\\Controller\\CheckListController::getCheckList'], [], null, null, false, false, null]],
-        426 => [[['_route' => 'app_put_wishlist', 'fragrance' => null, '_controller' => 'App\\Controller\\FragranceController::PUTWishlist'], ['wishlist', 'fragrance'], ['PUT' => 0], null, false, true, null]],
-        434 => [[['_route' => 'app_DELETE_wishlist', '_controller' => 'App\\Controller\\FragranceController::DELETEWishlist'], ['wishlist'], ['DELETE' => 0], null, false, true, null]],
-        464 => [
+        216 => [[['_route' => 'app_update_ContentExclusive', '_controller' => 'App\\Controller\\AdminController::updateContentExclusive'], ['id'], ['POST' => 0], null, false, true, null]],
+        249 => [[['_route' => 'app_updateContentExclusive', '_controller' => 'App\\Controller\\AdminController::removeContentExclusive'], ['contentExclusive'], ['DELETE' => 0], null, false, true, null]],
+        291 => [[['_route' => 'deleteContentExclusive', '_controller' => 'App\\Controller\\AdminController::deleteContentExclusive'], ['id'], ['DELETE' => 0], null, false, true, null]],
+        320 => [[['_route' => 'app_deleteNotification', '_controller' => 'App\\Controller\\AdminController::deleteNotification'], ['notification'], ['DELETE' => 0], null, false, true, null]],
+        346 => [[['_route' => 'app_admin_getAll_users', '_controller' => 'App\\Controller\\AdminController::getAllUser'], ['page'], ['GET' => 0], null, false, true, null]],
+        388 => [[['_route' => 'app_create_checkList', '_controller' => 'App\\Controller\\CheckListController::createCheckList'], ['m', 'Y'], ['POST' => 0], null, false, true, null]],
+        396 => [[['_route' => 'app_put_checkList', '_controller' => 'App\\Controller\\CheckListController::putCheckList'], ['checkList', 'fragrance'], ['PUT' => 0], null, false, true, null]],
+        420 => [[['_route' => 'app_delete_checkList', '_controller' => 'App\\Controller\\CheckListController::deleteCheckList'], ['checkList'], ['DELETE' => 0], null, false, true, null]],
+        463 => [[['_route' => 'app_put_wishlist', 'fragrance' => null, '_controller' => 'App\\Controller\\FragranceController::PUTWishlist'], ['wishlist', 'fragrance'], ['PUT' => 0], null, false, true, null]],
+        471 => [[['_route' => 'app_DELETE_wishlist', '_controller' => 'App\\Controller\\FragranceController::DELETEWishlist'], ['wishlist'], ['DELETE' => 0], null, false, true, null]],
+        501 => [
             [['_route' => 'app_update_Layerings', '_controller' => 'App\\Controller\\LayeringsController::updateLayerings'], ['layering'], ['PUT' => 0], null, false, true, null],
             [['_route' => 'app_DELETE_Layerings', '_controller' => 'App\\Controller\\LayeringsController::daleteLayerings'], ['layering'], ['DELETE' => 0], null, false, true, null],
         ],
-        517 => [[['_route' => 'app_create_perfumeTrialSheet', '_controller' => 'App\\Controller\\PerfumeTrialSheetController::createPerfumeTrialSheet'], ['m', 'Y'], ['POST' => 0], null, false, true, null]],
-        525 => [[['_route' => 'app_put_perfumeTrialSheet', '_controller' => 'App\\Controller\\PerfumeTrialSheetController::putPerfumeTrialSheet'], ['perfumeTrialSheet', 'fragrance'], ['PUT' => 0], null, false, true, null]],
-        534 => [[['_route' => 'app_DELETE_checkList', '_controller' => 'App\\Controller\\PerfumeTrialSheetController::deletePerfumeTrialSheet'], ['perfumeTrialSheet'], ['DELETE' => 0], null, false, true, null]],
-        564 => [
+        554 => [[['_route' => 'app_create_perfumeTrialSheet', '_controller' => 'App\\Controller\\PerfumeTrialSheetController::createPerfumeTrialSheet'], ['m', 'Y'], ['POST' => 0], null, false, true, null]],
+        562 => [[['_route' => 'app_put_perfumeTrialSheet', '_controller' => 'App\\Controller\\PerfumeTrialSheetController::putPerfumeTrialSheet'], ['perfumeTrialSheet', 'fragrance'], ['PUT' => 0], null, false, true, null]],
+        571 => [[['_route' => 'app_DELETE_checkList', '_controller' => 'App\\Controller\\PerfumeTrialSheetController::deletePerfumeTrialSheet'], ['perfumeTrialSheet'], ['DELETE' => 0], null, false, true, null]],
+        601 => [
             [['_route' => 'app_edit_tag', '_controller' => 'App\\Controller\\ProfilController::editMyFavoriteTypesOfPerfumes'], ['myFavoriteTypesOfPerfumes'], ['PUT' => 0], null, false, true, null],
             [['_route' => 'app_edit_dele', '_controller' => 'App\\Controller\\ProfilController::removeMyFavoriteTypesOfPerfumes'], ['myFavoriteTypesOfPerfumes'], ['DELETE' => 0], null, false, true, null],
         ],
-        618 => [[['_route' => 'app_create_ReviewPerfumeNote', '_controller' => 'App\\Controller\\ReviewPerfumeNoteController::createReviewPerfumeNote'], ['m', 'Y'], ['POST' => 0], null, false, true, null]],
-        647 => [
+        655 => [[['_route' => 'app_create_ReviewPerfumeNote', '_controller' => 'App\\Controller\\ReviewPerfumeNoteController::createReviewPerfumeNote'], ['m', 'Y'], ['POST' => 0], null, false, true, null]],
+        684 => [
             [['_route' => 'app_add_fragrance_in_ReviewPerfumeNote', '_controller' => 'App\\Controller\\ReviewPerfumeNoteController::addPerfumeInNote'], ['reviewPerfumeNote', 'fragrance'], ['POST' => 0], null, false, true, null],
             [['_route' => 'app_delete_fragrance_in_ReviewPerfumeNote', '_controller' => 'App\\Controller\\ReviewPerfumeNoteController::deletePerfumeInNote'], ['reviewPerfumeNote', 'fragrance'], ['DELETE' => 0], null, false, true, null],
         ],
-        657 => [
+        694 => [
             [['_route' => 'app_put_ReviewPerfumeNote', '_controller' => 'App\\Controller\\ReviewPerfumeNoteController::putReviewPerfumeNote'], ['ReviewPerfumeNote'], ['PUT' => 0], null, false, true, null],
             [['_route' => 'app_DELETE_ReviewPerfumeNote', '_controller' => 'App\\Controller\\ReviewPerfumeNoteController::deleteReviewPerfumeNote'], ['ReviewPerfumeNote'], ['DELETE' => 0], null, false, true, null],
         ],
-        696 => [[['_route' => 'app_reviewperfumenote_addfragrancesreviewperfumenote', '_controller' => 'App\\Controller\\ReviewPerfumeNoteController::addFragrancesReviewPerfumeNote'], ['reviewPerfumeNote', 'fragrances'], null, null, false, true, null]],
-        737 => [
+        733 => [[['_route' => 'app_reviewperfumenote_addfragrancesreviewperfumenote', '_controller' => 'App\\Controller\\ReviewPerfumeNoteController::addFragrancesReviewPerfumeNote'], ['reviewPerfumeNote', 'fragrances'], null, null, false, true, null]],
+        774 => [
             [['_route' => 'app_reviewperfumenote_removefragrancereviewperfumenote', '_controller' => 'App\\Controller\\ReviewPerfumeNoteController::removeFragranceReviewPerfumeNote'], ['reviewPerfumeNote', 'fragrances'], null, null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],
