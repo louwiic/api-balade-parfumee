@@ -400,21 +400,21 @@ class AdminController extends AbstractController
 
         $subscription = Subscription::retrieve($user->getIdSubscriptionStripe());
         $currentSub = $subscription->items->data[0]->plan->id;
-        $categoryFilter = null;
+        $categoryFilter = [1, 4];
 
+        $price_mensuel = 'price_1NwqwRFnV1sRkwn0cRKvCyLc';
+        $price_trimestriel = 'price_1NwqvOFnV1sRkwn0yaK0jhlH';
+        $forAboMensu = 2;
+        $forAboTrim = 3;
+        $forAboDiscover = 1;
+        $forAllUser = 4;
 
-        switch ($currentSub) {
-            case 'price_1NwqwRFnV1sRkwn0cRKvCyLc':
-                $categoryFilter = [2];
-                break;
+        if ($currentSub === $price_mensuel) {
+            $categoryFilter = [$forAboMensu, $forAboDiscover, $forAllUser];
+        }
 
-            case 'price_1NwqvOFnV1sRkwn0yaK0jhlH':
-                $categoryFilter = [3];
-                break;
-
-            default:
-                $categoryFilter = [1, 4];
-                break;
+        if ($currentSub === $price_trimestriel) {
+            $categoryFilter = [$forAboTrim, $forAboDiscover, $forAllUser];
         }
 
         $notifications = $notificationRepository->findBy(['categoryNotification' => $categoryFilter], ['createAt' => 'DESC']);
