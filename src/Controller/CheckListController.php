@@ -27,33 +27,33 @@ class CheckListController extends AbstractController
         EntityManagerInterface $entityManager,
         FragranceRepository $fragranceRepository,
         UserRepository $userRepository
-    )
-    {
+    ) {
         $this->entityManager = $entityManager;
         $this->fragranceRepository = $fragranceRepository;
         $this->userRepository = $userRepository;
     }
-    
+
     #[Route('api/checkList/{m}/{Y}', name: 'app_create_checkList', methods: "POST")]
-    public function createCheckList(Request $request, $m = false, $Y = false,StripeController $stripe): Response {
+    public function createCheckList(Request $request, $m = false, $Y = false, StripeController $stripe): Response
+    {
         $fragrance = json_decode($request->getContent(), true);
 
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
 
         $list = [];
         foreach ($user->getPerfumeTrialSheets() as $perfumeTrialSheet) {
-            if ($perfumeTrialSheet instanceof PerfumeTrialSheet && !$perfumeTrialSheet->getDeleteAt()) {        
+            if ($perfumeTrialSheet instanceof PerfumeTrialSheet && !$perfumeTrialSheet->getDeleteAt()) {
                 $list[] =  [
                     "id" => $perfumeTrialSheet->getId(),
                 ];
             }
         }
-        $subscribed = $stripe->_checkSubscription(userRepository:$this->userRepository);
-        if(!isset($subscribed) && count($list) >= 5){
+        $subscribed = $stripe->_checkSubscription(userRepository: $this->userRepository);
+        if (!isset($subscribed) && count($list) >= 5) {
             return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
         }
-        if(isset($subscribed) && count($list) >= 5){
-            if($subscribed["subscription_is_not_expired"] === false || $subscribed['subscription']['status'] !== "active"){
+        if (isset($subscribed) && count($list) >= 5) {
+            if ($subscribed["subscription_is_not_expired"] === false || $subscribed['subscription']['status'] !== "active") {
                 return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
             }
         }
@@ -61,26 +61,26 @@ class CheckListController extends AbstractController
         $list = [];
 
         foreach ($user->getCheckLists() as $checkList) {
-            if ($checkList instanceof checkList && !$checkList->getDeleteAt()) {        
+            if ($checkList instanceof checkList && !$checkList->getDeleteAt()) {
                 $list[] =  [
                     "id" => $checkList->getId(),
                 ];
             }
         }
 
-        $subscribed = $stripe->_checkSubscription(userRepository:$this->userRepository);
+        $subscribed = $stripe->_checkSubscription(userRepository: $this->userRepository);
 
-        if(!isset($subscribed) && count($list) >= 5){
+        if (!isset($subscribed) && count($list) >= 5) {
             return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
         }
 
-        if(isset($subscribed) && count($list) >= 5){
-            if($subscribed["subscription_is_not_expired"] === false || $subscribed['subscription']['status'] !== "active"){
+        if (isset($subscribed) && count($list) >= 5) {
+            if ($subscribed["subscription_is_not_expired"] === false || $subscribed['subscription']['status'] !== "active") {
                 return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
             }
         }
 
- 
+
         /* $subscribed = $stripe->_checkSubscription(userRepository:$this->userRepository);
  
 
@@ -93,14 +93,14 @@ class CheckListController extends AbstractController
                 return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
             }
         } */
-        
+
 
         $checkList = new CheckList();
         if ($m && $Y)
             $checkList->setCreateAt(DateTimeImmutable::createFromFormat('d/m/Y', "01/$m/$Y"));
         else
             $checkList->setCreateAt(new DateTimeImmutable());
-        
+
         /* if($fragrance["name"])  
             $fg = new Fragrance();
             $fg->setCreateAt(new DateTimeImmutable());
@@ -114,10 +114,10 @@ class CheckListController extends AbstractController
             $this->entityManager->persist($fg);
             $this->entityManager->flush();
             $checkList->setFragrance($fg); */
-        
+
         $checkList->setUser($user);
         $checkList->setState('try');
-        
+
         $this->entityManager->persist($checkList);
         $this->entityManager->flush();
         return new JsonResponse(["id" => $checkList->getId(), "createAt" => $checkList->getCreateAt()->format('m/Y')], Response::HTTP_OK);
@@ -128,14 +128,15 @@ class CheckListController extends AbstractController
     #[OA\Parameter(name: 'checkList', in: "path", required: true)]
     #[OA\Parameter(name: 'fragrance', in: "path", required: false)]
     #[OA\Parameter(name: 'state', in: "query", required: false)]
-    public function putCheckList(CheckList $checkList, Fragrance $fragrance = null, Request $request): Response {
+    public function putCheckList(CheckList $checkList, Fragrance $fragrance = null, Request $request): Response
+    {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
         if ($checkList->getUser() !== $user)
             return new JsonResponse("not access", Response::HTTP_FORBIDDEN);
 
         $data = json_decode($request->getContent(), true);
         if (key_exists('state', $data) && $data["state"]) {
-            $checkList->setState($data['state'] === "try" ? "try" : "tryEnd" );
+            $checkList->setState($data['state'] === "try" ? "try" : "tryEnd");
         }
         if ($fragrance) {
             $checkList->setFragrance($fragrance);
@@ -144,22 +145,26 @@ class CheckListController extends AbstractController
         return new Response(true, Response::HTTP_OK);
     }
 
-  
 
-    #[Route('api/checkList/delete/{checkList}', name: 'app_delete_checkList',methods: "DELETE")]
-    #[OA\Parameter(name: 'checkList', in: "path", required: true)]
-    public function deleteCheckList(CheckList $checkList): Response {
-        $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
-        if ($checkList->getUser() !== $user)
+
+    #[Route('api/checkList/delete/{checkList}', name: 'app_delete_checkList', methods: "DELETE")]
+    public function deleteCheckList(CheckList $checkList): Response
+    {
+        /* $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier()); */
+
+        return new JsonResponse(["data" => []]);
+
+        /*  if ($checkList->getUser() !== $user)
             return new JsonResponse("not access", Response::HTTP_FORBIDDEN);
 
         $checkList->setDeleteAt(new DateTimeImmutable());
         $this->entityManager->flush();
-        return new Response(true, Response::HTTP_OK);
+        return new Response(true, Response::HTTP_OK); */
     }
 
     #[Route('api/checkList', name: 'app_get_checkList')]
-    public function getCheckList(): Response {
+    public function getCheckList(): Response
+    {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
         $list = [];
 
@@ -168,17 +173,17 @@ class CheckListController extends AbstractController
 
                 $fragrance = $checkList->getFragrance();
 
-                $list [] =  [
+                $list[] =  [
                     "id" => $checkList->getId(),
                     'state' => $checkList->getState(),
                     "createAt" =>  $checkList->getCreateAt()->format('m/Y'),
                     "idFragrance" => $fragrance ? $fragrance->getId() : "",
                     "brand" =>  $fragrance ? $fragrance->getBrand() : "",
-                    "concentration" =>  $fragrance ? $fragrance->getConcentration(): "",
-                    "value" =>  $fragrance ? $fragrance->getName(): "",
-                    "name" =>  $fragrance ? $fragrance->getName(): "",
-                    "img" =>  $fragrance ? $fragrance->getImg(): "/pictogrammeParfum.png",
-                    "description" =>  $fragrance ? $fragrance->getDescription(): "",
+                    "concentration" =>  $fragrance ? $fragrance->getConcentration() : "",
+                    "value" =>  $fragrance ? $fragrance->getName() : "",
+                    "name" =>  $fragrance ? $fragrance->getName() : "",
+                    "img" =>  $fragrance ? $fragrance->getImg() : "/pictogrammeParfum.png",
+                    "description" =>  $fragrance ? $fragrance->getDescription() : "",
                     "dateFragrance" => $fragrance ? $fragrance->getCreateAt()->format('m/y') : "",
                 ];
             }

@@ -155,6 +155,17 @@ $catalogue = new MessageCatalogue('mn', array (
     'Too many failed login attempts, please try again later.' => 'Хэтэрхий олон амжилтгүй оролдлого, түр хүлээгээд дахин оролдоно уу.',
     'Invalid or expired login link.' => 'Буруу эсвэл хугацаа нь дууссан нэвтрэх зам.',
   ),
+  'VerifyEmailBundle' => 
+  array (
+    '%count% year|%count% years' => '%count% жил|%count% жил',
+    '%count% month|%count% months' => '%count% сар|%count% сар',
+    '%count% day|%count% days' => '%count% өдөр|%count% өдөр',
+    '%count% hour|%count% hours' => '%count% цаг|%count% цаг',
+    '%count% minute|%count% minutes' => '%count% минут|%count% минут',
+    'The link to verify your email has expired. Please request a new link.' => 'Таны мэйлийг баталгаажуулах холбоосны хугацаа дууссан байна. Шинэ холбоосны хүсэлт гаргана уу.',
+    'The link to verify your email is invalid. Please request a new link.' => 'Таны мэйлийг баталгаажуулах холбоос буруу байна. Шинэ холбоосны хүсэлт гаргана уу.',
+    'The link to verify your email appears to be for a different account or email. Please request a new link.' => 'Таны мэйлийг баталгаажуулах холбоос нь өөр бүртгэл эсвэл мэйлд зориулагдсан байна. Шинэ холбоосны хүсэлт гаргана уу.',
+  ),
 ));
 
 $catalogueEn = new MessageCatalogue('en', array (

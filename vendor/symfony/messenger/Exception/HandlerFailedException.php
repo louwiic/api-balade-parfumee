@@ -25,7 +25,7 @@ class HandlerFailedException extends RuntimeException
     {
         $firstFailure = current($exceptions);
 
-        $message = sprintf('Handling "%s" failed: ', $envelope->getMessage()::class);
+        $message = sprintf('Handling "%s" failed: ', \get_class($envelope->getMessage()));
 
         parent::__construct(
             $message.(1 === \count($exceptions)
@@ -58,7 +58,9 @@ class HandlerFailedException extends RuntimeException
         return array_values(
             array_filter(
                 $this->exceptions,
-                fn ($exception) => is_a($exception, $exceptionClassName)
+                function ($exception) use ($exceptionClassName) {
+                    return is_a($exception, $exceptionClassName);
+                }
             )
         );
     }

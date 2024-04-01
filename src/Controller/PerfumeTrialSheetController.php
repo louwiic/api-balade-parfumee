@@ -40,27 +40,27 @@ class PerfumeTrialSheetController extends AbstractController
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
         $list = [];
         foreach ($user->getPerfumeTrialSheets() as $perfumeTrialSheet) {
-            if ($perfumeTrialSheet instanceof PerfumeTrialSheet && !$perfumeTrialSheet->getDeleteAt()) {        
+            if ($perfumeTrialSheet instanceof PerfumeTrialSheet && !$perfumeTrialSheet->getDeleteAt()) {
                 $list[] =  [
                     "id" => $perfumeTrialSheet->getId(),
                 ];
             }
         }
 
-        $subscribed = $stripe->_checkSubscription(userRepository:$this->userRepository);
- 
+        $subscribed = $stripe->_checkSubscription(userRepository: $this->userRepository);
+
         //return new JsonResponse(["message" => $subscribed ], Response::HTTP_ACCEPTED);
 
-        if(!isset($subscribed) && count($list) >= 5){
+        if (!isset($subscribed) && count($list) >= 5) {
             return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
         }
-        
-        if(isset($subscribed) && count($list) >= 5){
-            if($subscribed["subscription_is_not_expired"] === false || $subscribed['subscription']['status'] !== "active"){
+
+        if (isset($subscribed) && count($list) >= 5) {
+            if ($subscribed["subscription_is_not_expired"] === false || $subscribed['subscription']['status'] !== "active") {
                 return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
             }
         }
-        
+
         $perfumeTrialSheet = new PerfumeTrialSheet();
         if ($m && $Y)
             $perfumeTrialSheet->setCreateAt(DateTimeImmutable::createFromFormat('d/m/Y', "01/$m/$Y"));
@@ -127,7 +127,7 @@ class PerfumeTrialSheetController extends AbstractController
         return new Response(true, Response::HTTP_OK);
     }
 
-    #[Route('api/perfumeTrialSheet/{perfumeTrialSheet}', name: 'app_DELETE_checkList', methods: "DELETE")]
+    #[Route('api/perfumeTrialSheet/{perfumeTrialSheet}', name: 'app_delete_trialsheet_checkList', methods: "DELETE")]
     #[OA\Parameter(name: 'perfumeTrialSheet', in: "path", required: true)]
     public function deletePerfumeTrialSheet(PerfumeTrialSheet $perfumeTrialSheet): Response
     {
@@ -153,7 +153,7 @@ class PerfumeTrialSheetController extends AbstractController
         }
         foreach ($user->getPerfumeTrialSheets() as $perfumeTrialSheet) {
             if ($perfumeTrialSheet instanceof PerfumeTrialSheet && !$perfumeTrialSheet->getDeleteAt()) {
-            
+
                 $fragrance = $perfumeTrialSheet->getFragrance();
 
                 $list[] =  [
