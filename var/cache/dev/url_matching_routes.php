@@ -164,7 +164,8 @@ return [
         ],
         554 => [[['_route' => 'app_create_perfumeTrialSheet', '_controller' => 'App\\Controller\\PerfumeTrialSheetController::createPerfumeTrialSheet'], ['m', 'Y'], ['POST' => 0], null, false, true, null]],
         562 => [[['_route' => 'app_put_perfumeTrialSheet', '_controller' => 'App\\Controller\\PerfumeTrialSheetController::putPerfumeTrialSheet'], ['perfumeTrialSheet', 'fragrance'], ['PUT' => 0], null, false, true, null]],
-        571 => [[['_route' => 'app_delete_trialsheet_checkList', '_controller' => 'App\\Controller\\PerfumeTrialSheetController::deletePerfumeTrialSheet'], ['perfumeTrialSheet'], ['DELETE' => 0], null, false, true, null]],
+notificationsList
+main
         601 => [
             [['_route' => 'app_edit_tag', '_controller' => 'App\\Controller\\ProfilController::editMyFavoriteTypesOfPerfumes'], ['myFavoriteTypesOfPerfumes'], ['PUT' => 0], null, false, true, null],
             [['_route' => 'app_edit_dele', '_controller' => 'App\\Controller\\ProfilController::removeMyFavoriteTypesOfPerfumes'], ['myFavoriteTypesOfPerfumes'], ['DELETE' => 0], null, false, true, null],

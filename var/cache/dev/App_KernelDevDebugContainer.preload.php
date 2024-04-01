@@ -10,6 +10,7 @@ if (in_array(PHP_SAPI, ['cli', 'phpdbg'], true)) {
 }
 
 require dirname(__DIR__, 3).'/vendor/autoload.php';
+notificationsList
 (require __DIR__.'/App_KernelDevDebugContainer.php')->set(\Container7hIolgc\App_KernelDevDebugContainer::class, null);
 require __DIR__.'/Container7hIolgc/EntityManagerGhostEbeb667.php';
 require __DIR__.'/Container7hIolgc/getWebProfiler_Controller_RouterService.php';
@@ -302,11 +303,14 @@ $classes[] = 'App\Controller\ReviewPerfumeNoteController';
 $classes[] = 'App\Controller\StripeController';
 $classes[] = 'App\Controller\UserController';
 $classes[] = 'Twilio\Rest\Client';
+
+notificationsList
 $classes[] = 'App\Security\EmailVerifier';
 $classes[] = 'SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelper';
 $classes[] = 'Symfony\Component\HttpKernel\UriSigner';
 $classes[] = 'SymfonyCasts\Bundle\VerifyEmail\Util\VerifyEmailQueryUtility';
 $classes[] = 'SymfonyCasts\Bundle\VerifyEmail\Generator\VerifyEmailTokenGenerator';
+
 $classes[] = 'App\EventListener\JwtCreatedListener';
 $classes[] = 'App\Form\RegistrationFormType';
 $classes[] = 'App\Repository\CategoryNotificationRepository';

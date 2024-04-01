@@ -58,6 +58,8 @@ return [[
 ], [
 
 0 => [],
+notificationsList
 1 => 1711724318,
+main
 
 ]];
