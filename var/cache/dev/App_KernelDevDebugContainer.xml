@@ -530,6 +530,9 @@
       <argument type="service" id="Twilio\Rest\Client"/>
       <argument type="service" id="kernel"/>
       <argument type="service" id="App\Controller\AdminController"/>
+notificationsList
+      <argument type="service" id="App\Security\EmailVerifier"/>
+main
       <call method="setContainer">
         <argument type="service" id=".service_locator..UjS3SV.App\Controller\UserController"/>
       </call>
@@ -642,7 +645,9 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
       <tag name="controller.argument_value_resolver" priority="-50"/>
-      <argument type="service" id=".service_locator.f73Bo.f"/>
+notificationsList
+      <argument type="service" id=".service_locator.LTwdSlx"/>
+main
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
       <tag name="controller.argument_value_resolver" priority="-100"/>
@@ -919,7 +924,6 @@
       <argument type="service" id="kernel"/>
       <argument type="service" id="monolog.logger" on-invalid="null"/>
     </service>
-    <service id="clock" class="Symfony\Component\Clock\NativeClock"/>
     <service id="Symfony\Component\Config\Loader\LoaderInterface" class="Symfony\Component\Config\Loader\LoaderInterface" abstract="true">
       <tag name="container.excluded"/>
     </service>
@@ -1828,7 +1832,7 @@
     </service>
     <service id="mailer.mailer" class="Symfony\Component\Mailer\Mailer">
       <argument type="service" id="mailer.transports"/>
-      <argument type="service" id="debug.traced.messenger.bus.default" on-invalid="null"/>
+      <argument>null</argument>
       <argument type="service" id="debug.event_dispatcher" on-invalid="ignore"/>
     </service>
     <service id="mailer.transports" class="Symfony\Component\Mailer\Transport\Transports">
@@ -1884,6 +1888,12 @@
       <argument type="service" id="monolog.logger.mailer" on-invalid="ignore"/>
     </service>
     <service id="mailer.transport_factory.sendmail" class="Symfony\Component\Mailer\Transport\SendmailTransportFactory">
+      <tag name="mailer.transport_factory"/>
+      <argument type="service" id="debug.event_dispatcher"/>
+      <argument type="service" id=".debug.http_client" on-invalid="ignore"/>
+      <argument type="service" id="monolog.logger.mailer" on-invalid="ignore"/>
+    </service>
+    <service id="mailer.transport_factory.sendinblue" class="Symfony\Component\Mailer\Bridge\Sendinblue\Transport\SendinblueTransportFactory">
       <tag name="mailer.transport_factory"/>
       <argument type="service" id="debug.event_dispatcher"/>
       <argument type="service" id=".debug.http_client" on-invalid="ignore"/>
@@ -2113,6 +2123,7 @@
             <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.mn.xlf</argument>
             <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/form/Resources/translations/validators.mn.xlf</argument>
             <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/security-core/Resources/translations/security.mn.xlf</argument>
+            <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfonycasts/verify-email-bundle/src/Resources/translations/VerifyEmailBundle.mn.xlf</argument>
           </argument>
           <argument key="my" type="collection">
             <argument>/Users/loic/Dev/symfony/bld_parfumee-api_hostinger/vendor/symfony/validator/Resources/translations/validators.my.xlf</argument>
@@ -3257,7 +3268,9 @@
     </service>
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
-      <argument type="service" id=".service_locator.f73Bo.f"/>
+notificationsList
+      <argument type="service" id=".service_locator.LTwdSlx"/>
+main
     </service>
     <service id="debug.log_processor" class="Symfony\Bridge\Monolog\Processor\DebugProcessor">
       <argument type="service" id="request_stack"/>
@@ -4859,10 +4872,6 @@
       <argument>null</argument>
       <argument type="service" id="monolog.logger"/>
     </service>
-    <service id="messenger.transport.doctrine.factory" class="Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransportFactory">
-      <tag name="messenger.transport_factory"/>
-      <argument type="service" id="doctrine"/>
-    </service>
     <service id="doctrine.orm.messenger.event_subscriber.doctrine_clear_entity_manager" class="Symfony\Bridge\Doctrine\Messenger\DoctrineClearEntityManagerWorkerSubscriber">
       <tag name="kernel.event_subscriber"/>
       <argument type="service" id="doctrine"/>
@@ -6048,6 +6057,13 @@
         <argument>null</argument>
       </call>
       <call method="add">
+        <argument type="service" id=".security.request_matcher.jjezRBz"/>
+        <argument type="collection">
+          <argument>PUBLIC_ACCESS</argument>
+        </argument>
+        <argument>null</argument>
+      </call>
+      <call method="add">
         <argument type="service" id=".security.request_matcher.UygwO_e"/>
         <argument type="collection">
           <argument>PUBLIC_ACCESS</argument>
@@ -6557,6 +6573,14 @@
     <service id=".security.request_matcher.XnEWfUx" class="Symfony\Component\HttpFoundation\ChainRequestMatcher">
       <argument type="collection">
         <argument type="service" id=".security.request_matcher.0HvWlJu"/>
+      </argument>
+    </service>
+    <service id=".security.request_matcher.Lc.5ELg" class="Symfony\Component\HttpFoundation\RequestMatcher\PathRequestMatcher">
+      <argument>^/api/auth/confirm_email</argument>
+    </service>
+    <service id=".security.request_matcher.jjezRBz" class="Symfony\Component\HttpFoundation\ChainRequestMatcher">
+      <argument type="collection">
+        <argument type="service" id=".security.request_matcher.Lc.5ELg"/>
       </argument>
     </service>
     <service id=".security.request_matcher.AnfLJrZ" class="Symfony\Component\HttpFoundation\RequestMatcher\PathRequestMatcher">
@@ -7726,6 +7750,19 @@
         <argument key="userRepository" type="service_closure" id="App\Repository\UserRepository"/>
       </argument>
     </service>
+    <service id=".service_locator.8YmlTGX" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="mailer" type="service_closure" id="mailer.mailer"/>
+        <argument key="userRepository" type="service_closure" id="App\Repository\UserRepository"/>
+      </argument>
+    </service>
+    <service id=".service_locator.uVvF4gL" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="mailer" type="service_closure" id="mailer.mailer"/>
+      </argument>
+    </service>
     <service id=".service_locator.xiCCC7r" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -7746,7 +7783,9 @@
         <argument key="userRepository" type="service_closure" id="App\Repository\UserRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.f73Bo.f" class="Symfony\Component\DependencyInjection\ServiceLocator">
+notificationsList
+    <service id=".service_locator.LTwdSlx" class="Symfony\Component\DependencyInjection\ServiceLocator">
+main
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\AdminController::addContentExclusive" type="service_closure" id=".service_locator.E9w1.nG"/>
@@ -7798,6 +7837,10 @@
         <argument key="App\Controller\StripeController::updateCreditCard" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\UserController::_updateUser" type="service_closure" id=".service_locator.NjUBG3v"/>
         <argument key="App\Controller\UserController::checkPhoneExist" type="service_closure" id=".service_locator.e_4zbH4"/>
+notificationsList
+        <argument key="App\Controller\UserController::generateCode" type="service_closure" id=".service_locator.uVvF4gL"/>
+        <argument key="App\Controller\UserController::generateEmailCode" type="service_closure" id=".service_locator.8YmlTGX"/>
+main
         <argument key="App\Controller\UserController::register" type="service_closure" id=".service_locator.e_4zbH4"/>
         <argument key="App\Controller\UserController::verifyCode" type="service_closure" id=".service_locator.xiCCC7r"/>
         <argument key="App\Controller\UserController::verifyUserEmail" type="service_closure" id=".service_locator.920S.Ym"/>
@@ -7854,6 +7897,10 @@
         <argument key="App\Controller\StripeController:updateCreditCard" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\UserController:_updateUser" type="service_closure" id=".service_locator.NjUBG3v"/>
         <argument key="App\Controller\UserController:checkPhoneExist" type="service_closure" id=".service_locator.e_4zbH4"/>
+notificationsList
+        <argument key="App\Controller\UserController:generateCode" type="service_closure" id=".service_locator.uVvF4gL"/>
+        <argument key="App\Controller\UserController:generateEmailCode" type="service_closure" id=".service_locator.8YmlTGX"/>
+main
         <argument key="App\Controller\UserController:register" type="service_closure" id=".service_locator.e_4zbH4"/>
         <argument key="App\Controller\UserController:verifyCode" type="service_closure" id=".service_locator.xiCCC7r"/>
         <argument key="App\Controller\UserController:verifyUserEmail" type="service_closure" id=".service_locator.920S.Ym"/>
@@ -9689,8 +9736,6 @@
     <service id="Symfony\Component\HttpKernel\UriSigner" alias="uri_signer"/>
     <service id="Symfony\Component\DependencyInjection\ReverseContainer" alias="reverse_container"/>
     <service id="Symfony\Component\String\Slugger\SluggerInterface" alias="slugger"/>
-    <service id="Symfony\Component\Clock\ClockInterface" alias="clock"/>
-    <service id="Psr\Clock\ClockInterface" alias="clock"/>
     <service id="Symfony\Component\HttpKernel\Fragment\FragmentUriGeneratorInterface" alias="fragment.uri_generator"/>
     <service id="error_renderer.html" alias="twig.error_renderer.html"/>
     <service id="error_renderer" alias="error_handler.error_renderer.serializer"/>
@@ -9827,7 +9872,8 @@
     <service id="lexik_jwt_authentication.key_loader" alias="lexik_jwt_authentication.key_loader.raw" public="true"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.7nzbL4K" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.f73Bo.f"/>
+notificationsList
+    <service id="argument_resolver.controller_locator" alias=".service_locator.LTwdSlx"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
@@ -9857,8 +9903,10 @@
     <service id=".service_locator.rdp95UR" alias=".service_locator.6MtxQHl"/>
     <service id=".service_locator.r2YMPOV" alias=".service_locator.unpIcZj"/>
     <service id=".service_locator.8IbU9zc" alias=".service_locator.NjUBG3v"/>
+    <service id=".service_locator.Nw3nSD5" alias=".service_locator.8YmlTGX"/>
     <service id=".service_locator.V6D1oJY" alias=".service_locator.e_4zbH4"/>
-    <service id=".service_locator.218.8lF" alias=".service_locator.f73Bo.f"/>
+notificationsList
+    <service id=".service_locator.VDk_9bc" alias=".service_locator.LTwdSlx"/>
     <service id=".service_locator.9XMoc9I" alias=".service_locator.kzegaci"/>
     <service id=".service_locator.yj07qm_" alias=".service_locator.ZyXYEQR"/>
     <service id=".service_locator.jij13qc" alias=".service_locator.PBToVFE"/>
@@ -9925,6 +9973,8 @@
     <service id=".service_locator.QnxpW09" alias=".service_locator.d1gTJrc"/>
     <service id=".service_locator.g__dTW3" alias=".service_locator.unpIcZj"/>
     <service id=".service_locator.SPFAmCQ" alias=".service_locator.NjUBG3v"/>
+    <service id=".service_locator.44DlDc7" alias=".service_locator.8YmlTGX"/>
+    <service id=".service_locator.OJmnvRJ" alias=".service_locator.uVvF4gL"/>
     <service id=".service_locator.xHcLn8X" alias=".service_locator.xiCCC7r"/>
     <service id=".service_locator.qnm_CJ1" alias=".service_locator.e_4zbH4"/>
     <service id=".service_locator.vWiWdqV" alias=".service_locator.920S.Ym"/>

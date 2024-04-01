@@ -69,7 +69,7 @@ final class HandlerDescriptor
         return $this->batchHandler;
     }
 
-    public function getOption(string $option): mixed
+    public function getOption(string $option)
     {
         return $this->options[$option] ?? null;
     }

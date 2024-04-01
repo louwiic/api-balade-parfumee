@@ -33,9 +33,6 @@ use Symfony\Component\Messenger\Transport\Receiver\ReceiverInterface;
  */
 class MessengerPass implements CompilerPassInterface
 {
-    /**
-     * @return void
-     */
     public function process(ContainerBuilder $container)
     {
         $busIds = [];
@@ -58,7 +55,7 @@ class MessengerPass implements CompilerPassInterface
         $this->registerHandlers($container, $busIds);
     }
 
-    private function registerHandlers(ContainerBuilder $container, array $busIds): void
+    private function registerHandlers(ContainerBuilder $container, array $busIds)
     {
         $definitions = [];
         $handlersByBusAndMessage = [];
@@ -257,7 +254,7 @@ class MessengerPass implements CompilerPassInterface
         return ('__invoke' === $methodName) ? [$type->getName()] : [$type->getName() => $methodName];
     }
 
-    private function registerReceivers(ContainerBuilder $container, array $busIds): void
+    private function registerReceivers(ContainerBuilder $container, array $busIds)
     {
         $receiverMapping = [];
         $failureTransportsMap = [];
@@ -348,7 +345,7 @@ class MessengerPass implements CompilerPassInterface
         }
     }
 
-    private function registerBusToCollector(ContainerBuilder $container, string $busId): void
+    private function registerBusToCollector(ContainerBuilder $container, string $busId)
     {
         $container->setDefinition(
             $tracedBusId = 'debug.traced.'.$busId,
@@ -358,7 +355,7 @@ class MessengerPass implements CompilerPassInterface
         $container->getDefinition('data_collector.messenger')->addMethodCall('registerBus', [$busId, new Reference($tracedBusId)]);
     }
 
-    private function registerBusMiddleware(ContainerBuilder $container, string $busId, array $middlewareCollection): void
+    private function registerBusMiddleware(ContainerBuilder $container, string $busId, array $middlewareCollection)
     {
         $middlewareReferences = [];
         foreach ($middlewareCollection as $middlewareItem) {

@@ -24,7 +24,9 @@ class DelayedMessageHandlingException extends RuntimeException
     public function __construct(array $exceptions)
     {
         $exceptionMessages = implode(", \n", array_map(
-            fn (\Throwable $e) => $e::class.': '.$e->getMessage(),
+            function (\Throwable $e) {
+                return $e::class.': '.$e->getMessage();
+            },
             $exceptions
         ));
 

@@ -4,6 +4,8 @@
 
 return [
     '_preview_error' => [['code', '_format'], ['_controller' => 'error_controller::preview', '_format' => 'html'], ['code' => '\\d+'], [['variable', '.', '[^/]++', '_format', true], ['variable', '/', '\\d+', 'code', true], ['text', '/_error']], [], [], []],
+    '2fa_login' => [[], ['_controller' => 'scheb_two_factor.form_controller::form'], [], [['text', '/2fa']], [], [], []],
+    '2fa_login_check' => [[], [], [], [['text', '/2fa_check']], [], [], []],
     '_wdt' => [['token'], ['_controller' => 'web_profiler.controller.profiler::toolbarAction'], [], [['variable', '/', '[^/]++', 'token', true], ['text', '/_wdt']], [], [], []],
     '_profiler_home' => [[], ['_controller' => 'web_profiler.controller.profiler::homeAction'], [], [['text', '/_profiler/']], [], [], []],
     '_profiler_search' => [[], ['_controller' => 'web_profiler.controller.profiler::searchAction'], [], [['text', '/_profiler/search']], [], [], []],
@@ -47,7 +49,7 @@ return [
     'subscriber_members_in_lists' => [[], ['_controller' => 'App\\Controller\\MailChimpController::subscribedMembers'], [], [['text', '/subscriber_members_in_lists']], [], [], []],
     'app_create_perfumeTrialSheet' => [['m', 'Y'], ['_controller' => 'App\\Controller\\PerfumeTrialSheetController::createPerfumeTrialSheet'], [], [['variable', '/', '[^/]++', 'Y', true], ['variable', '/', '[^/]++', 'm', true], ['text', '/api/perfumeTrialSheet']], [], [], []],
     'app_put_perfumeTrialSheet' => [['perfumeTrialSheet', 'fragrance'], ['_controller' => 'App\\Controller\\PerfumeTrialSheetController::putPerfumeTrialSheet'], [], [['variable', '/', '[^/]++', 'fragrance', true], ['variable', '/', '[^/]++', 'perfumeTrialSheet', true], ['text', '/api/perfumeTrialSheet']], [], [], []],
-    'app_DELETE_checkList' => [['perfumeTrialSheet'], ['_controller' => 'App\\Controller\\PerfumeTrialSheetController::deletePerfumeTrialSheet'], [], [['variable', '/', '[^/]++', 'perfumeTrialSheet', true], ['text', '/api/perfumeTrialSheet']], [], [], []],
+    'app_delete_trialsheet_checkList' => [['perfumeTrialSheet'], ['_controller' => 'App\\Controller\\PerfumeTrialSheetController::deletePerfumeTrialSheet'], [], [['variable', '/', '[^/]++', 'perfumeTrialSheet', true], ['text', '/api/perfumeTrialSheet']], [], [], []],
     'app_get_perfumeTrialSheet' => [[], ['_controller' => 'App\\Controller\\PerfumeTrialSheetController::getPerfumeTrialSheet'], [], [['text', '/api/perfumeTrialSheet']], [], [], []],
     'app_getProfil' => [[], ['_controller' => 'App\\Controller\\ProfilController::getProfil'], [], [['text', '/api/profil']], [], [], []],
     'app_updateProfilprofilPUT' => [[], ['_controller' => 'App\\Controller\\ProfilController::updateProfil'], [], [['text', '/api/profilPUT']], [], [], []],
@@ -77,6 +79,7 @@ return [
     'get lists ssasa' => [[], ['_controller' => 'App\\Controller\\StripeController::eee'], [], [['text', '/eeee']], [], [], []],
     'stripe_webhook' => [[], ['_controller' => 'App\\Controller\\StripeController::handleWebhook'], [], [['text', '/get_list_mailChimp']], [], [], []],
     'get lists mailChimp' => [[], ['_controller' => 'App\\Controller\\StripeController::mailChimp'], [], [['text', '/get_list_mailChimp']], [], [], []],
+    'confirm_email' => [[], ['_controller' => 'App\\Controller\\UserController::generateEmailCode'], [], [['text', '/api/auth/confirm_email']], [], [], []],
     'generate_code' => [[], ['_controller' => 'App\\Controller\\UserController::generateCode'], [], [['text', '/api/auth/generate_code']], [], [], []],
     'verify_code' => [[], ['_controller' => 'App\\Controller\\UserController::verifyCode'], [], [['text', '/api/auth/verify_code']], [], [], []],
     'update_user' => [[], ['_controller' => 'App\\Controller\\UserController::_updateUser'], [], [['text', '/api/update-user']], [], [], []],

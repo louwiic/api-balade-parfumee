@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 use App\Entity\CodeValidation;
 use App\Entity\Profil;
 use App\Entity\User;
@@ -10,6 +12,8 @@ use App\Kernel;
 use App\Repository\CodeValidationRepository;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
+use App\Service\JWTService;
+use App\Service\SendEmailService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use DrewM\MailChimp\MailChimp;
@@ -26,6 +30,10 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use Twilio\Rest\Client;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use App\Service\EmailService;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 class UserController extends AbstractController
 {
@@ -36,38 +44,109 @@ class UserController extends AbstractController
     private string $publicDir;
     private $adminController;
 
-    //   public function __construct(EmailVerifier $emailVerifier)
-    // {
-    //   $this->emailVerifier = $emailVerifier;
-    //}
-    public function __construct(MailChimp $mailchimp, EntityManagerInterface $entityManager, Client $client, Kernel $kernel, AdminController $adminController)
+
+    public function __construct(MailChimp $mailchimp, EntityManagerInterface $entityManager, Client $client, Kernel $kernel, AdminController $adminController, EmailVerifier $emailVerifier)
     {
         $this->mailchimp = $mailchimp;
+        $this->emailVerifier = $emailVerifier;
         $this->entityManager = $entityManager;
         $this->client = $client;
         $this->adminController = $adminController;
         $this->publicDir = $kernel->getProjectDir() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'avatar';
     }
 
+    #[Route('/api/auth/confirm_email', name: 'confirm_email', methods: ['POST'])]
+    function generateEmailCode(Request $request,  UserRepository $userRepository, MailerInterface $mailer)
+    {
+
+        $user = $userRepository->findOneBy(['id' => 53]);
+        /* $
+        $this->emailVerifier->sendEmailConfirmation(
+            'app_verify_email',
+            $user,
+            (new TemplatedEmail())
+                ->from(new Address('no-reply@balade-parfumee.xyz'))
+                ->to($user->getEmail())
+                ->subject('Please Confirm your Email')
+                ->htmlTemplate('emails/register.html.twig')
+        ); */
+        $validationCode = mt_rand(100000, 999999);
+
+        try {
+            $email = (new TemplatedEmail())
+                ->from(new Address('no-reply@balade-parfumee.xyz'))
+                ->to('loicbatonnet.dev@gmail.com')
+                //->cc('cc@example.com')
+                //->bcc('bcc@example.com')
+                //->replyTo('fabien@example.com')
+                //->priority(Email::PRIORITY_HIGH)
+                ->subject('Email Confirmation')
+                ->text('Sending emails is fun again!')
+                ->htmlTemplate('emails/register.html.twig')
+                ->context([
+                    'user' => $user,
+                    'validationCode' => $validationCode,
+                ]);
+
+            //->htmlTemplate('emails/register.html.twig');
+            $mailer->send($email);
+            return new JsonResponse(["ok" => $user->getEmail()]);
+        } catch (TransportExceptionInterface $e) {
+            // some error prevented the email sending; display an
+            // error message or try to resend the message
+            return new JsonResponse(["error" => $e]);
+        }
+    }
+
     #[Route('/api/auth/generate_code', name: 'generate_code', methods: ['POST'])]
-    public function generateCode(Request $request): Response
+    public function generateCode(Request $request, MailerInterface $mailer): Response
     {
         // Récupérer les données JSON
         $jsonData = json_decode($request->getContent(), true);
 
         // Récupérer le numéro de téléphone depuis les données JSON
         $phoneNumber = $jsonData['tel'];
+        $email = $jsonData['email'];
 
         // Rajouter a vérification du numéro de tel avant envoi de l'SMS
 
         // Générer un code de validation de six chiffres
         $validationCode = mt_rand(100000, 999999);
-
-        $expirationDate = new \DateTimeImmutable();
-        $expirationDate->modify('+2 minutes');
-
-        // Créer une nouvelle instance de l'entité CodeValidation
         $codeValidation = new CodeValidation();
+        $expirationDate = new \DateTimeImmutable();
+        $expirationDate->modify('+4 minutes');
+
+        $codeValidation->setSource($email);
+        $codeValidation->setCode((string)$validationCode);
+        $codeValidation->setExpiredAt($expirationDate);
+        $this->entityManager->persist($codeValidation);
+        $this->entityManager->flush();
+
+        try {
+            $email = (new TemplatedEmail())
+                ->from(new Address('no-reply@balade-parfumee.xyz'))
+                ->to($email)
+                //->cc('cc@example.com')
+                //->bcc('bcc@example.com')
+                //->replyTo('fabien@example.com')
+                //->priority(Email::PRIORITY_HIGH)
+                ->subject('Email Confirmation')
+                ->text('Sending emails is fun again!')
+                ->htmlTemplate('emails/register.html.twig')
+                ->context([
+                    // 'user' => $user,
+                    'validationCode' => $validationCode,
+                ]);
+            $mailer->send($email);
+        } catch (TransportExceptionInterface $e) {
+            // some error prevented the email sending; display an
+            // error message or try to resend the message
+            return new JsonResponse(["error" => $e]);
+        }
+
+        /*  $expirationDate = new \DateTimeImmutable();
+        $expirationDate->modify('+4 minutes');
+
         $codeValidation->setSource($phoneNumber);
         $codeValidation->setCode((string)$validationCode);
         $codeValidation->setExpiredAt($expirationDate);
@@ -75,15 +154,13 @@ class UserController extends AbstractController
         $this->entityManager->flush();
         $twilio_number = "+16193778287";
 
-        //return new JsonResponse(['message' =>  $this->client]);
         $this->client->messages->create(
-            // Where to send a text message (your cell phone?)
             $codeValidation->getSource(),
             array(
                 'from' => $twilio_number,
                 'body' => "Voici le code pour avoir accès à votre carnet olfactif : " . $validationCode
             )
-        );
+        ); */
 
         $response = [
             'success' => true,
@@ -265,11 +342,13 @@ class UserController extends AbstractController
             return new Response(json_encode(["error" => true, "message" => 'politics is not accepted']), Response::HTTP_NOT_FOUND);
         }
         // Vérifier si le numéro de téléphone existe déjà
-        $existingUserByPhone = $entityManager->getRepository(User::class)->findOneBy(['phone' => $jsonData['phone']]);
-        if ($existingUserByPhone) {
-            // Le numéro de téléphone existe déjà, renvoyer un message d'erreur
-            return new Response(json_encode(["error" => true, "message" => 'Le numéro de téléphone existe déjà.']), 400);
+        if (isset($jsonData['phone'])) {
+            $existingUserByPhone = $entityManager->getRepository(User::class)->findOneBy(['phone' => $jsonData['phone']]);
+            if ($existingUserByPhone) {
+                return new Response(json_encode(["error" => true, "message" => 'Le numéro de téléphone existe déjà.']), 400);
+            }
         }
+
 
 
         $user->setEmail($jsonData['email']);
@@ -308,8 +387,14 @@ class UserController extends AbstractController
     {
         $jsonData = json_decode($request->getContent(), true);
         $existingUserByPhone = $entityManager->getRepository(User::class)->findOneBy(['phone' => $jsonData['phone']]);
+        $existingUserByEmail = $entityManager->getRepository(User::class)->findOneBy(['email' => $jsonData['email']]);
+
         if ($existingUserByPhone) {
             return new Response(json_encode(["success" => false, "message" =>  'Le numéro de téléphone existe déjà.']), 200);
+        }
+
+        if ($existingUserByEmail) {
+            return new Response(json_encode(["success" => false, "message" =>  "L'email de téléphone existe déjà."]), 200);
         }
 
         return new Response(json_encode(["success" => true, "message" => 'email do not exist']),  200);

@@ -8,6 +8,8 @@
 return [
     false, // $matchHost
     [ // $staticRoutes
+        '/2fa' => [[['_route' => '2fa_login', '_controller' => 'scheb_two_factor.form_controller::form'], null, null, null, false, false, null]],
+        '/2fa_check' => [[['_route' => '2fa_login_check'], null, null, null, false, false, null]],
         '/_profiler' => [[['_route' => '_profiler_home', '_controller' => 'web_profiler.controller.profiler::homeAction'], null, null, null, true, false, null]],
         '/_profiler/search' => [[['_route' => '_profiler_search', '_controller' => 'web_profiler.controller.profiler::searchAction'], null, null, null, false, false, null]],
         '/_profiler/search_bar' => [[['_route' => '_profiler_search_bar', '_controller' => 'web_profiler.controller.profiler::searchBarAction'], null, null, null, false, false, null]],
@@ -59,6 +61,7 @@ return [
             [['_route' => 'stripe_webhook', '_controller' => 'App\\Controller\\StripeController::handleWebhook'], null, ['POST' => 0], null, false, false, null],
             [['_route' => 'get lists mailChimp', '_controller' => 'App\\Controller\\StripeController::mailChimp'], null, null, null, false, false, null],
         ],
+        '/api/auth/confirm_email' => [[['_route' => 'confirm_email', '_controller' => 'App\\Controller\\UserController::generateEmailCode'], null, ['POST' => 0], null, false, false, null]],
         '/api/auth/generate_code' => [[['_route' => 'generate_code', '_controller' => 'App\\Controller\\UserController::generateCode'], null, ['POST' => 0], null, false, false, null]],
         '/api/auth/verify_code' => [[['_route' => 'verify_code', '_controller' => 'App\\Controller\\UserController::verifyCode'], null, ['POST' => 0], null, false, false, null]],
         '/api/update-user' => [[['_route' => 'update_user', '_controller' => 'App\\Controller\\UserController::_updateUser'], null, ['POST' => 0], null, false, false, null]],
@@ -161,7 +164,8 @@ return [
         ],
         554 => [[['_route' => 'app_create_perfumeTrialSheet', '_controller' => 'App\\Controller\\PerfumeTrialSheetController::createPerfumeTrialSheet'], ['m', 'Y'], ['POST' => 0], null, false, true, null]],
         562 => [[['_route' => 'app_put_perfumeTrialSheet', '_controller' => 'App\\Controller\\PerfumeTrialSheetController::putPerfumeTrialSheet'], ['perfumeTrialSheet', 'fragrance'], ['PUT' => 0], null, false, true, null]],
-        571 => [[['_route' => 'app_DELETE_checkList', '_controller' => 'App\\Controller\\PerfumeTrialSheetController::deletePerfumeTrialSheet'], ['perfumeTrialSheet'], ['DELETE' => 0], null, false, true, null]],
+notificationsList
+main
         601 => [
             [['_route' => 'app_edit_tag', '_controller' => 'App\\Controller\\ProfilController::editMyFavoriteTypesOfPerfumes'], ['myFavoriteTypesOfPerfumes'], ['PUT' => 0], null, false, true, null],
             [['_route' => 'app_edit_dele', '_controller' => 'App\\Controller\\ProfilController::removeMyFavoriteTypesOfPerfumes'], ['myFavoriteTypesOfPerfumes'], ['DELETE' => 0], null, false, true, null],
