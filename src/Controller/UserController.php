@@ -181,19 +181,16 @@ class UserController extends AbstractController
         if (!isset($jsonData['code'])) {
             return new JsonResponse(['success' => false, 'message' => 'Code is missing'], Response::HTTP_BAD_REQUEST);
         }
-
         // Récupérer le numéro de téléphone depuis les données JSON
         $codeValidation = $jsonData['code'];
-
         $code = $codeValidationRepository->findOneBy(["code" => $codeValidation]);
-
         if (!$code) {
             return new JsonResponse(['success' => false, 'message' => 'Code not found'], Response::HTTP_NOT_FOUND);
         }
 
         $now = new \DateTimeImmutable();
         $expirationDate = $code->getExpiredAt();
-        $expirationLimit = $expirationDate->modify('+2 minutes');
+        $expirationLimit = $expirationDate->modify('+10 minutes');
 
         if ($code && $now > $expirationLimit) {
             // Soit le code n'a pas été trouvé, soit il a expiré
@@ -349,8 +346,6 @@ class UserController extends AbstractController
             }
         }
 
-
-
         $user->setEmail($jsonData['email']);
         $user->setLastName($jsonData['lastName']);
         $user->setPhone($jsonData['phone']);
@@ -394,7 +389,7 @@ class UserController extends AbstractController
         }
 
         if ($existingUserByEmail) {
-            return new Response(json_encode(["success" => false, "message" =>  "L'email de téléphone existe déjà."]), 200);
+            return new Response(json_encode(["success" => false, "message" =>  "L'email existe déjà."]), 200);
         }
 
         return new Response(json_encode(["success" => true, "message" => 'email do not exist']),  200);
