@@ -58,8 +58,6 @@ return [[
 ], [
 
 0 => [],
-notificationsList
-1 => 1711724318,
-main
+1 => 1713375843,
 
 ]];

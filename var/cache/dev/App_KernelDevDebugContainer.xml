@@ -530,9 +530,7 @@
       <argument type="service" id="Twilio\Rest\Client"/>
       <argument type="service" id="kernel"/>
       <argument type="service" id="App\Controller\AdminController"/>
-notificationsList
       <argument type="service" id="App\Security\EmailVerifier"/>
-main
       <call method="setContainer">
         <argument type="service" id=".service_locator..UjS3SV.App\Controller\UserController"/>
       </call>
@@ -645,9 +643,7 @@ main
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
       <tag name="controller.argument_value_resolver" priority="-50"/>
-notificationsList
       <argument type="service" id=".service_locator.LTwdSlx"/>
-main
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
       <tag name="controller.argument_value_resolver" priority="-100"/>
@@ -3268,9 +3264,7 @@ main
     </service>
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
-notificationsList
       <argument type="service" id=".service_locator.LTwdSlx"/>
-main
     </service>
     <service id="debug.log_processor" class="Symfony\Bridge\Monolog\Processor\DebugProcessor">
       <argument type="service" id="request_stack"/>
@@ -7783,9 +7777,7 @@ main
         <argument key="userRepository" type="service_closure" id="App\Repository\UserRepository"/>
       </argument>
     </service>
-notificationsList
     <service id=".service_locator.LTwdSlx" class="Symfony\Component\DependencyInjection\ServiceLocator">
-main
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\AdminController::addContentExclusive" type="service_closure" id=".service_locator.E9w1.nG"/>
@@ -7837,10 +7829,8 @@ main
         <argument key="App\Controller\StripeController::updateCreditCard" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\UserController::_updateUser" type="service_closure" id=".service_locator.NjUBG3v"/>
         <argument key="App\Controller\UserController::checkPhoneExist" type="service_closure" id=".service_locator.e_4zbH4"/>
-notificationsList
         <argument key="App\Controller\UserController::generateCode" type="service_closure" id=".service_locator.uVvF4gL"/>
         <argument key="App\Controller\UserController::generateEmailCode" type="service_closure" id=".service_locator.8YmlTGX"/>
-main
         <argument key="App\Controller\UserController::register" type="service_closure" id=".service_locator.e_4zbH4"/>
         <argument key="App\Controller\UserController::verifyCode" type="service_closure" id=".service_locator.xiCCC7r"/>
         <argument key="App\Controller\UserController::verifyUserEmail" type="service_closure" id=".service_locator.920S.Ym"/>
@@ -7897,10 +7887,8 @@ main
         <argument key="App\Controller\StripeController:updateCreditCard" type="service_closure" id=".service_locator.kPUOGb8"/>
         <argument key="App\Controller\UserController:_updateUser" type="service_closure" id=".service_locator.NjUBG3v"/>
         <argument key="App\Controller\UserController:checkPhoneExist" type="service_closure" id=".service_locator.e_4zbH4"/>
-notificationsList
         <argument key="App\Controller\UserController:generateCode" type="service_closure" id=".service_locator.uVvF4gL"/>
         <argument key="App\Controller\UserController:generateEmailCode" type="service_closure" id=".service_locator.8YmlTGX"/>
-main
         <argument key="App\Controller\UserController:register" type="service_closure" id=".service_locator.e_4zbH4"/>
         <argument key="App\Controller\UserController:verifyCode" type="service_closure" id=".service_locator.xiCCC7r"/>
         <argument key="App\Controller\UserController:verifyUserEmail" type="service_closure" id=".service_locator.920S.Ym"/>
@@ -9872,7 +9860,6 @@ main
     <service id="lexik_jwt_authentication.key_loader" alias="lexik_jwt_authentication.key_loader.raw" public="true"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.7nzbL4K" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-notificationsList
     <service id="argument_resolver.controller_locator" alias=".service_locator.LTwdSlx"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
@@ -9905,7 +9892,6 @@ notificationsList
     <service id=".service_locator.8IbU9zc" alias=".service_locator.NjUBG3v"/>
     <service id=".service_locator.Nw3nSD5" alias=".service_locator.8YmlTGX"/>
     <service id=".service_locator.V6D1oJY" alias=".service_locator.e_4zbH4"/>
-notificationsList
     <service id=".service_locator.VDk_9bc" alias=".service_locator.LTwdSlx"/>
     <service id=".service_locator.9XMoc9I" alias=".service_locator.kzegaci"/>
     <service id=".service_locator.yj07qm_" alias=".service_locator.ZyXYEQR"/>
