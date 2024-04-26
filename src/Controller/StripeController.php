@@ -79,17 +79,34 @@ class StripeController extends AbstractController
         $customerId = $user->getIdClientStripe();
 
         if (!$customerId) {
-            return new JsonResponse(["success" => false, "response" => "Aucune facture trouvé pour ce client."], 400);
+            return new JsonResponse(["success" => false, "response" => "Aucune facture trouvée pour ce client."], 400);
         }
 
         $allInvoices = Invoice::all([
             'customer' => $customerId
         ]);
 
+        // Tableau pour stocker toutes les factures
+        $invoices = [];
+        // Tableau pour stocker les factures non payées avec leur message associé
+        $unpaidInvoices = [];
 
-        //$invoices = Invoice::retrieve(['customer' => $user->getIdClientStripe()]);
+        // Parcourir chaque facture
+        foreach ($allInvoices->data as $invoice) {
+            // Ajouter la facture au tableau de toutes les factures
+            $invoices[] = $invoice;
 
-        return new JsonResponse($allInvoices);
+            // Vérifier si la facture n'est pas payée
+            if (!$invoice->paid) {
+                // Générer un message en anglais indiquant que la facture est en attente de paiement
+                $message = $invoice->hosted_invoice_url;
+                // Ajouter la facture non payée avec son message associé au tableau des factures non payées
+                $unpaidInvoices[] = ['invoice' => $invoice, 'message' => $message];
+            }
+        }
+
+        // Retourner une réponse JSON avec toutes les factures et les factures non payées avec leur message
+        return new JsonResponse(['invoices' => $invoices, 'unpaidInvoices' => $unpaidInvoices]);
     }
 
     #[Route('/api/getCurrentSubscription', name: 'getCurrentSubscription', methods: ['GET'])]
