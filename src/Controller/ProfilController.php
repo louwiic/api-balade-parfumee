@@ -158,7 +158,7 @@ class ProfilController extends AbstractController
 
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
         if (count($user->getMyFavoriteTypesOfPerfumes()) >= 5) {
-            return new Response(false, Response::HTTP_FORBIDDEN);
+            return new  JsonResponse("Vous ne pouvez pas ajouter plus de 5 types", Response::HTTP_FORBIDDEN);
         }
         $myFavoriteTypesOfPerfumes = new MyFavoriteTypesOfPerfumes();
         $myFavoriteTypesOfPerfumes->setName($jsonData["tagName"]);
