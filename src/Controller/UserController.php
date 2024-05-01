@@ -130,7 +130,7 @@ class UserController extends AbstractController
                 //->bcc('bcc@example.com')
                 //->replyTo('fabien@example.com')
                 //->priority(Email::PRIORITY_HIGH)
-                ->subject('Email Confirmation')
+                ->subject('Code de confirmation de votre carnet olfactif digital')
                 ->text('Sending emails is fun again!')
                 ->htmlTemplate('emails/register.html.twig')
                 ->context([

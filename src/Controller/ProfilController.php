@@ -65,10 +65,10 @@ class ProfilController extends AbstractController
 
             return $data;
         } catch (\Exception $e) {
-           //return $this->json(['error' => $e )], Response::HTTP_BAD_REQUEST);
+            //return $this->json(['error' => $e )], Response::HTTP_BAD_REQUEST);
         }
     }
-    
+
     #[Route('/api/profil', name: 'app_getProfil')]
     public function getProfil(Request $request, StripeController $stripe): Response
     {
@@ -80,7 +80,7 @@ class ProfilController extends AbstractController
         } else {
             if ($checksubscription["subscription_is_not_expired"] === false || $checksubscription['subscription']['status'] !== "active") {
                 $isSubscribed = false;
-            }else{
+            } else {
                 $isSubscribed = true;
             }
         }
@@ -97,10 +97,10 @@ class ProfilController extends AbstractController
             'email' => $user->getEmail(),
             'notesToDiscover' => $profil->getNotesToDiscover(),
             'childhoodScents' => $profil->getChildhoodScents(),
-            'feltOnMyCollection'=>$profil->getFeltOnMyCollection(),
-            'isSubscribed'=> $isSubscribed,
-            'avatar'=>$user->getAvatar(),
-            'iAm'=>$profil->getIam(),
+            'feltOnMyCollection' => $profil->getFeltOnMyCollection(),
+            'isSubscribed' => $isSubscribed,
+            'avatar' => $user->getAvatar(),
+            'iAm' => $profil->getIam(),
             'mySymbolicFragrance' => $fragrance ? [
                 "id" => $fragrance->getId(),
                 "brand" => $fragrance->getBrand(),
@@ -136,7 +136,7 @@ class ProfilController extends AbstractController
 
         return new Response('Profil mis à jour', Response::HTTP_OK);
     }
-    
+
     #[Route('/api/profil/feltOnMyCollection', name: 'app_get_feltOnMyCollection', methods: 'PUT')]
     #[OA\Parameter(name: 'feltOnMyCollection', in: "query", required: true)]
     public function getFeltOnMyCollection(Request $request): Response
@@ -147,17 +147,21 @@ class ProfilController extends AbstractController
         $profil->setFeltOnMyCollection(filter_var($data['feltOnMyCollection'], FILTER_VALIDATE_BOOLEAN));
 
         $this->entityManager->flush();
-        return new JsonResponse(["message" => 'feltOnMyCollection updated', "data"=>$data['feltOnMyCollection']], Response::HTTP_OK);
+        return new JsonResponse(["message" => 'feltOnMyCollection updated', "data" => $data['feltOnMyCollection']], Response::HTTP_OK);
     }
     #[Route('/api/profil/tag', name: 'app_add_tag', methods: 'POST')]
     public function addMyFavoriteTypesOfPerfumes(Request $request): Response
     {
+
+        $jsonData = json_decode($request->getContent(), true);
+
+
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
         if (count($user->getMyFavoriteTypesOfPerfumes()) >= 5) {
             return new Response(false, Response::HTTP_FORBIDDEN);
         }
         $myFavoriteTypesOfPerfumes = new MyFavoriteTypesOfPerfumes();
-        $myFavoriteTypesOfPerfumes->setName('');
+        $myFavoriteTypesOfPerfumes->setName($jsonData["tagName"]);
         $this->entityManager->persist($myFavoriteTypesOfPerfumes);
 
         $user->addMyFavoriteTypesOfPerfume($myFavoriteTypesOfPerfumes);
@@ -224,7 +228,7 @@ class ProfilController extends AbstractController
     public function getAllContentExclusive(Request $request, StripeController $stripe): Response
     {
 
-       $checksubscription = $stripe->_checkSubscription($this->userRepository);
+        $checksubscription = $stripe->_checkSubscription($this->userRepository);
 
 
         if (!isset($checksubscription)) {

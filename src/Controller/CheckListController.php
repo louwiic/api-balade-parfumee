@@ -150,16 +150,15 @@ class CheckListController extends AbstractController
     #[Route('api/checkList/delete/{checkList}', name: 'app_delete_checkList', methods: "DELETE")]
     public function deleteCheckList(CheckList $checkList): Response
     {
-        /* $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier()); */
+        $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
 
-        return new JsonResponse(["data" => []]);
 
-        /*  if ($checkList->getUser() !== $user)
+        if ($checkList->getUser() !== $user)
             return new JsonResponse("not access", Response::HTTP_FORBIDDEN);
 
         $checkList->setDeleteAt(new DateTimeImmutable());
         $this->entityManager->flush();
-        return new Response(true, Response::HTTP_OK); */
+        return new Response(true, Response::HTTP_OK);
     }
 
     #[Route('api/checkList', name: 'app_get_checkList')]
