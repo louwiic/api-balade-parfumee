@@ -55,6 +55,103 @@ class UserController extends AbstractController
         $this->publicDir = $kernel->getProjectDir() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'avatar';
     }
 
+    #[Route('/api/auth/request-password-reset', name: 'request_password_reset', methods: ['POST'])]
+    public function requestPasswordReset(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): JsonResponse
+    {
+        $jsonData = json_decode($request->getContent(), true);
+        $email = $jsonData['email'] ?? null;
+
+        if (!$email) {
+            return new JsonResponse(['error' => 'Email is required'], 400);
+        }
+
+        $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
+
+        if (!$user) {
+            return new JsonResponse(['error' => 'User not found'], 404);
+        }
+
+        $validationCode = mt_rand(100000, 999999);
+        $codeValidation = new CodeValidation();
+        $expirationDate = new \DateTimeImmutable();
+        $expirationDate->modify('+10 minutes');
+
+        $codeValidation->setSource($email);
+        $codeValidation->setCode((string)$validationCode);
+        $codeValidation->setExpiredAt($expirationDate);
+        $this->entityManager->persist($codeValidation);
+        $this->entityManager->flush();
+
+        try {
+            $email = (new TemplatedEmail())
+                ->from(new Address('no-reply@balade-parfumee.xyz'))
+                ->to($user->getEmail())
+                ->subject('Password Reset Request')
+                ->htmlTemplate('emails/password_reset.html.twig')
+                ->context([
+                    'user' => $user,
+                    'validationCode' => $validationCode,
+                ]);
+
+            $mailer->send($email);
+
+            return new JsonResponse(['message' => 'Password reset email sent.']);
+        } catch (TransportExceptionInterface $e) {
+            return new JsonResponse(['error' => 'Unable to send email.'], 500);
+        }
+    }
+
+
+    #[Route('/api/auth/reset-password', name: 'reset_password', methods: ['POST'])]
+    public function resetPassword(Request $request, UserPasswordHasherInterface $userPasswordHasher, CodeValidationRepository $codeValidationRepository, EntityManagerInterface $entityManager): JsonResponse
+    {
+
+        $jsonData = json_decode($request->getContent(), true);
+        $code = $jsonData['code'] ?? null;
+        $newPassword = $jsonData['password'] ?? null;
+        //$user = $entityManager->getRepository(User::class);
+
+
+        $jsonData = json_decode($request->getContent(), true);
+
+        // Vérifier si le code est présent dans les données JSON
+        if (!isset($code)) {
+            return new JsonResponse(['success' => false, 'message' => 'Code is missing'], Response::HTTP_BAD_REQUEST);
+        }
+        // Récupérer le numéro de téléphone depuis les données JSON
+        $codeValidation = $code;
+        $code = $codeValidationRepository->findOneBy(["code" => $codeValidation]);
+
+        $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $code->getSource()]);
+
+        if (!$code) {
+            return new JsonResponse(['success' => false, 'message' => 'Code not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $now = new \DateTimeImmutable();
+        $expirationDate = $code->getExpiredAt();
+        $expirationLimit = $expirationDate->modify('+10 minutes');
+
+        if ($code && $now > $expirationLimit) {
+            $response = [
+                'success' => false,
+                'message' => $code ? 'Code has expired' : 'Code not found'
+            ];
+            return new JsonResponse($response, Response::HTTP_NOT_FOUND);
+        }
+
+        $user->setPassword(
+            $userPasswordHasher->hashPassword(
+                $user,
+                $newPassword
+            )
+        );
+
+        $entityManager->flush();
+
+        return new JsonResponse(['message' => 'Password has been reset.']);
+    }
+
     #[Route('/api/auth/confirm_email', name: 'confirm_email', methods: ['POST'])]
     function generateEmailCode(Request $request,  UserRepository $userRepository, MailerInterface $mailer)
     {
@@ -107,10 +204,6 @@ class UserController extends AbstractController
         // Récupérer le numéro de téléphone depuis les données JSON
         $phoneNumber = $jsonData['tel'];
         $email = $jsonData['email'];
-
-        // Rajouter a vérification du numéro de tel avant envoi de l'SMS
-
-        // Générer un code de validation de six chiffres
         $validationCode = mt_rand(100000, 999999);
         $codeValidation = new CodeValidation();
         $expirationDate = new \DateTimeImmutable();

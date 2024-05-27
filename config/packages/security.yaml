@@ -26,6 +26,8 @@ security:
   access_control:
     - { path: ^/api/fragrance, roles: IS_AUTHENTICATED_FULLY }
     - { path: ^/api/auth/login, roles: PUBLIC_ACCESS }
+    - { path: ^/api/auth/request-password-reset, roles: PUBLIC_ACCESS }
+    - { path: ^/api/auth/reset-password, roles: PUBLIC_ACCESS }
     - { path: ^/api/auth/confirm_email, roles: PUBLIC_ACCESS }
     - { path: ^/api/auth/generate_code, roles: PUBLIC_ACCESS }
     - { path: ^/api/auth/verify_code, roles: PUBLIC_ACCESS }
