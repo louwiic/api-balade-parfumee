@@ -31,39 +31,37 @@ class ReviewPerfumeNoteController extends AbstractController
         EntityManagerInterface $entityManager,
         FragranceRepository $fragranceRepository,
         UserRepository $userRepository
-    )
-    {
+    ) {
         $this->entityManager = $entityManager;
         $this->fragranceRepository = $fragranceRepository;
         $this->userRepository = $userRepository;
     }
     #[Route('api/reviewPerfumeNote/{m}/{Y}', name: 'app_create_ReviewPerfumeNote', methods: "POST")]
-    public function createReviewPerfumeNote($m, $Y, StripeController $stripe): Response {
+    public function createReviewPerfumeNote($m, $Y, StripeController $stripe): Response
+    {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
         $reviewPerfumeNotes = $user->getReviewPerfumeNotes();
         $list = [];
-        
+
         foreach ($reviewPerfumeNotes as $reviewPerfumeNote) {
-            if ($reviewPerfumeNote instanceof ReviewPerfumeNote && !$reviewPerfumeNote->getDeleteAt()) {        
+            if ($reviewPerfumeNote instanceof ReviewPerfumeNote && !$reviewPerfumeNote->getDeleteAt()) {
                 $list[] =  [
                     "id" => $reviewPerfumeNote->getId(),
                 ];
             }
         }
 
-        $subscribed = $stripe->checkSubscription(userRepository:$this->userRepository);
+        $subscribed = $stripe->_checkSubscription(userRepository: $this->userRepository);
 
-        if(!isset($subscribed) && count($list) >= 5){
+        if (!isset($subscribed) && count($list) >= 5) {
             return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
         }
-        
-        if(isset($subscribed) && count($list) >= 5){
-            if($subscribed["subscription_is_not_expired"] === false || $subscribed['subscription']['status'] !== "active"){
+
+        if (isset($subscribed) && count($list) >= 5) {
+            if ($subscribed["subscription_is_not_expired"] === false || $subscribed['subscription']['status'] !== "active") {
                 return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
             }
         }
-
-  
 
         $ReviewPerfumeNote = new ReviewPerfumeNote();
         if ($m && $Y)
@@ -88,8 +86,8 @@ class ReviewPerfumeNoteController extends AbstractController
                 "img" => $frag->getImg(),
                 "description" => $frag->getDescription(),
             ];
-}
-        return new JsonResponse( [
+        }
+        return new JsonResponse([
             "id" => $ReviewPerfumeNote->getId(),
             "createAt" => $ReviewPerfumeNote->getCreateAt()->format('m/Y'),
             "review" => $ReviewPerfumeNote->getReview(),
@@ -99,20 +97,22 @@ class ReviewPerfumeNoteController extends AbstractController
         ], Response::HTTP_OK);
     }
 
-   #[Route('api/reviewPerfumeNoteAddFragrance/{reviewPerfumeNote}/{fragrances}')]
-   public function addFragrancesReviewPerfumeNote(ReviewPerfumeNote $reviewPerfumeNote, Fragrance $fragrances) : Response {
-       $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
+    #[Route('api/reviewPerfumeNoteAddFragrance/{reviewPerfumeNote}/{fragrances}')]
+    public function addFragrancesReviewPerfumeNote(ReviewPerfumeNote $reviewPerfumeNote, Fragrance $fragrances): Response
+    {
+        $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
 
-       if ($reviewPerfumeNote->getUser() !== $user) {
-           return new JsonResponse("not access", Response::HTTP_FORBIDDEN);
-       }
-       $reviewPerfumeNote->addFragrance($fragrances);
-       $this->entityManager->persist($reviewPerfumeNote);
-       $this->entityManager->flush();
-       return new JsonResponse(1);
-   }
+        if ($reviewPerfumeNote->getUser() !== $user) {
+            return new JsonResponse("not access", Response::HTTP_FORBIDDEN);
+        }
+        $reviewPerfumeNote->addFragrance($fragrances);
+        $this->entityManager->persist($reviewPerfumeNote);
+        $this->entityManager->flush();
+        return new JsonResponse(1);
+    }
     #[Route('api/reviewPerfumeNoteRemoveFragrance/{reviewPerfumeNote}/{fragrances}')]
-    public function removeFragranceReviewPerfumeNote(ReviewPerfumeNote $reviewPerfumeNote, Fragrance $fragrances) : Response {
+    public function removeFragranceReviewPerfumeNote(ReviewPerfumeNote $reviewPerfumeNote, Fragrance $fragrances): Response
+    {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
 
         if ($reviewPerfumeNote->getUser() !== $user) {
@@ -126,7 +126,8 @@ class ReviewPerfumeNoteController extends AbstractController
     #[Route('api/reviewPerfumeNote/{ReviewPerfumeNote}', name: 'app_put_ReviewPerfumeNote', methods: "PUT")]
     #[OA\Parameter(name: 'title', in: "query", required: true)]
     #[OA\Parameter(name: 'review', in: "query", required: false)]
-    public function putReviewPerfumeNote(ReviewPerfumeNote $ReviewPerfumeNote, Request $request): Response {
+    public function putReviewPerfumeNote(ReviewPerfumeNote $ReviewPerfumeNote, Request $request): Response
+    {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
         if ($ReviewPerfumeNote->getUser() !== $user)
             return new JsonResponse("not access", Response::HTTP_FORBIDDEN);
@@ -143,9 +144,10 @@ class ReviewPerfumeNoteController extends AbstractController
         return new Response(true, Response::HTTP_OK);
     }
 
-    #[Route('api/reviewPerfumeNote/{ReviewPerfumeNote}', name: 'app_DELETE_ReviewPerfumeNote',methods: "DELETE")]
+    #[Route('api/reviewPerfumeNote/{ReviewPerfumeNote}', name: 'app_DELETE_ReviewPerfumeNote', methods: "DELETE")]
     #[OA\Parameter(name: 'ReviewPerfumeNote', in: "path", required: true)]
-    public function deleteReviewPerfumeNote(ReviewPerfumeNote $ReviewPerfumeNote): Response {
+    public function deleteReviewPerfumeNote(ReviewPerfumeNote $ReviewPerfumeNote): Response
+    {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
         if ($ReviewPerfumeNote->getUser() !== $user)
             return new JsonResponse("not access", Response::HTTP_FORBIDDEN);
@@ -155,7 +157,8 @@ class ReviewPerfumeNoteController extends AbstractController
         return new Response(true, Response::HTTP_OK);
     }
     #[Route('api/reviewPerfumeNote', name: 'app_get_ReviewPerfumeNote')]
-    public function getReviewPerfumeNote(ReviewPerfumeNoteRepository $reviewPerfumeNoteRepository): Response {
+    public function getReviewPerfumeNote(ReviewPerfumeNoteRepository $reviewPerfumeNoteRepository): Response
+    {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
         $reviewPerfumeNotes = $user->getReviewPerfumeNotes();
         $result = [];
@@ -173,7 +176,7 @@ class ReviewPerfumeNoteController extends AbstractController
                         "description" => $frag->getDescription(),
                     ];
                 }
-                $result [] =  [
+                $result[] =  [
                     "id" => $reviewPerfumeNote->getId(),
                     "createAt" => $reviewPerfumeNote->getCreateAt()->format('m/Y'),
                     "review" => $reviewPerfumeNote->getReview(),
@@ -187,7 +190,8 @@ class ReviewPerfumeNoteController extends AbstractController
         return new JsonResponse($result, Response::HTTP_OK);
     }
     #[Route('api/reviewPerfumeNote/{reviewPerfumeNote}/fragrance/{fragrance}', name: 'app_add_fragrance_in_ReviewPerfumeNote', methods: "POST")]
-    public function addPerfumeInNote(ReviewPerfumeNote $reviewPerfumeNote, Fragrance $fragrance): Response {
+    public function addPerfumeInNote(ReviewPerfumeNote $reviewPerfumeNote, Fragrance $fragrance): Response
+    {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
         if ($reviewPerfumeNote->getUser() !== $user)
             return new JsonResponse("not access", Response::HTTP_FORBIDDEN);
@@ -196,7 +200,8 @@ class ReviewPerfumeNoteController extends AbstractController
         return new Response(true, Response::HTTP_OK);
     }
     #[Route('api/reviewPerfumeNote/{reviewPerfumeNote}/fragrance/{fragrance}', name: 'app_delete_fragrance_in_ReviewPerfumeNote', methods: "DELETE")]
-    public function deletePerfumeInNote(ReviewPerfumeNote $reviewPerfumeNote, Fragrance $fragrance): Response {
+    public function deletePerfumeInNote(ReviewPerfumeNote $reviewPerfumeNote, Fragrance $fragrance): Response
+    {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
         if ($reviewPerfumeNote->getUser() !== $user)
             return new JsonResponse("not access", Response::HTTP_FORBIDDEN);
@@ -204,5 +209,4 @@ class ReviewPerfumeNoteController extends AbstractController
         $this->entityManager->flush();
         return new Response(true, Response::HTTP_OK);
     }
-
 }

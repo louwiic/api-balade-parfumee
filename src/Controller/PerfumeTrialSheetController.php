@@ -57,7 +57,7 @@ class PerfumeTrialSheetController extends AbstractController
 
         if (isset($subscribed) && count($list) >= 5) {
             if ($subscribed["subscription_is_not_expired"] === false || $subscribed['subscription']['status'] !== "active") {
-                return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
+                return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_ACCEPTED);
             }
         }
 

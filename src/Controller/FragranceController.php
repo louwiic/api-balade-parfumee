@@ -26,20 +26,20 @@ class FragranceController extends AbstractController
         EntityManagerInterface $entityManager,
         FragranceRepository $fragranceRepository,
         UserRepository $userRepository
-    )
-    {
+    ) {
         $this->entityManager = $entityManager;
         $this->fragranceRepository = $fragranceRepository;
         $this->userRepository = $userRepository;
     }
     #[Route('api/fragrance', name: 'app_getAllFragrance')]
-    public function getAllFragrance(Request $request): Response {
+    public function getAllFragrance(Request $request): Response
+    {
         $fragrances = $this->fragranceRepository->findAll();
         $val = [];
 
         foreach ($fragrances as $fragrance) {
             if ($fragrance instanceof Fragrance) {
-                $val [] = [
+                $val[] = [
                     "id" => $fragrance->getId(),
                     "brand" => $fragrance->getBrand(),
                     "concentration" => $fragrance->getConcentration(),
@@ -50,59 +50,66 @@ class FragranceController extends AbstractController
                     "description" => $fragrance->getDescription(),
                 ];
             }
-
         }
         return new JsonResponse($val, Response::HTTP_OK);
     }
 
-    #[Route('api/wishlist', name: 'app_create_wishlist',methods: "POST")]
-    public function createWishlist(Request $request, Fragrance $f = null): Response {
-        $fragrance = json_decode($request->getContent(), true);
+    #[Route('api/wishlist', name: 'app_create_wishlist', methods: "POST")]
+    public function createWishlist(Request $request, Fragrance $f = null, StripeController $stripe): Response
+    {
 
-        //return new JsonResponse(($fragrance));
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
-        $wishlist = new Wishlist();        
-        $wishlist->setCreateAt(new DateTimeImmutable());
-        $wishlist->setUser($user);
+        $wishProducts = $user->getWishlists();
 
-        /* if($fragrance)  
-            $fg = new Fragrance();
-            $fg->setCreateAt(new DateTimeImmutable());
-            $fg->setName($fragrance["name"]);            
-            $fg->setBrand($fragrance["brand"]);
-            $fg->setDescription($fragrance["description"]);            
-            $fg->setValue($fragrance["value"]);            
-            $fg->setImg("test.pgn");
-            $fg->setConcentration($fragrance["concentration"]);    
-            
-            $this->entityManager->persist($fg);
-            $this->entityManager->flush();        
-        
-            $wishlist->setFragrance($fg); */
-        
-        $this->entityManager->persist($wishlist);
+        $list = [];
+        foreach ($wishProducts as $wishProduct) {
+            if ($wishProduct instanceof Wishlist && !$wishProduct->getDeleteAt()) {
+                $list[] =  [
+                    "id" => $wishProduct->getId(),
+                ];
+            }
+        }
+        $subscribed = $stripe->_checkSubscription(userRepository: $this->userRepository);
+
+        if (!isset($subscribed) && count($list) >= 5) {
+            return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
+        }
+
+        if (isset($subscribed) && count($list) >= 5) {
+            if ($subscribed["subscription_is_not_expired"] === false || $subscribed['subscription']['status'] !== "active") {
+                return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
+            }
+        }
+
+        $newWishlist = new Wishlist();
+        $newWishlist->setCreateAt(new DateTimeImmutable());
+        $newWishlist->setUser($user);
+
+        $this->entityManager->persist($newWishlist);
         $this->entityManager->flush();
-        return new JsonResponse(["id" => $wishlist->getId()], Response::HTTP_OK);
+        return new JsonResponse(["id" => $newWishlist->getId()], Response::HTTP_OK);
     }
 
-    #[Route('api/wishlist/{wishlist}/{fragrance}', name: 'app_put_wishlist',methods: "PUT")]
+    #[Route('api/wishlist/{wishlist}/{fragrance}', name: 'app_put_wishlist', methods: "PUT")]
     #[OA\Parameter(name: 'fragrance', in: "path", required: false)]
-    public function PUTWishlist(Wishlist $wishlist, Fragrance $fragrance = null): Response {
-             
-     
+    public function PUTWishlist(Wishlist $wishlist, Fragrance $fragrance = null, StripeController $stripe): Response
+    {
+
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
+
         if ($wishlist->getUser() !== $user)
             return new JsonResponse("not access", Response::HTTP_FORBIDDEN);
-   
+
 
         $wishlist->setFragrance($fragrance);
         $wishlist->setUser($user);
         $this->entityManager->flush();
         return new Response(true, Response::HTTP_OK);
     }
-    #[Route('api/wishlist/{wishlist}', name: 'app_DELETE_wishlist',methods: "DELETE")]
+    #[Route('api/wishlist/{wishlist}', name: 'app_DELETE_wishlist', methods: "DELETE")]
     #[OA\Parameter(name: 'fragrance', in: "path", required: false)]
-    public function DELETEWishlist(Wishlist $wishlist): Response {
+    public function DELETEWishlist(Wishlist $wishlist): Response
+    {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
         if ($wishlist->getUser() !== $user)
             return new JsonResponse("not access", Response::HTTP_FORBIDDEN);
@@ -111,9 +118,10 @@ class FragranceController extends AbstractController
         $this->entityManager->flush();
         return new Response(true, Response::HTTP_OK);
     }
-    
+
     #[Route('api/wishlist', name: 'app_getWishlist')]
-    public function getWishlist(): Response {
+    public function getWishlist(): Response
+    {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
         $list = [];
 
@@ -122,21 +130,20 @@ class FragranceController extends AbstractController
 
                 $fragrance = $wishlist->getFragrance();
 
-                $list [] =  [
+                $list[] =  [
                     "id" => $wishlist->getId(),
                     "date" => $wishlist->getCreateAt()->format('d/m/y'),
                     "idFragrance" => $fragrance ? $fragrance->getId() : "",
                     "brand" =>  $fragrance ? $fragrance->getBrand() : "",
-                    "concentration" =>  $fragrance ? $fragrance->getConcentration(): "",
-                    "createAt" =>  $fragrance ? $fragrance->getCreateAt(): "",
-                    "value" =>  $fragrance ? $fragrance->getName(): "",
-                    "name" =>  $fragrance ? $fragrance->getName(): "",
-                    "img" =>  $fragrance ? $fragrance->getImg(): "/pictogrammeParfum.png",
-                    "description" =>  $fragrance ? $fragrance->getDescription(): "",
+                    "concentration" =>  $fragrance ? $fragrance->getConcentration() : "",
+                    "createAt" =>  $fragrance ? $fragrance->getCreateAt() : "",
+                    "value" =>  $fragrance ? $fragrance->getName() : "",
+                    "name" =>  $fragrance ? $fragrance->getName() : "",
+                    "img" =>  $fragrance ? $fragrance->getImg() : "/pictogrammeParfum.png",
+                    "description" =>  $fragrance ? $fragrance->getDescription() : "",
                 ];
             }
         }
         return new JsonResponse($list, Response::HTTP_OK);
     }
-
 }

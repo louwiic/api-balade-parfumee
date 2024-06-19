@@ -24,16 +24,37 @@ class LayeringsController extends AbstractController
         EntityManagerInterface $entityManager,
         FragranceRepository $fragranceRepository,
         UserRepository $userRepository
-    )
-    {
+    ) {
         $this->entityManager = $entityManager;
         $this->fragranceRepository = $fragranceRepository;
         $this->userRepository = $userRepository;
     }
     #[Route('api/layerings', name: 'app_create_Layerings', methods: "POST")]
-    public function createLayerings( Request $request) {
+    public function createLayerings(Request $request, StripeController $stripe)
+    {
+
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
-        $data = json_decode($request->getContent(), true);
+        $layerings = $user->getLayerings();
+
+        $list = [];
+        foreach ($layerings as $layering) {
+            if ($layering instanceof Layering && !$layering->getDeletedAT()) {
+                $list[] =  [
+                    "id" => $layering->getId(),
+                ];
+            }
+        }
+        $subscribed = $stripe->_checkSubscription(userRepository: $this->userRepository);
+
+        if (!isset($subscribed) && count($list) >= 5) {
+            return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
+        }
+
+        if (isset($subscribed) && count($list) >= 5) {
+            if ($subscribed["subscription_is_not_expired"] === false || $subscribed['subscription']['status'] !== "active") {
+                return new JsonResponse(["message" => 'limit trialsheet add exceeded'], Response::HTTP_NOT_FOUND);
+            }
+        }
 
         $layering = new Layering();
         $layering->setUser($user);
@@ -52,7 +73,9 @@ class LayeringsController extends AbstractController
     }
 
     #[Route('api/layerings/{layering}', name: 'app_update_Layerings', methods: "PUT")]
-    public function updateLayerings(Layering $layering, Request $request) {
+    public function updateLayerings(Layering $layering, Request $request,  StripeController $stripe)
+    {
+
         $data = json_decode($request->getContent(), true);
         foreach ($data as $key => $value) {
             match ($key) {
@@ -66,7 +89,8 @@ class LayeringsController extends AbstractController
         return new Response(1, Response::HTTP_OK);
     }
     #[Route('api/layerings/{layering}', name: 'app_DELETE_Layerings', methods: "DELETE")]
-    public function daleteLayerings(Layering $layering, Request $request) {
+    public function daleteLayerings(Layering $layering, Request $request)
+    {
         $data = json_decode($request->getContent(), true);
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
         if ($layering->getUser() !== $user)
@@ -76,7 +100,8 @@ class LayeringsController extends AbstractController
         return new Response(1, Response::HTTP_OK);
     }
     #[Route('api/layerings', name: 'app_get_Layerings', methods: "GET")]
-    public function getLayerings() {
+    public function getLayerings()
+    {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
 
         $layerings = $user->getLayerings() ?: [];
@@ -85,10 +110,10 @@ class LayeringsController extends AbstractController
             if ($layering instanceof Layering  && !$layering->getDeletedAT()) {
                 $frag = $layering->getFragrance1();
                 $frag2 = $layering->getFragrance2();
-                $result [] = [
+                $result[] = [
                     'id' => $layering->getId(),
                     "description" => $layering->getDescription(),
-                    "layering1" =>$frag ? [
+                    "layering1" => $frag ? [
                         "id" => $frag->getId(),
                         "name" => $frag->getName(),
                         "brand" => $frag->getBrand(),
@@ -105,13 +130,10 @@ class LayeringsController extends AbstractController
                         "value" => $frag2->getValue(),
                         "img" => $frag2->getImg(),
                         "description" => $frag2->getDescription(),
-                    ]: [],
+                    ] : [],
                 ];
             }
-
         }
         return new JsonResponse($result, Response::HTTP_OK);
     }
-
-
 }
