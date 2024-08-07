@@ -402,8 +402,10 @@ class AdminController extends AbstractController
         $currentSub = $subscription->items->data[0]->plan->id;
         $categoryFilter = [1, 4];
 
-        $price_mensuel = 'price_1NwqwRFnV1sRkwn0cRKvCyLc';
-        $price_trimestriel = 'price_1NwqvOFnV1sRkwn0yaK0jhlH';
+        $price_mensuel = 'price_1PlCG0FnV1sRkwn0jjwJJd0D';
+        /* $price_mensuel = 'price_1PlCG0FnV1sRkwn0jjwJJd0D'; */
+        $price_trimestriel = 'price_1PlCEeFnV1sRkwn0TogFOv88';
+        /* $price_trimestriel = 'price_1PlCEeFnV1sRkwn0TogFOv88'; */
         $forAboMensu = 2;
         $forAboTrim = 3;
         $forAboDiscover = 1;
