@@ -261,9 +261,19 @@ class StripeController extends AbstractController
     #[OA\Parameter(name: 'subscriptionSelected', in: "query", required: true)]
     public function changeSubscription(userRepository $userRepository, Request $request, EntityManagerInterface $entityManager)
     {
+
+
+        /*  $user = $userRepository->findOneUserByEmail("samia@yopmail.com");
+        $user->setTypeSubscription(1);
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return new JsonResponse(['message' => 'Test api']); */
+
+
         $list_id = "f9470226d5";
-        $price_id_mensuel = "price_1NwqwRFnV1sRkwn0cRKvCyLc"; //9.99 eur
-        $price_id_trimestriel = "price_1NwqvOFnV1sRkwn0yaK0jhlH"; //26.99 eur 
+        $price_id_mensuel = "price_1PlCG0FnV1sRkwn0jjwJJd0D"; //PROD -> "price_1PlCG0FnV1sRkwn0jjwJJd0D"; //dev -> price_1NwqwRFnV1sRkwn0cRKvCyLc //9.99 eur
+        $price_id_trimestriel = "price_1PlCEeFnV1sRkwn0TogFOv88"; //PROD -> "price_1PlCEeFnV1sRkwn0TogFOv88"; //dev -> price_1NwqvOFnV1sRkwn0yaK0jhlH //26.99 eur 
         $userEmail = $this->getUser()->getUserIdentifier();
         $user = $userRepository->findOneUserByEmail($userEmail);
         $customerStripeId = $user->getIdClientStripe();
@@ -381,7 +391,19 @@ class StripeController extends AbstractController
                 $subscriptionUpdateData['default_payment_method'] = $defaultPaymentMethod;
             }
 
-            //return new JsonResponse($subscriptionUpdateData, 400);
+            if (isset($data['subscriptionSelected'])) {
+                $user->setTypeSubscription($data['subscriptionSelected']);
+            }
+
+            /* 
+             if ($subscriptionSelected === 1)
+                return $this->monthlySubscription;
+            if ($subscriptionSelected === 2)
+                return $this->quarterlySubscription;
+            // if ($subscriptionSelected === 3)
+            //   return $this->freeSubscription;
+            return false;
+         */
 
             $subscription = Subscription::update($subscriptionId, $subscriptionUpdateData);
 
@@ -389,7 +411,7 @@ class StripeController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return new JsonResponse(['message' => 'Mise à jour de l\'abonnement réussie.', 'data' => $subscription]);
+            return new JsonResponse(['message' => 'Mise à jour de l\'abonnement réussie.', 'data' => $subscription, 'subscription' => $data['subscriptionSelected']]);
         } catch (ApiErrorException $e) {
             return new JsonResponse(['message' => 'Erreur lors de la mise à jour de l\'abonnement.', 'success' => false, 'error' => $e], 400);
         }

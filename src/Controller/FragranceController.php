@@ -31,12 +31,12 @@ class FragranceController extends AbstractController
         $this->fragranceRepository = $fragranceRepository;
         $this->userRepository = $userRepository;
     }
+
     #[Route('api/fragrance', name: 'app_getAllFragrance')]
     public function getAllFragrance(Request $request): Response
     {
         $fragrances = $this->fragranceRepository->findAll();
         $val = [];
-
         foreach ($fragrances as $fragrance) {
             if ($fragrance instanceof Fragrance) {
                 $val[] = [

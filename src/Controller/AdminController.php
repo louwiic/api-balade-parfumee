@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\CategoryNotification;
 use App\Entity\ContentExclusive;
 use App\Entity\ContentTag;
+use App\Entity\Fragrance;
 use App\Entity\Notification;
 use App\Entity\NotificationsUsers;
 use App\Entity\User;
@@ -12,6 +13,7 @@ use App\Kernel;
 use App\Repository\CategoryNotificationRepository;
 use App\Repository\ContentExclusiveRepository;
 use App\Repository\ContentTagRepository;
+use App\Repository\FragranceRepository;
 use App\Repository\NotificationRepository;
 use App\Repository\NotificationsUsersRepository;
 use App\Repository\UserRepository;
@@ -390,27 +392,42 @@ class AdminController extends AbstractController
     {
         $user = $this->userRepository->findOneByEmail($this->getUser()->getUserIdentifier());
         $subscriptionStripeId = $user->getIdSubscriptionStripe();
+
         if ($subscriptionStripeId === null) {
-
             $notifications = $notificationRepository->findBy(['categoryNotification' => [1, 4]], ['createAt' => 'DESC']);
-            $normalizedNotifications = $this->normalizer->normalize($notifications, null, ['ignored_attributes' => ['user'], 'groups' => 'notification:read']);
 
+            // Ajouter la propriété 'subscriptionType' avant la normalisation
+            foreach ($notifications as $notification) {
+                $notification->subscriptionType = 'no_subscription'; // Valeur pour les utilisateurs sans abonnement
+            }
+
+            $normalizedNotifications = $this->normalizer->normalize($notifications, null, ['ignored_attributes' => ['user'], 'groups' => 'notification:read']);
             return new JsonResponse(['notifications' => $normalizedNotifications]);
         }
 
+        // Récupération des informations d'abonnement Stripe
         $subscription = Subscription::retrieve($user->getIdSubscriptionStripe());
         $currentSub = $subscription->items->data[0]->plan->id;
+        $subscriptionStatus = $subscription->status;
+
         $categoryFilter = [1, 4];
 
-        $price_mensuel = 'price_1PlCG0FnV1sRkwn0jjwJJd0D';
-        /* $price_mensuel = 'price_1PlCG0FnV1sRkwn0jjwJJd0D'; */
-        $price_trimestriel = 'price_1PlCEeFnV1sRkwn0TogFOv88';
-        /* $price_trimestriel = 'price_1PlCEeFnV1sRkwn0TogFOv88'; */
+        // Vérifier si l'abonnement est actif et non annulé ou impayé
+        if (!in_array($subscriptionStatus, ['active', 'trialing'])) {
+            $notifications = $notificationRepository->findBy(['categoryNotification' => $categoryFilter], ['createAt' => 'DESC']);
+            $normalizedNotifications = $this->normalizer->normalize($notifications, null, ['ignored_attributes' => ['user'], 'groups' => 'notification:read']);
+            return new JsonResponse(['notifications' => $normalizedNotifications]);
+        }
+
+        // Définir les prix et les types d'abonnement
+        $price_mensuel = 'price_1NwqwRFnV1sRkwn0cRKvCyLc';
+        $price_trimestriel = 'price_1NwqvOFnV1sRkwn0yaK0jhlH';
         $forAboMensu = 2;
         $forAboTrim = 3;
         $forAboDiscover = 1;
         $forAllUser = 4;
 
+        // Mise à jour des catégories en fonction de l'abonnement
         if ($currentSub === $price_mensuel) {
             $categoryFilter = [$forAboMensu, $forAboDiscover, $forAllUser];
         }
@@ -419,11 +436,28 @@ class AdminController extends AbstractController
             $categoryFilter = [$forAboTrim, $forAboDiscover, $forAllUser];
         }
 
+        // Récupérer les notifications en fonction du filtre de catégorie
         $notifications = $notificationRepository->findBy(['categoryNotification' => $categoryFilter], ['createAt' => 'DESC']);
-        $normalizedNotifications = $this->normalizer->normalize($notifications, null, ['ignored_attributes' => ['user'], 'groups' => 'notification:read']);
 
-        return new JsonResponse(['notifications' => $normalizedNotifications]);
+        $enhancedNotifications = [];
+
+        foreach ($notifications as $notification) {
+            $notificationArray = $this->normalizer->normalize($notification, null, ['ignored_attributes' => ['user'], 'groups' => 'notification:read']);
+
+            if ($currentSub === $price_mensuel) {
+                $notificationArray['subscriptionType'] = 2;
+            }
+
+            if ($currentSub === $price_trimestriel) {
+                $notificationArray['subscriptionType'] = 3;
+            }
+
+            $enhancedNotifications[] = $notificationArray;
+        }
+
+        return new JsonResponse(['notifications' => $enhancedNotifications, "subscriptionStripeId" => $subscriptionStripeId]);
     }
+
 
     #[Route('api/admin/deleteNotification/{notification}', name: 'app_deleteNotification', methods: "delete")]
     public function deleteNotification(Notification $notification): JsonResponse
@@ -701,5 +735,99 @@ class AdminController extends AbstractController
         } catch (\Stripe\Exception\ApiErrorException $e) {
             return new JsonResponse(['error' => 'Une erreur s\'est produite lors de la récuperation des abonnements.'], 500);
         }
+    }
+
+
+    #[Route('/api/admin/importFragrances', name: 'app_import_fragrances', methods: ['POST'])]
+    public function importFragrances(Request $request, EntityManagerInterface $entityManager, FragranceRepository $fragranceRepository): JsonResponse
+    {
+        // Vérification des droits d'accès
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return new JsonResponse([
+                'message' => 'Vous n\'avez pas les droits pour effectuer cette action.'
+            ], 403);
+        }
+
+        // Récupération des données JSON
+        $data = json_decode($request->getContent(), true);
+
+        if (!is_array($data)) {
+            return new JsonResponse([
+                'message' => 'Format de données invalide.'
+            ], 400);
+        }
+
+        $fragrances = [];
+        $skippedFragrances = [];
+
+        // Parcours des données pour créer des entités Fragrance
+        foreach ($data as $item) {
+            if (isset($item['fields'])) {
+                $fields = $item['fields'];
+
+                // Récupération des champs 'name' et 'brand'
+                $name = $fields['name'] ?? null;
+                $brand = $fields['brand'] ?? null;
+
+                // Vérifier si la fragrance existe déjà dans la base de données
+                if ($name && $brand) {
+                    $existingFragrance = $fragranceRepository->findOneBy([
+                        'name' => $name,
+                        'brand' => $brand,
+                    ]);
+
+                    if ($existingFragrance) {
+                        // La fragrance existe déjà, on la skippe et on ajoute un message
+                        $skippedFragrances[] = $name . ' de ' . $brand;
+                        continue;
+                    }
+                }
+
+                $fragrance = new Fragrance();
+
+                // Gestion du champ 'createdTime', conversion en DateTimeImmutable
+                if (isset($item['createdTime'])) {
+                    try {
+                        $createAt = new \DateTimeImmutable($item['createdTime'], new \DateTimeZone('UTC'));
+                        $fragrance->setCreateAt($createAt);
+                    } catch (\Exception $e) {
+                        // Gestion du format de date invalide
+                        return new JsonResponse([
+                            'message' => 'Format de date invalide dans le champ createdTime.'
+                        ], 400);
+                    }
+                } else {
+                    // Vous pouvez définir une valeur par défaut si nécessaire
+                    $fragrance->setCreateAt(new \DateTimeImmutable());
+                }
+
+                $fragrance->setName($name);
+                $fragrance->setBrand($brand);
+                $fragrance->setImg($fields['link'] ?? null);
+                $fragrance->setConcentration($fields['concentration'] ?? null);
+                $fragrance->setDescription($fields['description'] ?? null);
+                $fragrance->setValue($fields['value'] ?? null);
+
+                $entityManager->persist($fragrance);
+                $fragrances[] = $fragrance;
+            }
+        }
+
+        // Enregistrement en base de données
+        $entityManager->flush();
+
+        // Normalisation des données pour la réponse JSON
+        $normalizedFragrances = $this->normalizer->normalize($fragrances, null, ['ignored_attributes' => ['checkLists', 'reviewPerfumeNotes']]);
+
+        // Préparation du message de réponse
+        $message = 'Les fragrances ont été importées avec succès.';
+        if (count($skippedFragrances) > 0) {
+            $message .= ' Les fragrances suivantes existent déjà et n\'ont pas été importées : ' . implode(', ', $skippedFragrances);
+        }
+
+        return new JsonResponse([
+            'message' => $message,
+            'fragrances' => $normalizedFragrances
+        ], 201);
     }
 }
