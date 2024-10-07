@@ -737,97 +737,152 @@ class AdminController extends AbstractController
         }
     }
 
-
-    #[Route('/api/admin/importFragrances', name: 'app_import_fragrances', methods: ['POST'])]
-    public function importFragrances(Request $request, EntityManagerInterface $entityManager, FragranceRepository $fragranceRepository): JsonResponse
+    #[Route('api/admin/fragrance/search', name: 'app_getFragranceByNameAndBrand', methods: "POST")]
+    public function getFragranceByNameAndBrand(Request $request, FragranceRepository $fragranceRepository): Response
     {
-        // Vérification des droits d'accès
+
         if (!$this->isGranted('ROLE_ADMIN')) {
             return new JsonResponse([
                 'message' => 'Vous n\'avez pas les droits pour effectuer cette action.'
             ], 403);
         }
 
-        // Récupération des données JSON
+        //get name and brand from body request
         $data = json_decode($request->getContent(), true);
+        $name = $data['name'];
+        $brand = $data['brand'];
+        $fragrance = $fragranceRepository->createQueryBuilder('f')
+            ->where('f.name = :name')
+            ->andWhere('f.brand = :brand')
+            ->setParameter('name', $name)
+            ->setParameter('brand', $brand)
+            ->getQuery()
+            ->getOneOrNullResult();
+        return new JsonResponse($fragrance, Response::HTTP_OK);
+    }
 
-        if (!is_array($data)) {
+
+    #[Route('/api/admin/importFragrances', name: 'app_import_fragrances', methods: ['POST'])]
+    public function importFragrances(Request $request, EntityManagerInterface $entityManager, FragranceRepository $fragranceRepository): JsonResponse
+    {
+        if (!$this->isGranted('ROLE_ADMIN')) {
             return new JsonResponse([
-                'message' => 'Format de données invalide.'
+                'message' => 'Vous n\'avez pas les droits pour effectuer cette action.'
+            ], 403);
+        }
+
+        // Récupérer les données du corps de la requête
+        $apiData = json_decode($request->getContent(), true);
+
+        if (!is_array($apiData) || empty($apiData)) {
+            return new JsonResponse([
+                'message' => 'Les données reçues ne sont pas valides ou sont vides.'
             ], 400);
         }
 
-        $fragrances = [];
-        $skippedFragrances = [];
+        // Récupérer tous les parfums existants pour comparaison
+        $allFragrances = $fragranceRepository->findAll();
+        $updatedData = [];
 
-        // Parcours des données pour créer des entités Fragrance
-        foreach ($data as $item) {
-            if (isset($item['fields'])) {
-                $fields = $item['fields'];
-
-                // Récupération des champs 'name' et 'brand'
-                $name = $fields['name'] ?? null;
-                $brand = $fields['brand'] ?? null;
-
-                // Vérifier si la fragrance existe déjà dans la base de données
-                if ($name && $brand) {
-                    $existingFragrance = $fragranceRepository->findOneBy([
-                        'name' => $name,
-                        'brand' => $brand,
-                    ]);
-
-                    if ($existingFragrance) {
-                        // La fragrance existe déjà, on la skippe et on ajoute un message
-                        $skippedFragrances[] = $name . ' de ' . $brand;
-                        continue;
-                    }
-                }
-
-                $fragrance = new Fragrance();
-
-                // Gestion du champ 'createdTime', conversion en DateTimeImmutable
-                if (isset($item['createdTime'])) {
-                    try {
-                        $createAt = new \DateTimeImmutable($item['createdTime'], new \DateTimeZone('UTC'));
-                        $fragrance->setCreateAt($createAt);
-                    } catch (\Exception $e) {
-                        // Gestion du format de date invalide
-                        return new JsonResponse([
-                            'message' => 'Format de date invalide dans le champ createdTime.'
-                        ], 400);
-                    }
-                } else {
-                    // Vous pouvez définir une valeur par défaut si nécessaire
-                    $fragrance->setCreateAt(new \DateTimeImmutable());
-                }
-
-                $fragrance->setName($name);
-                $fragrance->setBrand($brand);
-                $fragrance->setImg($fields['link'] ?? null);
-                $fragrance->setConcentration($fields['concentration'] ?? null);
-                $fragrance->setDescription($fields['description'] ?? null);
-                $fragrance->setValue($fields['value'] ?? null);
-
-                $entityManager->persist($fragrance);
-                $fragrances[] = $fragrance;
+        // Traiter chaque parfum reçu
+        foreach ($apiData as $item) {
+            if (!isset($item['fields'])) {
+                continue; // Ignorer les éléments sans champ 'fields'
             }
+
+            $fields = $item['fields'];
+            $existingFragrance = $this->findExistingFragrance($fields, $allFragrances);
+
+            if ($existingFragrance) {
+                // Mettre à jour le parfum existant
+                $updatedItem = $this->updateExistingFragrance($existingFragrance, $fields);
+                $updatedData[] = $updatedItem;
+            } /* else {
+                // Créer un nouveau parfum
+                $newItem = $this->createNewFragrance($fields, $item, $entityManager);
+                $updatedData[] = $newItem;
+            } */
         }
 
-        // Enregistrement en base de données
+        // Enregistrer les modifications dans la base de données
         $entityManager->flush();
 
-        // Normalisation des données pour la réponse JSON
-        $normalizedFragrances = $this->normalizer->normalize($fragrances, null, ['ignored_attributes' => ['checkLists', 'reviewPerfumeNotes']]);
+        return new JsonResponse([
+            'message' => 'Fragrances traitées avec succès.',
+            'updatedData' => $updatedData
+        ]);
+    }
 
-        // Préparation du message de réponse
-        $message = 'Les fragrances ont été importées avec succès.';
-        if (count($skippedFragrances) > 0) {
-            $message .= ' Les fragrances suivantes existent déjà et n\'ont pas été importées : ' . implode(', ', $skippedFragrances);
+    private function findExistingFragrance(array $fields, array $allFragrances): ?Fragrance
+    {
+        foreach ($allFragrances as $fragrance) {
+            if (
+                $fragrance->getBrand() === $this->decodeSpecialCharacters($fields['name'] ?? '') &&
+                $fragrance->getName() === $this->decodeSpecialCharacters($fields['brand'] ?? '')
+            ) {
+                return $fragrance;
+            }
+        }
+        return null;
+    }
+
+    private function updateExistingFragrance(Fragrance $fragrance, array $fields): array
+    {
+        $fragrance->setConcentration($this->decodeSpecialCharacters($fields['concentration'] ?? null));
+        $fragrance->setDescription($this->decodeSpecialCharacters($fields['description'] ?? null));
+        $fragrance->setImg($fields['link'] ?? null);
+        $fragrance->setValue($fields['value'] ?? null);
+
+        return [
+            'id' => $fragrance->getId(),
+            'brand' => $fragrance->getBrand(),
+            'name' => $fragrance->getName(),
+            'updated' => true
+        ];
+    }
+
+    private function createNewFragrance(array $fields, array $item, EntityManagerInterface $entityManager): array
+    {
+        $fragrance = new Fragrance();
+        $fragrance->setName($this->decodeSpecialCharacters($fields['name']));
+        $fragrance->setBrand($this->decodeSpecialCharacters($fields['brand']));
+        $fragrance->setImg($fields['link'] ?? null);
+        $fragrance->setConcentration($this->decodeSpecialCharacters($fields['concentration'] ?? null));
+        $fragrance->setDescription($this->decodeSpecialCharacters($fields['description'] ?? null));
+        $fragrance->setValue($fields['value'] ?? null);
+
+        if (isset($item['createdTime'])) {
+            try {
+                $createAt = new \DateTimeImmutable($item['createdTime']);
+                $fragrance->setCreateAt($createAt);
+            } catch (\Exception $e) {
+                $fragrance->setCreateAt(new \DateTimeImmutable());
+            }
+        } else {
+            $fragrance->setCreateAt(new \DateTimeImmutable());
         }
 
-        return new JsonResponse([
-            'message' => $message,
-            'fragrances' => $normalizedFragrances
-        ], 201);
+        $entityManager->persist($fragrance);
+
+        return [
+            'id' => $fragrance->getId(),
+            'brand' => $fragrance->getBrand(),
+            'name' => $fragrance->getName(),
+            'created' => true
+        ];
+    }
+
+    private function decodeSpecialCharacters(?string $text): ?string
+    {
+        if ($text === null) {
+            return null;
+        }
+
+        $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $text = preg_replace_callback('/\\\\u([0-9a-fA-F]{4})/', function ($match) {
+            return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
+        }, $text);
+
+        return trim($text);
     }
 }
